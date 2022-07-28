@@ -9,10 +9,9 @@ import matplotlib.pyplot as plt
 
 class PzServer():
 
-    def __init__(self, user, password):
-        # to do: get user's github credentials for authentication
-        # session = requests.Session()
-        # session.auth = (user, password)
+    def __init__(self, token):
+        # token
+
         pass
 
     def list_product_types(self):
@@ -57,7 +56,7 @@ class PzServer():
 
         raise NotImplementedError
 
-    def list_products(self, filters):
+    def list_products(self, filters=None):
         """Fetches the list of data products available. 
 
         Connects to the Photo-z Server's database and 
