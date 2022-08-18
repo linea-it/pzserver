@@ -240,7 +240,7 @@ class PzServerApi:
         return list(resp.keys())
 
 
-    def list(self, entity):
+    def get_all(self, entity):
         """ Returns a list with all records of the entity.
 
         Args:

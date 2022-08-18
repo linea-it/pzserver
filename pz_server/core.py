@@ -5,14 +5,15 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 #import seaborn as sns
+from .api import PzServerApi
 
 
 class PzServer():
 
-    def __init__(self, token):
+    def __init__(self, token, host="pz"):
         # token
+        self.api = PzServerApi(token, host)
 
-        pass
 
     def list_product_types(self):
         """Fetches the list of valid product types. 
@@ -26,7 +27,7 @@ class PzServer():
             corresponding description. 
         """
 
-        raise NotImplementedError
+        return self.api.get_all("product_types")
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -52,9 +53,9 @@ class PzServer():
 
         Returns:
             A list data release tags.  
-       """
+        """
 
-        raise NotImplementedError
+        return self.api.get_all("releases")
 
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
@@ -69,7 +70,8 @@ class PzServer():
             A dict mapping data products to the corresponding 
             short description informed by the owners.             
         """
-        raise NotImplementedError
+        
+        return self.api.get_all("products")
 
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
@@ -99,4 +101,5 @@ class PzServer():
             Astropy Table with tabular data or 
             .tar file (in case of multiple files). 
         """
-        raise NotImplementedError
+        
+        return self.api.get("products", product_id)
