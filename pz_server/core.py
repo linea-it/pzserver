@@ -27,7 +27,7 @@ class PzServer():
             corresponding description. 
         """
 
-        return self.api.get_all("product_types")
+        return self.api.get_all("product-types")
 
     def list_users(self):
         """Fetches the list of registered users. 
