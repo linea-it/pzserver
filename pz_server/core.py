@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 from .api import PzServerApi
 
 
+
 class PzServer():
+
 
     def __init__(self, token, host="pz"):
         # token
@@ -28,6 +30,7 @@ class PzServer():
         """
 
         return self.api.get_all("product-types")
+
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -57,6 +60,7 @@ class PzServer():
 
         return self.api.get_all("releases")
 
+
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
 
@@ -70,8 +74,9 @@ class PzServer():
             A dict mapping data products to the corresponding 
             short description informed by the owners.             
         """
-        
+
         return self.api.get_all("products")
+
 
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
@@ -101,5 +106,5 @@ class PzServer():
             Astropy Table with tabular data or 
             .tar file (in case of multiple files). 
         """
-        
+
         return self.api.get("products", product_id)
