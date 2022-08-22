@@ -10,7 +10,7 @@ Welcome to Photo-z Server Library's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-
+   pz_server
 
 Indices and tables
 ==================
