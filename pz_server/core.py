@@ -1,5 +1,5 @@
 import requests
-
+#from IPython.display import Markdown
 import numpy as np
 #import scipy as sp
 import pandas as pd
@@ -25,7 +25,11 @@ class PzServer():
             A dict mapping product type names to the 
             corresponding description. 
         """
-        return self.api.get_all("product-types")
+
+        items = self.api.get_all("product-types")
+        dataframe = pd.DataFrame(items)
+
+        return dataframe
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -37,8 +41,10 @@ class PzServer():
         Returns:
             A list of github usernames.             
         """
+        items = self.api.get_all("users")
+        dataframe = pd.DataFrame(items)
 
-        raise NotImplementedError
+        return dataframe
 
     def list_releases(self):
         """Fetches the list of valid data releases. 
@@ -53,7 +59,10 @@ class PzServer():
             A list data release tags.
         """
 
-        return self.api.get_all("releases")
+        items = self.api.get_all("releases")
+        dataframe = pd.DataFrame(items)
+
+        return dataframe
 
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
@@ -69,7 +78,10 @@ class PzServer():
             short description informed by the owners.             
         """
 
-        return self.api.get_all("products")
+        items = self.api.get_all("products")
+        dataframe = pd.DataFrame(items)
+
+        return dataframe
 
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
