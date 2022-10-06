@@ -1,3 +1,4 @@
+from curses.ascii import controlnames
 import requests
 #from IPython.display import Markdown
 import numpy as np
@@ -22,12 +23,13 @@ class PzServer():
         types and their respective short description.
 
         Returns:
-            A dict mapping product type names to the 
-            corresponding description. 
+            A Pandas DataFrame mapping product type names
+            to the corresponding description.
         """
 
-        items = self.api.get_all("product-types")
-        dataframe = pd.DataFrame(items)
+        product_types_dict = self.api.get_all("product-types")
+        dataframe = pd.DataFrame(product_types_dict, 
+                    columns=["name", "display_name", "description"])
 
         return dataframe
 
@@ -41,9 +43,12 @@ class PzServer():
         Returns:
             A list of github usernames.             
         """
-        items = self.api.get_all("users")
-        dataframe = pd.DataFrame(items)
 
+        product_types_dict = self.api.get_all("users")
+        dataframe = pd.DataFrame(product_types_dict, 
+                    columns=["username", "last_name"])
+        dataframe.rename(columns={"last_name": "user"}, inplace=True)
+            
         return dataframe
 
     def list_releases(self):
