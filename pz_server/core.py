@@ -102,7 +102,7 @@ class PzServer():
         """
         raise NotImplementedError
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, save_file=False):
         """Fetches the data to local. 
 
         Connects to the Photo-z Server's database and 
@@ -116,4 +116,5 @@ class PzServer():
             Astropy Table with tabular data or 
             .tar file (in case of multiple files). 
         """
+        
         return self.api.get("products", product_id)
