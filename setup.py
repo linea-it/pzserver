@@ -24,7 +24,8 @@ setup(
         "pandas>=1.2.0",
         "requests>=2.23.0",
         "astropy>=5.0.0",
-        "matplotlib>=3.6.0"
+        "matplotlib>=3.6.0",
+        "tomark>=0.1.4"
     ],
     # tests_require=["pytest==4.4.1", "astropy"],  #TODO
     # test_suite="tests",  #TODO
