@@ -1,5 +1,6 @@
+from curses.ascii import controlnames
 import requests
-
+#from IPython.display import Markdown
 import numpy as np
 #import scipy as sp
 import pandas as pd
@@ -8,14 +9,11 @@ import matplotlib.pyplot as plt
 from .api import PzServerApi
 
 
-
 class PzServer():
-
 
     def __init__(self, token, host="pz"):
         # token
         self.api = PzServerApi(token, host)
-
 
     def list_product_types(self):
         """Fetches the list of valid product types. 
@@ -25,12 +23,15 @@ class PzServer():
         types and their respective short description.
 
         Returns:
-            A dict mapping product type names to the 
-            corresponding description. 
+            A Pandas DataFrame mapping product type names
+            to the corresponding description.
         """
 
-        return self.api.get_all("product-types")
+        product_types_dict = self.api.get_all("product-types")
+        dataframe = pd.DataFrame(product_types_dict, 
+                    columns=["name", "display_name", "description"])
 
+        return dataframe
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -43,7 +44,12 @@ class PzServer():
             A list of github usernames.             
         """
 
-        raise NotImplementedError
+        product_types_dict = self.api.get_all("users")
+        dataframe = pd.DataFrame(product_types_dict, 
+                    columns=["username", "last_name"])
+        dataframe.rename(columns={"last_name": "user"}, inplace=True)
+            
+        return dataframe
 
     def list_releases(self):
         """Fetches the list of valid data releases. 
@@ -55,11 +61,13 @@ class PzServer():
         increase over the years of survey operations.
 
         Returns:
-            A list data release tags.  
+            A list data release tags.
         """
 
-        return self.api.get_all("releases")
+        items = self.api.get_all("releases")
+        dataframe = pd.DataFrame(items)
 
+        return dataframe
 
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
@@ -75,8 +83,10 @@ class PzServer():
             short description informed by the owners.             
         """
 
-        return self.api.get_all("products")
+        items = self.api.get_all("products")
+        dataframe = pd.DataFrame(items)
 
+        return dataframe
 
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
@@ -92,7 +102,7 @@ class PzServer():
         """
         raise NotImplementedError
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, save_file=False):
         """Fetches the data to local. 
 
         Connects to the Photo-z Server's database and 
@@ -106,5 +116,5 @@ class PzServer():
             Astropy Table with tabular data or 
             .tar file (in case of multiple files). 
         """
-
+        
         return self.api.get("products", product_id)

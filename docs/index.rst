@@ -12,7 +12,6 @@ Welcome to Photo-z Server Library's documentation!
 
    pz_server
 
-
 Indices and tables
 ==================
 

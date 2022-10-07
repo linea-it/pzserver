@@ -1,2 +1,2 @@
 from .core import PzServer
-from .plots import *
+from .pz_plots import *
