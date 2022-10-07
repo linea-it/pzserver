@@ -266,8 +266,21 @@ class PzServerApi:
             _id (int): record id
 
         Returns:
-            dict: record data
+            dict: record metadata
         """
 
         return self._get_request(f"{self._base_api_url}{entity}/{_id}/")
+        
+    def get_content(self, _id):
+        """ Gets the contents uploaded by the user 
+            for a given record.
+
+        Args:
+            _id (int): record id
+
+        Returns:
+            dict: record data
+        """
+
+        return self._get_request(f"{self._base_api_url}products/{_id}/content/")
         

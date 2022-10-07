@@ -29,7 +29,9 @@ class PzServer():
 
         product_types_dict = self.api.get_all("product-types")
         dataframe = pd.DataFrame(product_types_dict, 
-                    columns=["name", "display_name", "description"])
+                    columns=["display_name", "description"])
+        dataframe.rename(columns={"display_name": "product type"}, inplace=True)
+
 
         return dataframe
 
@@ -44,10 +46,11 @@ class PzServer():
             A list of github usernames.             
         """
 
-        product_types_dict = self.api.get_all("users")
-        dataframe = pd.DataFrame(product_types_dict, 
+        users_dict = self.api.get_all("users")
+        dataframe = pd.DataFrame(users_dict, 
                     columns=["username", "last_name"])
-        dataframe.rename(columns={"last_name": "user"}, inplace=True)
+        dataframe.rename(columns={"last_name": "user",
+                "username": "user name"}, inplace=True)
             
         return dataframe
 
@@ -64,9 +67,12 @@ class PzServer():
             A list data release tags.
         """
 
-        items = self.api.get_all("releases")
-        dataframe = pd.DataFrame(items)
-
+        releases_dict = self.api.get_all("releases")
+        dataframe = pd.DataFrame(releases_dict, 
+                    columns=["display_name"])
+        dataframe.rename(columns={"display_name": "release"}, 
+                    inplace=True)
+            
         return dataframe
 
     def list_products(self, filters=None):
@@ -100,7 +106,8 @@ class PzServer():
             A dict with data product metadata informed
             py the product owner. 
         """
-        raise NotImplementedError
+        return self.api.get("products", product_id)
+
 
     def get_product(self, product_id=None, save_file=False):
         """Fetches the data to local. 
@@ -117,4 +124,4 @@ class PzServer():
             .tar file (in case of multiple files). 
         """
         
-        return self.api.get("products", product_id)
+        return self.api.get_content(product_id)
