@@ -7,6 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #import seaborn as sns
 from .api import PzServerApi
+from tomark import Tomark
+from IPython.display import display_markdown
 
 
 class PzServer():
@@ -89,12 +91,26 @@ class PzServer():
             short description informed by the owners.             
         """
 
-        items = self.api.get_all("products")
-        dataframe = pd.DataFrame(items)
+        products_dict = self.api.get_all("products")
+        # dataframe = pd.DataFrame(products_dict, 
+        #             columns=["id", "release", "uploaded_by",   
+        #              "product_type", "official_product", 
+        #              "survey", "pz_code", "description", "created_at"]
+        dataframe = pd.DataFrame(products_dict, 
+                    columns=["id", "release_name", "uploaded_by",   
+                     "product_type_name", "official_product", 
+                     "survey", "pz_code", "description", "created_at"])
+
+        dataframe.rename(columns={"release_name": "release",
+                                  "uploaded_by": "uploaded by", 
+                                  "product_type_name": "product type",
+                                  "official_product": "official product",
+                                  "pz_code":  "pz code",
+                                  "created_at": "created at"}, inplace=True)
 
         return dataframe
 
-    def get_product_metadata(self, product_id=None):
+    def get_product_metadata(self, product_id=None, show_as_markdown=True):
         """Fetches the product metadata. 
 
         Connects to the Photo-z Server's database and 
@@ -106,7 +122,16 @@ class PzServer():
             A dict with data product metadata informed
             py the product owner. 
         """
-        return self.api.get("products", product_id)
+
+        metadata_dict = self.api.get("products", product_id)
+        if show_as_markdown:  
+            transposed_list = []
+            for k,v in metadata_dict.items():
+                transposed_list.append({"key": k, "value": v})
+            markdown = Tomark.table(transposed_list)
+            display_markdown(markdown, raw=True) 
+        
+        return metadata_dict
 
 
     def get_product(self, product_id=None, save_file=False):
