@@ -5,6 +5,9 @@ import requests
 import numpy as np
 #import scipy as sp
 import pandas as pd
+pd.options.display.max_colwidth = None
+#pd.options.display.max_rows = 999
+
 import matplotlib.pyplot as plt
 #import seaborn as sns
 from .api import PzServerApi
@@ -34,8 +37,13 @@ class PzServer():
         dataframe = pd.DataFrame(results_dict, 
                     columns=["display_name", "description"])
         dataframe.rename(columns={"display_name": "product type"}, inplace=True)
-
-
+        # index_dict = {0: "Spec-z Catalog",
+        #               1: "Training Set", 
+        #               2: "Validation Set",
+        #               3: "Validation Results",
+        #               4: "Photo-z Table"}
+        # dataframe["product type"]=dataframe["product type"].sort_index(index_dict)
+        
         return dataframe
 
     def list_users(self):
