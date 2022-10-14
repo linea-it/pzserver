@@ -130,7 +130,7 @@ class PzServer():
         for k,v in results_dict.items():
             transposed_list.append({"key": k, "value": v})
         dataframe = pd.DataFrame(transposed_list) 
-        return results_dict #dataframe 
+        return dataframe 
        
 
     def get_product(self, product_id=None, save_file=False, tabletype=tables_io.types.PD_DATAFRAME):
@@ -153,10 +153,10 @@ class PzServer():
         """
         
         results_dict = self.api.get_content(product_id)
-        # transposed_list = []
-        # for k,v in results_dict.items():
-        #     transposed_list.append({"key": k, "value": v})
-        # dataframe = pd.DataFrame(transposed_list) 
-        # return dataframe 
+        #transposed_list = []
+        #for k,v in results_dict.items():
+            #transposed_list.append({"key": k, "value": v})
+        #dataframe = pd.DataFrame(transposed_list) 
+        #return dataframe 
 
         return results_dict 
