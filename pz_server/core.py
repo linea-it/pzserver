@@ -94,22 +94,11 @@ class PzServer():
         """
 
         results_dict = self.api.get_all("products")
-        # dataframe = pd.DataFrame(results_dict, 
-        #             columns=["id", "release", "uploaded_by",   
-        #              "product_type", "official_product", 
-        #              "survey", "pz_code", "description", "created_at"]
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["id", "release_name", "uploaded_by",   
-                     "product_type_name", "official_product", 
+                    columns=["id", "release", "uploaded_by",   
+                     "product_type", "official_product", 
                      "survey", "pz_code", "description", "created_at"])
-
-        dataframe.rename(columns={"release_name": "release",
-                                  "uploaded_by": "uploaded by", 
-                                  "product_type_name": "product type",
-                                  "official_product": "official product",
-                                  "pz_code":  "pz code",
-                                  "created_at": "created at"}, inplace=True)
-
+       
         return dataframe
 
     def get_product_metadata(self, product_id=None, outputtype=tables_io.types.PD_DATAFRAME):
