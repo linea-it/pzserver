@@ -4,7 +4,7 @@ import requests
 import numpy as np
 import pandas as pd
 pd.options.display.max_colwidth = None
-
+from IPython.display import display 
 import matplotlib.pyplot as plt
 from .api import PzServerApi
 import tables_io
@@ -25,16 +25,19 @@ class PzServer():
         database and fetches the list of valid product 
         types and their respective short description.
 
-        Returns:
-            A Pandas DataFrame mapping product type names
-            to the corresponding descriptions.
+        If called from a Jupyter notebbok, displays a 
+        pandas.io.formats.style.Styler object mapping the 
+        product type names to the corresponding descriptions.
+        
         """
         results_dict = self.api.get_all("product-types")
         dataframe = pd.DataFrame(results_dict, 
                     columns=["display_name", "description"])          
         dataframe.rename(columns={"display_name": "product_type"}, inplace=True)
         
-        return dataframe.style.hide(axis="index")
+        display(dataframe.style.hide(axis="index"))
+
+        
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -43,8 +46,10 @@ class PzServer():
         database and fetches the list of registered 
         users (GitHub username). 
 
-        Returns:
-            A Pandas DataFrame with GitHub usernames.             
+        If called from a Jupyter notebbok, displays a 
+        pandas.io.formats.style.Styler object mapping 
+        the users to corresponding GitHub usernames.             
+
         """
 
         results_dict = self.api.get_all("users")
@@ -53,7 +58,8 @@ class PzServer():
         dataframe.rename(columns={"last_name": "user"}, 
                     inplace=True)
             
-        return dataframe.style.hide(axis="index")
+        display(dataframe.style.hide(axis="index"))
+
 
     def list_releases(self):
         """Fetches the list of valid data releases. 
@@ -64,8 +70,9 @@ class PzServer():
         available. The resulting list is expected to
         increase over the years of survey operations.
 
-        Returns:
-            A Pandas DataFrame with data release tags.
+        If called from a Jupyter notebbok, displays a 
+        pandas.io.formats.style.Styler object mapping 
+        the data release tags to their full names.
         """
 
         results_dict = self.api.get_all("releases")
@@ -74,7 +81,8 @@ class PzServer():
         dataframe.rename(columns={"display_name": "release"}, 
                     inplace=True)
             
-        return dataframe.style.hide(axis="index")
+        display(dataframe.style.hide(axis="index"))
+
 
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
@@ -85,24 +93,35 @@ class PzServer():
         as dictionary by the user as argument. Default 
         is no filter.  
 
-        Returns:`
-            A Pandas DataFrame mapping data products to 
-            the corresponding short description informed 
-            by the owners.             
+        If called from a Jupyter notebbok, displays a 
+        pandas.io.formats.style.Styler object with the 
+        list of all products available with the metadata
+        informed by the owners.
+          
+        Args:
+            filters (dict): dictionary with strings (or a 
+                            list of strings) patterns 
+                            to filter the results. 
+                               
         """
         results_dict = self.api.get_products(filters)
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["id", "release_name", "uploaded_by",   
-                     "product_type_name", "official_product", 
-                     "survey", "pz_code", "description", "created_at"])
-        dataframe.rename(columns={"release_name": "release",
+                    columns=["id", "display_name", 
+                    "product_type_name", "survey", "release_name",  
+                    "uploaded_by", "official_product",  #"pz_code", 
+                    "description", "created_at"])
+
+
+        dataframe.rename(columns={"display_name": "product_name", 
+                                  "release_name": "release",
                                   "product_type_name": "product_type"},                  
                         inplace=True)
         
-        return dataframe.style.hide(axis="index")
+        display(dataframe.style.hide(axis="index"))
 
+    #--------------------------------------------------# 
 
-    def get_product_metadata(self, product_id=None):
+    def get_product_metadata(self, product_id=None, display_table=True):
         """Fetches the product metadata. 
 
         Connects to the Photo-z Server's database and 
@@ -116,26 +135,27 @@ class PzServer():
         """
 
         results_dict = self.api.get("products", product_id)
-        columns=["id", "release_name", "product_type_name", "uploaded_by",
-            "display_name", "official_product", "survey", "pz_code", 
-            "description", "created_at"]
-        transposed_list = []
-        for k,v in results_dict.items():
-            if k in columns: 
-                if k == "release_name":
-                    k = "release"
-                if k == "product_type_name":
-                    k = "product_type"
-                transposed_list.append({"key": k, "value": v})
-            
-        dataframe = pd.DataFrame(transposed_list)
-        dataframe.replace("release_name", "release")
-        # dataframe.replace("product_type_name", "product_type")
-        # dataframe.replace("display_name", "product_name")
+    
+        if display_table:
+            columns=["id", "display_name", 
+                        "product_type_name", "survey", "release_name",  
+                        "uploaded_by", "official_product",  #"pz_code", 
+                        "description", "created_at"]                   
+            transposed_list = []
+            for k,v in results_dict.items():
+                if k in columns: 
+                    if k == "release_name":
+                        k = "release"
+                    if k == "product_type_name":
+                        k = "product_type"
+                    if k == "display_name":
+                        k = "product_name"
+                    transposed_list.append({"key": k, "value": v})
+            dataframe = pd.DataFrame(transposed_list)        
+            display(dataframe.style.hide(axis="index"))
 
-        display(dataframe.style.hide(axis="index"))
+        return results_dict
 
-        return dataframe
         
     def get_product(self, product_id=None, save_file=False, tabletype=tables_io.types.PD_DATAFRAME):
         """Fetches the data to local. 
