@@ -49,7 +49,7 @@ class PzServer():
 
         results_dict = self.api.get_all("users")
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["last_name", "username"])
+                    columns=[ "username", "last_name"])
         dataframe.rename(columns={"last_name": "user"}, 
                     inplace=True)
             
@@ -90,8 +90,7 @@ class PzServer():
             the corresponding short description informed 
             by the owners.             
         """
-
-        results_dict = self.api.get_all("products")
+        results_dict = self.api.get_products(filters)
         dataframe = pd.DataFrame(results_dict, 
                     columns=["id", "release_name", "uploaded_by",   
                      "product_type_name", "official_product", 
@@ -99,7 +98,9 @@ class PzServer():
         dataframe.rename(columns={"release_name": "release",
                                   "product_type_name": "product_type"},                  
                         inplace=True)
+        
         return dataframe.style.hide(axis="index")
+
 
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
@@ -121,16 +122,21 @@ class PzServer():
         transposed_list = []
         for k,v in results_dict.items():
             if k in columns: 
+                if k == "release_name":
+                    k = "release"
+                if k == "product_type_name":
+                    k = "product_type"
                 transposed_list.append({"key": k, "value": v})
             
-        dataframe = pd.DataFrame(transposed_list).style.hide(axis="index")
+        dataframe = pd.DataFrame(transposed_list)
         dataframe.replace("release_name", "release")
         # dataframe.replace("product_type_name", "product_type")
         # dataframe.replace("display_name", "product_name")
 
-        return dataframe 
-       
+        display(dataframe.style.hide(axis="index"))
 
+        return dataframe
+        
     def get_product(self, product_id=None, save_file=False, tabletype=tables_io.types.PD_DATAFRAME):
         """Fetches the data to local. 
 
