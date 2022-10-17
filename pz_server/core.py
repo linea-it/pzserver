@@ -148,6 +148,8 @@ class PzServer():
         #for k,v in results_dict.items():
             #transposed_list.append({"key": k, "value": v})
         #dataframe = pd.DataFrame(transposed_list) 
-        #return dataframe 
 
-        return results_dict 
+        dataframe = pd.DataFrame(results_dict) 
+        return dataframe 
+
+        #return results_dict 

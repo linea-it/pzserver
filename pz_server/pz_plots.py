@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def specz_plots(dataframe, savefig=False, 
                 ra_name="ra",
                 dec_name="dec",
-                redshift_name="z"):
+                redshift_name="redshift"):
     """ 
     Basic plots to characterize a Spec-z catalog. 
 
@@ -20,13 +20,15 @@ def specz_plots(dataframe, savefig=False,
 
     plt.figure(figsize=[9,4])
     plt.subplot(121)
-    plt.hist2d(dataframe[ra_name], dataframe[dec_name])
+    #plt.hist2d(dataframe[ra_name], dataframe[dec_name], bins=[100,100])
+    plt.scatter(dataframe[ra_name], dataframe[dec_name])
     plt.xlabel("R.A. (deg)")
     plt.ylabel("Dec. (deg)")
     plt.subplot(122)
-    plt.hist(dataframe[redshift_name])
+    plt.hist(dataframe[redshift_name], bins=30)
     plt.xlabel("redshift")
-    plt.subplots_adjust()
+    plt.ylabel("counts")
+    plt.tight_layout()
 
     if savefig:
         filename = "specz_catalog.png"
