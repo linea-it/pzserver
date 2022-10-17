@@ -36,14 +36,8 @@ class PzServer():
         results_dict = self.api.get_all("product-types")
         dataframe = pd.DataFrame(results_dict, 
                     columns=["display_name", "description"])
-        dataframe.rename(columns={"display_name": "product type"}, inplace=True)
-        # index_dict = {0: "Spec-z Catalog",
-        #               1: "Training Set", 
-        #               2: "Validation Set",
-        #               3: "Validation Results",
-        #               4: "Photo-z Table"}
-        # dataframe["product type"]=dataframe["product type"].sort_index(index_dict)
-        
+        dataframe.rename(columns={"display_name": "product_type"}, inplace=True)
+
         return dataframe
 
     def list_users(self):
@@ -80,7 +74,7 @@ class PzServer():
 
         results_dict = self.api.get_all("releases")
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["display_name"])
+                    columns=["display_name", "description"])
         dataframe.rename(columns={"display_name": "release"}, 
                     inplace=True)
             
@@ -95,7 +89,7 @@ class PzServer():
         as dictionary by the user as argument. Default 
         is no filter.  
 
-        Returns:
+        Returns:`
             A Pandas DataFrame mapping data products to 
             the corresponding short description informed 
             by the owners.             
@@ -104,7 +98,7 @@ class PzServer():
         results_dict = self.api.get_all("products")
         dataframe = pd.DataFrame(results_dict, 
                     columns=["id", "release", "uploaded_by",   
-                     "product_type", "official_product", 
+                     "product_type_name", "official_product", 
                      "survey", "pz_code", "description", "created_at"])
        
         return dataframe
