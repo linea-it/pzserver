@@ -25,7 +25,8 @@ setup(
         "requests>=2.23.0",
         "astropy>=5.0.0",
         "matplotlib>=3.6.0",
-        "tables_io >=0.7.9"
+        "tables_io >=0.7.9",
+        "Jinja2>=3.1.2"
     ],
     # tests_require=["pytest==4.4.1", "astropy"],  #TODO
     # test_suite="tests",  #TODO

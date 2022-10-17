@@ -1,15 +1,11 @@
 from asyncio import DatagramProtocol
 from curses.ascii import controlnames
 import requests
-#from IPython.display import Markdown
 import numpy as np
-#import scipy as sp
 import pandas as pd
 pd.options.display.max_colwidth = None
-#pd.options.display.max_rows = 999
 
 import matplotlib.pyplot as plt
-#import seaborn as sns
 from .api import PzServerApi
 import tables_io
 
@@ -31,14 +27,14 @@ class PzServer():
 
         Returns:
             A Pandas DataFrame mapping product type names
-            to the corresponding description.
+            to the corresponding descriptions.
         """
         results_dict = self.api.get_all("product-types")
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["display_name", "description"])
+                    columns=["display_name", "description"])          
         dataframe.rename(columns={"display_name": "product_type"}, inplace=True)
-
-        return dataframe
+        
+        return dataframe.style.hide(axis="index")
 
     def list_users(self):
         """Fetches the list of registered users. 
@@ -57,7 +53,7 @@ class PzServer():
         dataframe.rename(columns={"last_name": "user"}, 
                     inplace=True)
             
-        return dataframe
+        return dataframe.style.hide(axis="index")
 
     def list_releases(self):
         """Fetches the list of valid data releases. 
@@ -78,7 +74,7 @@ class PzServer():
         dataframe.rename(columns={"display_name": "release"}, 
                     inplace=True)
             
-        return dataframe
+        return dataframe.style.hide(axis="index")
 
     def list_products(self, filters=None):
         """Fetches the list of data products available. 
@@ -97,13 +93,15 @@ class PzServer():
 
         results_dict = self.api.get_all("products")
         dataframe = pd.DataFrame(results_dict, 
-                    columns=["id", "release", "uploaded_by",   
+                    columns=["id", "release_name", "uploaded_by",   
                      "product_type_name", "official_product", 
                      "survey", "pz_code", "description", "created_at"])
-       
-        return dataframe
+        dataframe.rename(columns={"release_name": "release",
+                                  "product_type_name": "product_type"},                  
+                        inplace=True)
+        return dataframe.style.hide(axis="index")
 
-    def get_product_metadata(self, product_id=None, outputtype=tables_io.types.PD_DATAFRAME):
+    def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
 
         Connects to the Photo-z Server's database and 
@@ -117,10 +115,19 @@ class PzServer():
         """
 
         results_dict = self.api.get("products", product_id)
+        columns=["id", "release_name", "product_type_name", "uploaded_by",
+            "display_name", "official_product", "survey", "pz_code", 
+            "description", "created_at"]
         transposed_list = []
         for k,v in results_dict.items():
-            transposed_list.append({"key": k, "value": v})
-        dataframe = pd.DataFrame(transposed_list) 
+            if k in columns: 
+                transposed_list.append({"key": k, "value": v})
+            
+        dataframe = pd.DataFrame(transposed_list).style.hide(axis="index")
+        dataframe.replace("release_name", "release")
+        # dataframe.replace("product_type_name", "product_type")
+        # dataframe.replace("display_name", "product_name")
+
         return dataframe 
        
 
