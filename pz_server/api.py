@@ -284,3 +284,27 @@ class PzServerApi:
 
         return self._get_request(f"{self._base_api_url}products/{_id}/content/")
         
+    def get_products(self, filters={}, status=1):
+        """ Returns list of products according to a filter
+
+        Args:
+            filters (dict): products filter   ex: {'release': 'LSST'}
+            status (int): products status (1 is viewing only completed products)
+        """
+        
+        if status:
+            url = f"{self._base_api_url}/products/?status={str(status)}"
+        else:
+            url = f"{self._base_api_url}/products/?"
+
+        if filters:
+            for key, value in filters.items():
+                value = list(map(str, value)) if isinstance(value, list) else [str(value)]
+                url += f"&{key}={','.join(value)}"
+
+        resp = self._get_request(url)
+
+        if "success" in resp and resp["success"] is False:
+            return resp
+
+        return resp.get("results", [])
