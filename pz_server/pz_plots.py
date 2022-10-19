@@ -25,7 +25,7 @@ def specz_plots(dataframe, savefig=False,
     plt.xlabel("R.A. (deg)")
     plt.ylabel("Dec. (deg)")
     plt.subplot(122)
-    plt.hist(dataframe[redshift_name], bins=30)
+    plt.hist(dataframe[redshift_name], bins=30, histtype="bar")
     plt.xlabel("redshift")
     plt.ylabel("counts")
     plt.tight_layout()
@@ -37,35 +37,67 @@ def specz_plots(dataframe, savefig=False,
     else:
         pass
 
-def train_valid_plots(train=None, Valid=None, 
+def train_valid_plots(train=None, valid=None, 
                     savefig=False,
-                    redshift_name="z", 
-                    mag_name="mag_cModel_i"):
+                    redshift_name="redshift", 
+                    mag_name="mag_i_cModel"):
 
+    if train[mag_name].min() < 16.:
+        mag_min = 16.
+    else: 
+        mag_min = train[mag_name].min() - 0.2
+    if train[mag_name].max() > 30.:
+        mag_max = 28.
+    else: 
+        mag_max = train[mag_name].max() + 0.2
+
+    if train[redshift_name].min() <= 0.1:
+            redshift_min = 0.
+    else: 
+        redshift_min = train[redshift_name].min() - 0.1
+    if train[redshift_name].max() > 10.:
+        redshift_max = 10.
+    else: 
+        redshift_max = train[redshift_name].max() + 0.1
+    
+    
     plt.figure(figsize=[12,4])
     plt.subplot(131)
     if train is not None: 
-        plt.hist(train[mag_name], label="train")
+        plt.hist(train[mag_name], label="train", 
+                 bins=30, histtype="bar")
     if valid is not None: 
-        plt.hist(valid[mag_name], label="valid")
-    plt.legend()
-    plt.xlabel(f"magnitude {mag_name}")
+        plt.hist(valid[mag_name], label="valid", 
+                 bins=30, histtype="step", lw=2)
+    plt.legend(loc="upper left")
+    plt.xlabel(mag_name)
+    plt.xlim(mag_min, mag_max)
+    
     plt.subplot(132)
     if train is not None: 
-        plt.hist(train[redshift_name], label="train")
+        plt.hist(train[redshift_name], label="train", 
+                 bins=30, histtype="bar")
     if valid is not None: 
-        plt.hist(valid[redshift_name], label="valid")
-    plt.legend()
-    plt.xlabel("redshift")
+        plt.hist(valid[redshift_name], label="valid", 
+                 bins=30, histtype="step", lw=2)
+    #plt.legend()
+    plt.xlabel(redshift_name)
+    plt.xlim(redshift_min, redshift_max)
+    
     plt.subplot(133)
     if train is not None: 
-        plt.plot(train[redshift_name], train[mag_name], label="train")
+        plt.plot(train[redshift_name], train[mag_name],
+                 '.', label="train")
     if valid is not None: 
-        plt.plot(train[redshift_name], train[mag_name], label="valid")
+        plt.plot(valid[redshift_name], valid[mag_name],
+                 '.', label="valid")
     plt.legend()
-    plt.xlabel("redshift")
-    plt.ylabel(mag_name)    
-    plt.subplots_adjust()
+    plt.xlabel(redshift_name)
+    plt.ylabel(mag_name)   
+    plt.xlim(redshift_min, redshift_max)
+    plt.ylim(mag_min, mag_max)
+
+    plt.tight_layout()
 
     if savefig:
         filename = "train_valid_set.png"
