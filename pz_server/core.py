@@ -18,7 +18,7 @@ class PzServer():
         else:
             self.api = PzServerApi(token, host)
 
-    def list_product_types(self):
+    def list_product_types(self, jupyter=True):
         """Fetches the list of valid product types. 
 
         Connects to the Photo-z Server's admnistrative 
@@ -35,10 +35,12 @@ class PzServer():
                                  columns=["display_name", "description"])
         dataframe.rename(
             columns={"display_name": "product_type"}, inplace=True)
+        if jupyter:
+            display(dataframe.style.hide(axis="index"))
+        else:
+            print(dataframe)
 
-        display(dataframe.style.hide(axis="index"))
-
-    def list_users(self):
+    def list_users(self, jupyter=True):
         """Fetches the list of registered users. 
 
         Connects to the Photo-z Server's admnistrative 
@@ -57,9 +59,13 @@ class PzServer():
         dataframe.rename(columns={"last_name": "user"},
                          inplace=True)
 
-        display(dataframe.style.hide(axis="index"))
+        if jupyter:
+            display(dataframe.style.hide(axis="index"))
+        else:
+            print(dataframe)
 
-    def list_releases(self):
+
+    def list_releases(self, jupyter=True):
         """Fetches the list of valid data releases. 
 
         Connects to the Photo-z Server's admnistrative
@@ -79,9 +85,13 @@ class PzServer():
         dataframe.rename(columns={"display_name": "release"},
                          inplace=True)
 
-        display(dataframe.style.hide(axis="index"))
+        if jupyter:
+            display(dataframe.style.hide(axis="index"))
+        else:
+            print(dataframe)
 
-    def list_products(self, filters=None):
+
+    def list_products(self, filters=None, jupyter=True):
         """Fetches the list of data products available. 
 
         Connects to the Photo-z Server's database and 
@@ -113,7 +123,11 @@ class PzServer():
                                   "product_type_name": "product_type"},
                          inplace=True)
 
-        display(dataframe.style.hide(axis="index"))
+        if jupyter:
+            display(dataframe.style.hide(axis="index"))
+        else:
+            print(dataframe)
+
 
     #--------------------------------------------------#
 
@@ -193,8 +207,8 @@ class PzServer():
             elif fmt in tables_io_formats:
                 tables_io.write(dataframe, save_file_as)
             else:
-                raise ValueError("File format is not supported. \n"     
-                                 "Please provide a file name with one of the suffixes:\n" 
+                raise ValueError("File format is not supported. \n"
+                                 "Please provide a file name with one of the suffixes:\n"
                                  "['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq'] ")
 
         return dataframe
