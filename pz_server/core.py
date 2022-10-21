@@ -1,3 +1,4 @@
+from imp import acquire_lock
 import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
@@ -13,7 +14,7 @@ class PzServer():
         else:
             self.api = PzServerApi(token, host)
 
-    def fetch_product_types(self):
+    def get_product_types(self):
         """Fetches the list of valid product types.
 
         Connects to the Photo-z Server's admnistrative
@@ -21,7 +22,7 @@ class PzServer():
         types and their respective short description.
 
         Returns:
-            list of product types (dict)
+            dict of product types
         """
         return self.api.get_all("product-types")
 
@@ -33,14 +34,14 @@ class PzServer():
         mapping the product type names to the corresponding 
         descriptions (optimized for use in Jupyter Notebook).  
         """
-        results_dict = self.fetch_product_types()
+        results_dict = self.get_product_types()
         dataframe = pd.DataFrame(results_dict, 
             columns=["display_name", "description"])
         dataframe.rename(
             columns={"display_name": "product_type"}, inplace=True)
         display(dataframe.style.hide(axis="index"))
 
-    def fetch_users(self):
+    def get_users(self):
         """Fetches the list of registered users.
 
         Connects to the Photo-z Server's admnistrative 
@@ -48,7 +49,7 @@ class PzServer():
         users (first/last name and GitHub username). 
         
         Returns: 
-            list of users (dict) 
+            dict of users 
         """
         return self.api.get_all("users")
         
@@ -60,14 +61,14 @@ class PzServer():
         mapping the users to corresponding GitHub usernames
         (optimized for use in Jupyter Notebook).  
         """
-        results_dict = self.fetch_users()
+        results_dict = self.get_users()
         dataframe = pd.DataFrame(results_dict, 
             columns=["username", "last_name"])
         dataframe.rename(columns={"last_name": "user"},
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
-    def fetch_releases(self):
+    def get_releases(self):
         """Fetches the list of valid data releases. 
 
         Connects to the Photo-z Server's admnistrative
@@ -76,8 +77,8 @@ class PzServer():
         available. The resulting list is expected to
         increase over the years of survey operations.
         
-        Returns: 
-            list of releases (dict) 
+        Returns:
+            dict of releases
         """
         return self.api.get_all("releases")
         
@@ -95,7 +96,7 @@ class PzServer():
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
         
-    def fetch_products_list(self, filters=None):
+    def get_products_list(self, filters=None):
         """Fetches the list of data products available. 
 
         Connects to the Photo-z Server's database and 
@@ -108,7 +109,7 @@ class PzServer():
                 filter the results. 
 
         Returns: 
-            list of data products (dict) 
+            dict of data products 
         """
         return self.api.get_products(filters)
         
@@ -125,9 +126,9 @@ class PzServer():
                 (or a list of strings) patterns to 
                 filter the results. 
         """
-        results_dict = self.fetch_products_list(filters)
+        results_dict = self.get_products_list(filters)
         dataframe = pd.DataFrame(results_dict,
-                                 columns=["id", "display_name",
+                                 columns=["id", "internal_name", "display_name",
                                           "product_type_name", "survey", "release_name",
                                           "uploaded_by", "official_product",  # "pz_code",
                                           "description", "created_at"])
@@ -138,73 +139,83 @@ class PzServer():
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
     
-    #--------------------------------------------------#
+    
 
-    def get_product_metadata(self, product_id=None, display_table=True):
+    def get_product_metadata(self, product_id=None):
         """Fetches the product metadata. 
 
         Connects to the Photo-z Server's database and 
-        fetches the metadata available for a given 
-        data product located by product_id (provided 
-        as argumetn by the user). 
+        fetches the metadata informed by the product 
+        owner. 
 
         Args:
-            product_id (int): data product unique identifier 
-
-            display_table (boolean): show as styled dataframe,
-                                     default=True
+            product_id (str or int): data product 
+                unique identifier (product id 
+                number or internal name)
 
         Returns:
-            A Pandas DataFrame with data product metadata 
-            informed by the product owner. 
+            dict of metadata 
+        """
+        product_id=str(product_id)
+        if "_" in product_id:
+            list = self.api.get_products({"internal_name": product_id})
+            return list[0]            
+        else:
+            return self.api.get("products", product_id)
+
+
+    def display_product_metadata(self, product_id=None):
+        """Displays the metadata informed by the product owner. 
+
+        Displays a pandas.io.formats.style.Styler object 
+        with the metadata informed by the product owner
+        (optimized for use in Jupyter Notebook).  
+
+        Args:
+            product (str or int): data product 
+                unique identifier (product id 
+                number or internal name)
         """
 
-        results_dict = self.api.get("products", product_id)
+        results_dict = self.get_product_metadata(product_id)
 
-        if display_table:
-            columns = ["id", "display_name",
+        columns = ["id", "internal_name", "display_name",
                        "product_type_name", "survey", "release_name",
-                       "uploaded_by", "official_product",  # "pz_code",
+                       "uploaded_by", "official_product",  "pz_code",
                        "description", "created_at"]
-            transposed_list = []
-            for k, v in results_dict.items():
-                if k in columns:
-                    if k == "release_name":
-                        k = "release"
-                    if k == "product_type_name":
-                        k = "product_type"
-                    if k == "display_name":
-                        k = "product_name"
-                    transposed_list.append({"key": k, "value": v})
-            dataframe = pd.DataFrame(transposed_list)
-            display(dataframe.style.hide(axis="index"))
+        transposed_list = []
+        for k, v in results_dict.items():
+            if k in columns:
+                if k == "release_name":
+                    k = "release"
+                if k == "product_type_name":
+                    k = "product_type"
+                if k == "display_name":
+                    k = "product_name"
+                transposed_list.append({"key": k, "value": v})
+        dataframe = pd.DataFrame(transposed_list)
+        display(dataframe.style.hide(axis="index"))
 
-        return results_dict
 
-    def get_product(self, product_id=None, save_file_as=False):
+    def get_product(self, product_id=None):
         """Fetches the data to local. 
 
         Connects to the Photo-z Server's database and 
         fetches the data stored as registered data 
-        product. The result depends on product type. 
-        If tabular data, returns one of the types 
-        supported by the Python package tables_io 
-        (AP_TABLE, NUMPY_DICT, NUMPY_RECARRAY, 
-        PD_DATAFRAME). If the data product is composed 
-        of multiple files, it downloads a .tar file 
-        to local environment and returns a string with 
-        the file name. 
+        product.
 
         Args:
-            product_id (int): data product unique identifier 
-
-            save_file_as (str/boolean): file name to save 
-                                    the data, default=False
-
+        Args:
+            product_id (str or int): data product 
+                unique identifier (product id 
+                number or internal name)
+                
         Returns:
-            Tabular object with data (default is Pandas 
-            Dataframe) or .tar file (in case of multiple files). 
+            data as Pandas Dataframe
         """
+
+        PAREI AQUI 
+        
         prod_type = self.get_product_metadata(product_id, display_table=False)['product_type_name'] 
         
 
@@ -227,3 +238,6 @@ class PzServer():
                                  "['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq'] ")
 
         return dataframe
+
+    def download_product(self, product=None ):
+        return self.api.download_content(product)

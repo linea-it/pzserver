@@ -283,7 +283,21 @@ class PzServerApi:
         """
 
         return self._get_request(f"{self._base_api_url}products/{_id}/content/")
-        
+    
+
+    def download_content(self, _id):
+        """ Downloads the product to local 
+
+        Args:
+            _id (int): record id
+
+        Returns:
+            dict: record data
+        """
+
+        return self._get_request(f"{self._base_api_url}products/{_id}/download")
+
+
     def get_products(self, filters={}, status=1):
         """ Returns list of products according to a filter
 
