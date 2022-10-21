@@ -1,10 +1,5 @@
-from asyncio import DatagramProtocol
-from curses.ascii import controlnames
-import requests
-import numpy as np
 import pandas as pd
 from IPython.display import display
-import matplotlib.pyplot as plt
 from .api import PzServerApi
 import tables_io
 pd.options.display.max_colwidth = None
@@ -18,54 +13,61 @@ class PzServer():
         else:
             self.api = PzServerApi(token, host)
 
-    def list_product_types(self, jupyter=True):
-        """Fetches the list of valid product types. 
+    def fetch_product_types(self):
+        """Fetches the list of valid product types.
 
-        Connects to the Photo-z Server's admnistrative 
-        database and fetches the list of valid product 
+        Connects to the Photo-z Server's admnistrative
+        database and fetches the list of valid product
         types and their respective short description.
 
-        If called from a Jupyter notebbok, displays a 
-        pandas.io.formats.style.Styler object mapping the 
-        product type names to the corresponding descriptions.
-
+        Returns:
+            list of product types (dict)
         """
-        results_dict = self.api.get_all("product-types")
-        dataframe = pd.DataFrame(results_dict,
-                                 columns=["display_name", "description"])
+        return self.api.get_all("product-types")
+
+
+    def display_product_types(self):
+        """Displays the list of product types as dataframe
+            
+        Displays a pandas.io.formats.style.Styler object 
+        mapping the product type names to the corresponding 
+        descriptions (optimized for use in Jupyter Notebook).  
+        """
+        results_dict = self.fetch_product_types()
+        dataframe = pd.DataFrame(results_dict, 
+            columns=["display_name", "description"])
         dataframe.rename(
             columns={"display_name": "product_type"}, inplace=True)
-        if jupyter:
-            display(dataframe.style.hide(axis="index"))
-        else:
-            print(dataframe)
+        display(dataframe.style.hide(axis="index"))
 
-    def list_users(self, jupyter=True):
-        """Fetches the list of registered users. 
+    def fetch_users(self):
+        """Fetches the list of registered users.
 
         Connects to the Photo-z Server's admnistrative 
         database and fetches the list of registered 
-        users (GitHub username). 
-
-        If called from a Jupyter notebbok, displays a 
-        pandas.io.formats.style.Styler object mapping 
-        the users to corresponding GitHub usernames.             
-
+        users (first/last name and GitHub username). 
+        
+        Returns: 
+            list of users (dict) 
         """
+        return self.api.get_all("users")
+        
 
-        results_dict = self.api.get_all("users")
-        dataframe = pd.DataFrame(results_dict,
-                                 columns=["username", "last_name"])
+    def display_users(self):
+        """Displays the list of users as dataframe
+            
+        Displays a pandas.io.formats.style.Styler object 
+        mapping the users to corresponding GitHub usernames
+        (optimized for use in Jupyter Notebook).  
+        """
+        results_dict = self.fetch_users()
+        dataframe = pd.DataFrame(results_dict, 
+            columns=["username", "last_name"])
         dataframe.rename(columns={"last_name": "user"},
                          inplace=True)
+        display(dataframe.style.hide(axis="index"))
 
-        if jupyter:
-            display(dataframe.style.hide(axis="index"))
-        else:
-            print(dataframe)
-
-
-    def list_releases(self, jupyter=True):
+    def fetch_releases(self):
         """Fetches the list of valid data releases. 
 
         Connects to the Photo-z Server's admnistrative
@@ -73,45 +75,57 @@ class PzServer():
         data releases corresponding to the data products
         available. The resulting list is expected to
         increase over the years of survey operations.
-
-        If called from a Jupyter notebbok, displays a 
-        pandas.io.formats.style.Styler object mapping 
-        the data release tags to their full names.
+        
+        Returns: 
+            list of releases (dict) 
         """
-
+        return self.api.get_all("releases")
+        
+    def display_releases(self):
+        """Displays the list of data releases as dataframe
+            
+        Displays a pandas.io.formats.style.Styler object 
+        mapping the the data release tags to their full 
+        names (optimized for use in Jupyter Notebook).  
+        """
         results_dict = self.api.get_all("releases")
         dataframe = pd.DataFrame(results_dict,
                                  columns=["display_name", "description"])
         dataframe.rename(columns={"display_name": "release"},
                          inplace=True)
-
-        if jupyter:
-            display(dataframe.style.hide(axis="index"))
-        else:
-            print(dataframe)
-
-
-    def list_products(self, filters=None, jupyter=True):
+        display(dataframe.style.hide(axis="index"))
+        
+    def fetch_products_list(self, filters=None):
         """Fetches the list of data products available. 
 
         Connects to the Photo-z Server's database and 
         fetches the filtered list of data products 
-        available. The (optional) filters are provided 
-        as dictionary by the user as argument. Default 
-        is no filter.  
-
-        If called from a Jupyter notebbok, displays a 
-        pandas.io.formats.style.Styler object with the 
-        list of all products available with the metadata
-        informed by the owners.
+        available. 
 
         Args:
-            filters (dict): dictionary with strings (or a 
-                            list of strings) patterns 
-                            to filter the results. 
+            filters (dict): dictionary with strings 
+                (or a list of strings) patterns to 
+                filter the results. 
 
+        Returns: 
+            list of data products (dict) 
         """
-        results_dict = self.api.get_products(filters)
+        return self.api.get_products(filters)
+        
+    def display_products_list(self, filters=None):
+        """Displays the list of data products as dataframe
+            
+        Displays a pandas.io.formats.style.Styler object 
+        with the list of all products available with the 
+        metadata informed by the owners (optimized for use 
+        in Jupyter Notebook).  
+
+        Args:
+            filters (dict): dictionary with strings 
+                (or a list of strings) patterns to 
+                filter the results. 
+        """
+        results_dict = self.fetch_products_list(filters)
         dataframe = pd.DataFrame(results_dict,
                                  columns=["id", "display_name",
                                           "product_type_name", "survey", "release_name",
@@ -122,13 +136,8 @@ class PzServer():
                                   "release_name": "release",
                                   "product_type_name": "product_type"},
                          inplace=True)
-
-        if jupyter:
-            display(dataframe.style.hide(axis="index"))
-        else:
-            print(dataframe)
-
-
+        display(dataframe.style.hide(axis="index"))
+    
     #--------------------------------------------------#
 
     def get_product_metadata(self, product_id=None, display_table=True):
@@ -196,6 +205,12 @@ class PzServer():
             Tabular object with data (default is Pandas 
             Dataframe) or .tar file (in case of multiple files). 
         """
+        prod_type = self.get_product_metadata(product_id, display_table=False)['product_type_name'] 
+        
+
+        if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
+            raise NotImplementedError("TBD")
+        
         results_dict = self.api.get_content(product_id)
         dataframe = pd.DataFrame(results_dict)
 
