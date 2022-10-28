@@ -214,7 +214,7 @@ class PzServer():
             data as Pandas Dataframe
         """
 
-        PAREI AQUI 
+        #PAREI AQUI 
         
         prod_type = self.get_product_metadata(product_id, display_table=False)['product_type_name'] 
         
