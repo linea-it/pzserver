@@ -27,6 +27,7 @@ class PzServer():
         """
         return self.api.get_all("product-types")
 
+        return dataframe
 
     def display_product_types(self):
         """Displays the list of product types as dataframe
@@ -198,7 +199,7 @@ class PzServer():
         display(dataframe.style.hide(axis="index"))
 
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, save_file=False):
         """Fetches the data to local. 
 
         Connects to the Photo-z Server's database and 
