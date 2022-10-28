@@ -4,6 +4,7 @@ from IPython.display import display
 from .api import PzServerApi
 import tables_io
 pd.options.display.max_colwidth = None
+#pd.options.display.max_rows = 6
 
 
 class PzServer():
@@ -17,7 +18,7 @@ class PzServer():
     def get_product_types(self):
         """Fetches the list of valid product types.
 
-        Connects to the Photo-z Server's admnistrative
+        Connects to the Photo-z Server's administrative
         database and fetches the list of valid product
         types and their respective short description.
 
@@ -44,7 +45,7 @@ class PzServer():
     def get_users(self):
         """Fetches the list of registered users.
 
-        Connects to the Photo-z Server's admnistrative 
+        Connects to the Photo-z Server's administrative 
         database and fetches the list of registered 
         users (first/last name and GitHub username). 
         
@@ -71,7 +72,7 @@ class PzServer():
     def get_releases(self):
         """Fetches the list of valid data releases. 
 
-        Connects to the Photo-z Server's admnistrative
+        Connects to the Photo-z Server's administrative
         database and fetches the list of valid LSST
         data releases corresponding to the data products
         available. The resulting list is expected to
@@ -205,39 +206,35 @@ class PzServer():
         product.
 
         Args:
-        Args:
             product_id (str or int): data product 
                 unique identifier (product id 
                 number or internal name)
                 
         Returns:
-            data as Pandas Dataframe
+            data product (pd.DataFrame)
         """
-
-        #PAREI AQUI 
         
-        prod_type = self.get_product_metadata(product_id, display_table=False)['product_type_name'] 
+        prod_type = self.get_product_metadata(product_id)['product_type_name'] 
         
-
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
-            raise NotImplementedError("TBD")
-        
-        results_dict = self.api.get_content(product_id)
-        dataframe = pd.DataFrame(results_dict)
+            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
+            print("The function get_product() only supports tabular data.")
+            print(f"For {prod_type}, please use function download_product().") 
+        else:
+            results_dict = self.api.get_content(product_id)
+            dataframe = pd.DataFrame(results_dict)
+            return dataframe
 
-        if save_file_as:
-            tables_io_formats = ['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq']
-            fmt = save_file_as.split('.')[-1]
-            if fmt == "csv":
-                dataframe.to_csv(save_file_as)
-            elif fmt in tables_io_formats:
-                tables_io.write(dataframe, save_file_as)
-            else:
-                raise ValueError("File format is not supported. \n"
-                                 "Please provide a file name with one of the suffixes:\n"
-                                 "['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq'] ")
-
-        return dataframe
-
-    def download_product(self, product=None ):
+    def download_product(self, product=None, save_file_as=None):
+        # if save_file_as:
+        #     tables_io_formats = ['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq']
+        #     fmt = save_file_as.split('.')[-1]
+        #     if fmt == "csv":
+        #         dataframe.to_csv(save_file_as)
+        #     elif fmt in tables_io_formats:
+        #         tables_io.write(dataframe, save_file_as)
+        #     else:
+        #         raise ValueError("File format is not supported. \n"
+        #                          "Please provide a file name with one of the suffixes:\n"
+        #                          "['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq'] ")
         return self.api.download_content(product)
