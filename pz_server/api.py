@@ -266,8 +266,59 @@ class PzServerApi:
             _id (int): record id
 
         Returns:
-            dict: record data
+            dict: record metadata
         """
 
         return self._get_request(f"{self._base_api_url}{entity}/{_id}/")
         
+    def get_content(self, _id):
+        """ Gets the contents uploaded by the user 
+            for a given record.
+
+        Args:
+            _id (int): record id
+
+        Returns:
+            dict: record data
+        """
+
+        return self._get_request(f"{self._base_api_url}products/{_id}/content/")
+    
+
+    def download_content(self, _id):
+        """ Downloads the product to local 
+
+        Args:
+            _id (int): record id
+
+        Returns:
+            dict: record data
+        """
+
+        return self._get_request(f"{self._base_api_url}products/{_id}/download")
+
+
+    def get_products(self, filters={}, status=1):
+        """ Returns list of products according to a filter
+
+        Args:
+            filters (dict): products filter   ex: {'release': 'LSST'}
+            status (int): products status (1 is viewing only completed products)
+        """
+        
+        if status:
+            url = f"{self._base_api_url}/products/?status={str(status)}"
+        else:
+            url = f"{self._base_api_url}/products/?"
+
+        if filters:
+            for key, value in filters.items():
+                value = list(map(str, value)) if isinstance(value, list) else [str(value)]
+                url += f"&{key}={','.join(value)}"
+
+        resp = self._get_request(url)
+
+        if "success" in resp and resp["success"] is False:
+            return resp
+
+        return resp.get("results", [])
