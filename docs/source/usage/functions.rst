@@ -15,16 +15,7 @@ pz\_server.core module
 pz\_server.plots module
 -----------------------
 
-.. automodule:: pz_server.plots
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-
-Module contents
----------------
-
-.. automodule:: pz_server
+.. automodule:: pz_server.pz_plots
    :members:
    :undoc-members:
    :show-inheritance:
