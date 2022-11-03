@@ -6,7 +6,7 @@
 Welcome to Photo-z Server Library's documentation!
 ==================================================
 
-The Photo-z Server Library is a Python package to support the Photo-z Server users to access data and metadata via command-line. 
+The Photo-z Server Library is a Python package to support the Photo-z Server users to access data and metadata via Python code. 
 
 
 .. toctree::
@@ -27,6 +27,6 @@ Indices and tables
 Acknowledgments
 ===============
 
-| This work is part of the in-kind contribution program (BRA-LIN) between LIneA and the Rubin Observatory. 
-| The Photo-z Server is an online service hosted at the Brazilian LSST Independent Data Access Center, available to the Rubin Science Platform users. 
-| To know more about the Photo-z Server and other contributions, please visit the [BRA-LIN S4 documentation page](https://linea-it.github.io/pz-lsst-inkind-doc/). 
+| This work is part of the in-kind contribution program (BRA-LIN) between LIneA and the Rubin Observatory. The Photo-z Server is an online service hosted at the Brazilian LSST Independent Data Access Center, available to the Rubin Science Platform users. To know more about the Photo-z Server and other contributions, please visit the `BRA-LIN S4 documentation page <https://linea-it.github.io/pz-lsst-inkind-doc/>`_  
+
+
