@@ -2,7 +2,20 @@
 Installation
 ============
 
-| To install the code, you have to clone the repository and
-| follow instructions on README to install dependencies.
+To install the code, type on terminal:
 
-| The code is intended to run on Linux OS.
+.. code-block:: 
+
+   pip install pz-server-lib 
+
+
+
+   
+
+To access the tutorial for new users (Jupyter Notebook): 
+
+.. code-block:: 
+
+    git clone https://github.com/linea-it/pz-server-lib
+
+
