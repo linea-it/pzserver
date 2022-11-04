@@ -10,6 +10,11 @@ pd.options.display.max_colwidth = None
 class PzServer():
 
     def __init__(self, token=None, host="pz"):
+        """ PzServer class constructor
+        Args:
+            host (str): "pz" (production) or 
+                        "pz-dev" (test environment)
+        """
         if token is None:
             raise ValueError("Please provide a valid token.")
         else:
