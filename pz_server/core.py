@@ -224,16 +224,17 @@ class PzServer():
             dataframe = pd.DataFrame(results_dict)
             return dataframe
 
-    def download_product(self, product=None, save_file_as=None):
-        # if save_file_as:
-        #     tables_io_formats = ['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq']
-        #     fmt = save_file_as.split('.')[-1]
-        #     if fmt == "csv":
-        #         dataframe.to_csv(save_file_as)
-        #     elif fmt in tables_io_formats:
-        #         tables_io.write(dataframe, save_file_as)
-        #     else:
-        #         raise ValueError("File format is not supported. \n"
-        #                          "Please provide a file name with one of the suffixes:\n"
-        #                          "['fits', 'hf5', 'hdf5', 'fit', 'h5', 'pq'] ")
+    def download_product(self, product=None):
+        """Download the data to local. 
+
+        Connects to the Photo-z Server's database and 
+        download a file containing data and metadata of
+        a given data product.
+
+        Args:
+            product_id (str or int): data product 
+                unique identifier (product id 
+                number or internal name)
+
+        """
         return self.api.download_content(product)

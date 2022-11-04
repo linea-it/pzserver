@@ -100,6 +100,61 @@ class PzServerApi:
             message = "Request Error: {}".format(err)
             return dict({"success": False, "message": message, })
 
+    def _download_request(self, url, params=None):
+        """ Download a record from the API.
+
+        Args:
+            url (str): url to get
+            params (dict, optional): params to get. Defaults to None.
+
+        """
+
+        try:
+            r = requests.get(
+                url,
+                params=params,
+                headers=dict({
+                    "Authorization": "Token {}".format(self._token),
+                }),
+            )
+
+            if r.status_code == 200:
+                return r.json()
+
+            elif r.status_code == 403:
+                # Não enviou as credenciais de usuario
+                message = json.loads(str(r.text))["detail"]
+                status = r.status_code
+                return dict({
+                    "success": False, "message": message, "status_code": status,
+                })
+
+            elif r.status_code == 404:
+                # Mensagem de erro pra Not Found.
+                message = r.text
+                status = r.status_code
+                return dict({
+                    "success": False, "message": message, "status_code": status,
+                })
+            else:
+                return dict({"success": False, "status_code": r.status_code, })
+
+        except requests.exceptions.HTTPError as errh:
+            message = "Http Error: {}".format(errh)
+            return dict({"success": False, "message": message, })
+
+        except requests.exceptions.ConnectionError as errc:
+            message = "Connection Error: {}".format(errc)
+            return dict({"success": False, "message": message, })
+
+        except requests.exceptions.Timeout as errt:
+            message = "Timeout Error: {}".format(errt)
+            return dict({"success": False, "message": message, })
+
+        except requests.exceptions.RequestException as err:
+            message = "Request Error: {}".format(err)
+            return dict({"success": False, "message": message, })
+
     def _post_request(self, url, payload):
         """ Posts a record to the API.
 
@@ -286,7 +341,7 @@ class PzServerApi:
             dict: record data
         """
 
-        return self._get_request(f"{self._base_api_url}products/{_id}/download")
+        return self._download_request(f"{self._base_api_url}products/{_id}/download")
 
     def get_products(self, filters={}, status=1):
         """ Returns list of products according to a filter
