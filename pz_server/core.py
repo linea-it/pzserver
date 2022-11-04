@@ -224,7 +224,7 @@ class PzServer():
             dataframe = pd.DataFrame(results_dict)
             return dataframe
 
-    def download_product(self, product=None):
+    def download_product(self, product=None, save_in="."):
         """Download the data to local. 
 
         Connects to the Photo-z Server's database and 
@@ -235,6 +235,8 @@ class PzServer():
             product_id (str or int): data product 
                 unique identifier (product id 
                 number or internal name)
+            save_in (str): location where the file will 
+                be saved
 
         """
-        return self.api.download_content(product)
+        return self.api.download_content(product, save_in)
