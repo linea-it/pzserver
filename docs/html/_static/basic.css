@@ -920,11 +920,3 @@ div.math:hover a.headerlink {
         margin: 0 !important;
         width: 100%;
     }
-
-    div.sphinxsidebar,
-    div.related,
-    div.footer,
-    #top-link {
-        display: none;
-    }
-}

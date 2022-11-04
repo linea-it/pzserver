@@ -13,7 +13,6 @@ class PzServerApi:
         "pz": "https://pz-server.linea.org.br/api/",
     }
 
-
     def __init__(self, token, host="pz"):
         """ Initializes the Pz Server API.
 
@@ -24,7 +23,6 @@ class PzServerApi:
 
         self._base_api_url = self._enviroments[host]
         self._token = token
-
 
     @staticmethod
     def safe_list_get(l, idx, default):
@@ -42,7 +40,6 @@ class PzServerApi:
             return l[idx]
         except IndexError:
             return default
-
 
     def _get_request(self, url, params=None):
         """ Get a record from the API.
@@ -85,24 +82,23 @@ class PzServerApi:
                     "success": False, "message": message, "status_code": status,
                 })
             else:
-                return dict({"success": False, "status_code": r.status_code,})
+                return dict({"success": False, "status_code": r.status_code, })
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message,})
-
+            return dict({"success": False, "message": message, })
 
     def _post_request(self, url, payload):
         """ Posts a record to the API.
@@ -145,24 +141,23 @@ class PzServerApi:
                     "success": False, "message": message, "status_code": status,
                 })
             else:
-                return dict({"success": False, "status_code": r.status_code,})
+                return dict({"success": False, "status_code": r.status_code, })
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message,})
-
+            return dict({"success": False, "message": message, })
 
     def _delete_request(self, url):
         """ Remove a record from the API.
@@ -173,7 +168,7 @@ class PzServerApi:
         Returns:
             dict: status and message of the request.
         """
-        
+
         try:
             r = requests.delete(
                 url,
@@ -206,24 +201,23 @@ class PzServerApi:
                     "success": False, "message": message, "status_code": status,
                 })
             else:
-                return dict({"success": False, "status_code": r.status_code,})
+                return dict({"success": False, "status_code": r.status_code, })
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message,})
+            return dict({"success": False, "message": message, })
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message,})
-
+            return dict({"success": False, "message": message, })
 
     def get_entities(self):
         """ Gets all entities from the API.
@@ -238,7 +232,6 @@ class PzServerApi:
             return resp
 
         return list(resp.keys())
-
 
     def get_all(self, entity):
         """ Returns a list with all records of the entity.
@@ -255,8 +248,7 @@ class PzServerApi:
         if "success" in resp and resp["success"] is False:
             return resp
 
-        return resp.get("results", []) 
-
+        return resp.get("results", [])
 
     def get(self, entity, _id):
         """ Gets a record from the entity.
@@ -270,7 +262,7 @@ class PzServerApi:
         """
 
         return self._get_request(f"{self._base_api_url}{entity}/{_id}/")
-        
+
     def get_content(self, _id):
         """ Gets the contents uploaded by the user 
             for a given record.
@@ -283,7 +275,6 @@ class PzServerApi:
         """
 
         return self._get_request(f"{self._base_api_url}products/{_id}/content/")
-    
 
     def download_content(self, _id):
         """ Downloads the product to local 
@@ -297,7 +288,6 @@ class PzServerApi:
 
         return self._get_request(f"{self._base_api_url}products/{_id}/download")
 
-
     def get_products(self, filters={}, status=1):
         """ Returns list of products according to a filter
 
@@ -305,15 +295,22 @@ class PzServerApi:
             filters (dict): products filter   ex: {'release': 'LSST'}
             status (int): products status (1 is viewing only completed products)
         """
-        
+
+        mapping_keys = {
+            "product_type": "product_type_name",
+            "release": "release_name"
+        }
+
+        url = f"{self._base_api_url}/products/?"
+
         if status:
-            url = f"{self._base_api_url}/products/?status={str(status)}"
-        else:
-            url = f"{self._base_api_url}/products/?"
+            url += f"status={str(status)}"
 
         if filters:
             for key, value in filters.items():
-                value = list(map(str, value)) if isinstance(value, list) else [str(value)]
+                value = list(map(str, value)) if isinstance(
+                    value, list) else [str(value)]
+                key = mapping_keys.get(key, key)
                 url += f"&{key}={','.join(value)}"
 
         resp = self._get_request(url)
