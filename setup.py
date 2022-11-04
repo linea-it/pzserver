@@ -18,15 +18,14 @@ setup(
     python_requires=">=3.9, <4",
     setup_requires=["pytest-runner", "numpy", "astropy"],
     install_requires=[
-        "sqlalchemy>=1.4.25",
-        "psycopg2-binary>=2.9.1",
         "numpy>=1.19.4",
         "pandas>=1.2.0",
         "requests>=2.23.0",
         "astropy>=5.0.0",
         "matplotlib>=3.6.0",
         "tables_io >=0.7.9",
-        "Jinja2>=3.1.2"
+        "Jinja2>=3.1.2",
+        "ipython>=8.5.0"
     ],
     # tests_require=["pytest==4.4.1", "astropy"],  #TODO
     # test_suite="tests",  #TODO
