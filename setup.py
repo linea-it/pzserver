@@ -9,7 +9,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 setup(
     name="pz-server-lib",
     packages=find_packages(include=["pz_server"]),
-    version="0.1.5.dev",
+    version="0.1.5.dev2",
     description=(
         "Python library to access the Photo-z Server database"
         " hosted by the Brazilian LSST IDAC at LIneA. "
