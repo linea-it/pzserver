@@ -239,4 +239,6 @@ class PzServer():
                 be saved
 
         """
-        return self.api.download_content(product, save_in)
+        result_dict = self.api.download_content(product, save_in)
+        print(f"File saved as: {result_dict['message']}")
+        
