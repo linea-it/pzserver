@@ -23,6 +23,6 @@ Alternatively, you can clone the repository and install the library with:
 .. code-block:: 
 
    git clone https://github.com/linea-it/pz-server-lib.git  
-   python setup.py --install
+   python setup.py install
 
   
