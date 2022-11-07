@@ -63,6 +63,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-pz_server.pz_plots">pz_server.plots module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pz_server.pz_plots.specz_plots"><code class="docutils literal notranslate"><span class="pre">specz_plots()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pz_server.pz_plots.train_valid_plots"><code class="docutils literal notranslate"><span class="pre">train_valid_plots()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -166,8 +167,23 @@ mapping the users to corresponding GitHub usernames
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pz_server.core.PzServer.download_product">
-<span class="sig-name descname"><span class="pre">download_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_file_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pz_server.core.PzServer.download_product" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">download_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pz_server.core.PzServer.download_product" title="Permalink to this definition"></a></dt>
+<dd><p>Download the data to local.</p>
+<p>Connects to the Photo-z Server’s database and
+download a file containing data and metadata of
+a given data product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>str</em><em> or </em><em>int</em>) – data product
+unique identifier (product id
+number or internal name)</p></li>
+<li><p><strong>save_in</strong> (<em>str</em>) – location where the file will
+be saved</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pz_server.core.PzServer.get_product">
@@ -277,19 +293,22 @@ users (first/last name and GitHub username).</p>
 <span id="pz-server-plots-module"></span><h2>pz_server.plots module<a class="headerlink" href="#module-pz_server.pz_plots" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pz_server.pz_plots.specz_plots">
-<span class="sig-prename descclassname"><span class="pre">pz_server.pz_plots.</span></span><span class="sig-name descname"><span class="pre">specz_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'False'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pz_server.pz_plots.specz_plots" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">pz_server.pz_plots.</span></span><span class="sig-name descname"><span class="pre">specz_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ra'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dec'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'redshift'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pz_server.pz_plots.specz_plots" title="Permalink to this definition"></a></dt>
 <dd><p>Basic plots to characterize a Spec-z catalog.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> – </p></li>
-<li><p><strong>metadata</strong> – </p></li>
-<li><p><strong>savefig</strong> – </p></li>
+<li><p><strong>dataframe</strong> – Input data (Pandas DataFrame)</p></li>
+<li><p><strong>savefig</strong> – option to save PNG figure (boolean)</p></li>
 </ul>
 </dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pz_server.pz_plots.train_valid_plots">
+<span class="sig-prename descclassname"><span class="pre">pz_server.pz_plots.</span></span><span class="sig-name descname"><span class="pre">train_valid_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'redshift'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mag_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mag_i_cModel'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pz_server.pz_plots.train_valid_plots" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </section>
 </section>
