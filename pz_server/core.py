@@ -5,9 +5,9 @@ from .api import PzServerApi
 import tables_io
 pd.options.display.max_colwidth = None
 #pd.options.display.max_rows = 6
+from .catalog import SpeczCatalog, TrainingSet
 
-
-class PzServer():
+class PzServer:
 
     def __init__(self, token=None, host="pz"):
         """ PzServer class constructor
@@ -19,7 +19,8 @@ class PzServer():
             raise ValueError("Please provide a valid token.")
         else:
             self.api = PzServerApi(token, host)
-
+        self._token = token 
+    
     def get_product_types(self):
         """Fetches the list of valid product types.
 
@@ -210,20 +211,33 @@ class PzServer():
                 number or internal name)
 
         Returns:
-            data product (pd.DataFrame)
+            data product (class pd.DataFrame)
         """
 
         prod_type = self.get_product_metadata(product_id)['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
-            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
-            print("The function get_product() only supports tabular data.")
-            print(f"For {prod_type}, please use function download_product().")
+            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:")) 
+            print("The method get_product() only supports simple tabular ")
+            print("data (product types: Spec-z Catalog, Training Set).")  
+            print(f"For {prod_type}, please use method download_product().")
         else:
             results_dict = self.api.get_content(product_id)
             dataframe = pd.DataFrame(results_dict)
-            return dataframe
-
+            
+            if prod_type == "Spec-z Catalog":
+                catalog =  SpeczCatalog(dataframe)               
+            elif prod_type == "Training Set":
+                catalog = TrainingSet(dataframe)
+            else:
+                raise ValueError("Unknown product type")
+                        
+            catalog.attrs['product_id'] = product_id
+            catalog.attrs['prod_type'] = prod_type
+            
+            return catalog
+            
+            
     def download_product(self, product=None, save_in="."):
         """Download the data to local. 
 
@@ -241,4 +255,20 @@ class PzServer():
         """
         result_dict = self.api.download_content(product, save_in)
         print(f"File saved as: {result_dict['message']}")
-        
+
+        def combine_specz_catalogs(self, catalog_list, 
+                    duplicates_criteria="smallest flag"): 
+            # smallest flag
+            # smallest error
+            # newest survey
+            # show progress bar
+            raise NotImplementedError
+
+        def make_training_set(self, specz_catalog=None, 
+                              photo_catalog=None, 
+                              search_radius=1.0,
+                              multiple_match_criteria="select closest"):
+            # "select closest"
+            # keep all 
+            # show progress bar
+            raise NotImplementedError
