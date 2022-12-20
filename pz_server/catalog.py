@@ -3,8 +3,7 @@ import matplotlib.pyplot as plt
 
 
 class SpeczCatalog(pd.DataFrame):
-    
-     
+        
     #def __init__(self, data=None, product_id=None):
     #    self.product_id = product_id
         #self.data = data_dict
@@ -13,7 +12,6 @@ class SpeczCatalog(pd.DataFrame):
      #   self.data=data 
         #self.attrs["product_id"] = product_id 
         #atalog.__init__(product_id, dataframe)
-    #    print("2")
 
     def plot(self, savefig=False, 
                 ra_name="ra",
@@ -46,12 +44,62 @@ class SpeczCatalog(pd.DataFrame):
             pass
 
 
-class TrainingSet: 
-    def __init__(self): #f, product_id=None):
-        pass #     super().__init__(product_id)
+class TrainingSet(pd.DataFrame):
 
-    
-#     def plot(self):
-#         raise NotImplementedError 
+    def plot(self, savefig=False,
+                   redshift_name="redshift", 
+                   mag_name="mag_i_cModel"):
+
+        if self[mag_name].min() < 16.:
+            mag_min = 16.
+        else: 
+            mag_min = self[mag_name].min() - 0.2
+        if self[mag_name].max() > 30.:
+            mag_max = 28.
+        else: 
+            mag_max = self[mag_name].max() + 0.2
+
+        if self[redshift_name].min() <= 0.1:
+                redshift_min = 0.
+        else: 
+            redshift_min = self[redshift_name].min() - 0.1
+        if self[redshift_name].max() > 10.:
+            redshift_max = 10.
+        else: 
+            redshift_max = self[redshift_name].max() + 0.1
+        
+        
+        plt.figure(figsize=[12,4])
+        plt.subplot(131)
+        plt.hist(self[mag_name], bins=30, histtype="bar")
+        plt.xlabel(mag_name)
+        plt.xlim(mag_min, mag_max)
+        
+        plt.subplot(132)
+        plt.hist(self[redshift_name], bins=30, histtype="bar")
+        plt.xlabel(redshift_name)
+        plt.xlim(redshift_min, redshift_max)
+        
+        plt.subplot(133)
+        plt.plot(self[redshift_name], self[mag_name], '.')
+        plt.xlabel(redshift_name)
+        plt.ylabel(mag_name)   
+        plt.xlim(redshift_min, redshift_max)
+        plt.ylim(mag_min, mag_max)
+
+        plt.tight_layout()
+
+        if savefig:
+            filename = "train_set.png"
+            plt.savefig(filename)
+            return filename
+        else:
+            pass
+
+
+
+
+
+
 
 

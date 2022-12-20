@@ -1,4 +1,4 @@
-from imp import acquire_lock
+#from imp import acquire_lock
 import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
@@ -237,7 +237,7 @@ class PzServer:
             
             return catalog
             
-            
+
     def download_product(self, product=None, save_in="."):
         """Download the data to local. 
 
