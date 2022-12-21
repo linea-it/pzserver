@@ -1,17 +1,41 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from IPython.display import display
+
 
 
 class SpeczCatalog(pd.DataFrame):
+
+    def __init__(self, data=None, metadata=None):
+        super(SpeczCatalog, self).__init__(data)#, attrs=metadata)
+        #print(metadata)
         
-    #def __init__(self, data=None, product_id=None):
-    #    self.product_id = product_id
-        #self.data = data_dict
-        #print(len(data)) 
-     #   pd.DataFrame.__init__(self)#data=data)
-     #   self.data=data 
-        #self.attrs["product_id"] = product_id 
-        #atalog.__init__(product_id, dataframe)
+        #self.metadata = metadata
+        #self.attrs['metadata'] = metadata
+        #print(metadata)
+        
+        
+    #def get_metadata(self):
+    #    return self.attrs['metadata']
+
+
+    # def display_metadata(self):
+    #     columns = ["id", "internal_name", "display_name",
+    #                "product_type_name", "survey", "release_name",
+    #                "uploaded_by", "official_product",  "pz_code",
+    #                "description", "created_at"]
+    #     transposed_list = []
+    #     for k, v in results_dict.items():
+    #         if k in columns:
+    #             if k == "release_name":
+    #                 k = "release"
+    #             if k == "product_type_name":
+    #                 k = "product_type"
+    #             if k == "display_name":
+    #                 k = "product_name"
+    #             transposed_list.append({"key": k, "value": v})
+    #     dataframe = pd.DataFrame(transposed_list)
+    #     display(dataframe.style.hide(axis="index"))
 
     def plot(self, savefig=False, 
                 ra_name="ra",

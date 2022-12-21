@@ -1,11 +1,11 @@
-#from imp import acquire_lock
 import pandas as pd
 from IPython.display import display
-from .api import PzServerApi
+from api import PzServerApi
 import tables_io
 pd.options.display.max_colwidth = None
-#pd.options.display.max_rows = 6
-from .catalog import SpeczCatalog, TrainingSet
+pd.options.display.max_rows = 6
+from catalog import SpeczCatalog, TrainingSet
+
 
 class PzServer:
 
@@ -211,7 +211,8 @@ class PzServer:
                 number or internal name)
 
         Returns:
-            data product (class pd.DataFrame)
+            SpeczSample or TrainingSet (child class from pd.DataFrame)
+
         """
 
         prod_type = self.get_product_metadata(product_id)['product_type_name']
@@ -223,18 +224,18 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
         else:
             results_dict = self.api.get_content(product_id)
-            dataframe = pd.DataFrame(results_dict)
+            metadata = self.get_product_metadata(product_id)
             
             if prod_type == "Spec-z Catalog":
-                catalog =  SpeczCatalog(dataframe)               
+                catalog =  SpeczCatalog(results_dict, metadata)               
             elif prod_type == "Training Set":
-                catalog = TrainingSet(dataframe)
+                catalog = TrainingSet(results_dict, metadata)
             else:
                 raise ValueError("Unknown product type")
-                        
-            catalog.attrs['product_id'] = product_id
-            catalog.attrs['prod_type'] = prod_type
-            
+
+            for key, value in metadata.items(): 
+                catalog.attrs[key] = value      
+                                  
             return catalog
             
 
