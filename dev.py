@@ -1,4 +1,4 @@
-from core import PzServer
+from pz_server import PzServer
 print()
 print()
 pz = PzServer(token="54d88903cb7efde2d9e82064a0ba02738cfcd5d4", host="pz-dev")
