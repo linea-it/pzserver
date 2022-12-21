@@ -1,10 +1,10 @@
 import pandas as pd
 from IPython.display import display
-from api import PzServerApi
+from .api import PzServerApi
 import tables_io
 pd.options.display.max_colwidth = None
 pd.options.display.max_rows = 6
-from catalog import SpeczCatalog, TrainingSet
+from .catalog import SpeczCatalog, TrainingSet
 
 
 class PzServer:
