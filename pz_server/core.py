@@ -2,8 +2,9 @@ from .catalog import SpeczCatalog, TrainingSet
 import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
-import tables_io
+# import tables_io
 pd.options.display.max_colwidth = None
+pd.options.display.max_columns = 500
 pd.options.display.max_rows = 6
 
 
@@ -44,7 +45,8 @@ class PzServer:
         dataframe = pd.DataFrame(results_dict,
                                  columns=["display_name", "description"])
         dataframe.rename(
-            columns={"display_name": "product_type"}, inplace=True)
+            columns={"display_name": "Product type",
+                     "description": "Description"}, inplace=True)
         display(dataframe.style.hide(axis="index"))
 
     def get_users(self):
@@ -69,7 +71,8 @@ class PzServer:
         results_dict = self.get_users()
         dataframe = pd.DataFrame(results_dict,
                                  columns=["username", "last_name"])
-        dataframe.rename(columns={"last_name": "user"},
+        dataframe.rename(columns={"username": "GitHub username",
+                                  "last_name": "User"},
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
@@ -97,8 +100,8 @@ class PzServer:
         results_dict = self.api.get_all("releases")
         dataframe = pd.DataFrame(results_dict,
                                  columns=["display_name", "description"])
-        dataframe.rename(columns={"display_name": "release"},
-                         inplace=True)
+        dataframe.rename(columns={"display_name": "Release",
+                                  "description": "Description"}, inplace=True)
         display(dataframe.style.hide(axis="index"))
 
     def get_products_list(self, filters=None):
