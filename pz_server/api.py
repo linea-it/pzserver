@@ -1,6 +1,7 @@
-import requests
 import json
 from urllib.parse import urljoin
+
+import requests
 
 
 class PzServerApi:
@@ -14,7 +15,7 @@ class PzServerApi:
     }
 
     def __init__(self, token, host="pz"):
-        """ Initializes the Pz Server API.
+        """Initializes the Pz Server API.
 
         Args:
             token (str): token to access the API.
@@ -26,7 +27,7 @@ class PzServerApi:
 
     @staticmethod
     def safe_list_get(l, idx, default):
-        """ Gets a value from a list if it exists. Otherwise returns the default.
+        """Gets a value from a list if it exists. Otherwise returns the default.
 
         Args:
             l (list): list to get the value from.
@@ -42,7 +43,7 @@ class PzServerApi:
             return default
 
     def _get_request(self, url, params=None):
-        """ Get a record from the API.
+        """Get a record from the API.
 
         Args:
             url (str): url to get
@@ -56,11 +57,13 @@ class PzServerApi:
             r = requests.get(
                 url,
                 params=params,
-                headers=dict({
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Token {}".format(self._token),
-                }),
+                headers=dict(
+                    {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Token {}".format(self._token),
+                    }
+                ),
             )
 
             if r.status_code == 200:
@@ -70,38 +73,71 @@ class PzServerApi:
                 # Não enviou as credenciais de usuario
                 message = json.loads(str(r.text))["detail"]
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
 
             elif r.status_code == 404:
                 # Mensagem de erro pra Not Found.
                 message = r.text
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
             else:
-                return dict({"success": False, "status_code": r.status_code, })
+                return dict(
+                    {
+                        "success": False,
+                        "status_code": r.status_code,
+                    }
+                )
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
     def _download_request(self, url, save_in="."):
-        """ Download a record from the API.
+        """Download a record from the API.
 
         Args:
             url (str): url to get
@@ -113,9 +149,11 @@ class PzServerApi:
             r = requests.get(
                 url,
                 stream=True,
-                headers=dict({
-                    "Authorization": "Token {}".format(self._token),
-                }),
+                headers=dict(
+                    {
+                        "Authorization": "Token {}".format(self._token),
+                    }
+                ),
             )
 
             if r.status_code == 200:
@@ -127,51 +165,87 @@ class PzServerApi:
 
                 filename = f"{save_in}/{filename}"
 
-                with open(filename, 'wb') as fd:
+                with open(filename, "wb") as fd:
                     for chunk in r.iter_content(chunk_size=128):
                         fd.write(chunk)
 
-                return dict({
-                    "success": True, "message": filename,
-                    "status_code": r.status_code,
-                })
+                return dict(
+                    {
+                        "success": True,
+                        "message": filename,
+                        "status_code": r.status_code,
+                    }
+                )
 
             elif r.status_code == 403:
                 # Não enviou as credenciais de usuario
                 message = json.loads(str(r.text))["detail"]
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
 
             elif r.status_code == 404:
                 # Mensagem de erro pra Not Found.
                 message = r.text
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
             else:
-                return dict({"success": False, "status_code": r.status_code, })
+                return dict(
+                    {
+                        "success": False,
+                        "status_code": r.status_code,
+                    }
+                )
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
     def _post_request(self, url, payload):
-        """ Posts a record to the API.
+        """Posts a record to the API.
 
         Args:
             url (str): url to post.
@@ -185,11 +259,13 @@ class PzServerApi:
             r = requests.post(
                 url,
                 data=json.dumps(payload),
-                headers=dict({
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": "Token {}".format(self._token),
-                }),
+                headers=dict(
+                    {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": "Token {}".format(self._token),
+                    }
+                ),
             )
 
             if r.status_code == 200:
@@ -199,38 +275,71 @@ class PzServerApi:
                 # Não enviou as credenciais de usuario
                 message = json.loads(str(r.text))["detail"]
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
 
             elif r.status_code == 404:
                 # Mensagem de erro pra Not Found.
                 message = r.text
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
             else:
-                return dict({"success": False, "status_code": r.status_code, })
+                return dict(
+                    {
+                        "success": False,
+                        "status_code": r.status_code,
+                    }
+                )
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
     def _delete_request(self, url):
-        """ Remove a record from the API.
+        """Remove a record from the API.
 
         Args:
             url (str): url to delete with the record id.
@@ -242,55 +351,92 @@ class PzServerApi:
         try:
             r = requests.delete(
                 url,
-                headers=dict({
-                    "Accept": "application/json",
-                    "Authorization": "Token {}".format(self._token),
-                }),
+                headers=dict(
+                    {
+                        "Accept": "application/json",
+                        "Authorization": "Token {}".format(self._token),
+                    }
+                ),
             )
 
             if r.status_code == 204:
                 return True
             elif r.status_code == 400:
-                return dict({
-                    "success": False,
-                    "message": "The server failed to perform the operation.",
-                    "status_code": r.status_code,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": "The server failed to perform the operation.",
+                        "status_code": r.status_code,
+                    }
+                )
             elif r.status_code == 403:
                 # Não enviou as credenciais de usuario
                 message = json.loads(str(r.text))["detail"]
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
             elif r.status_code == 404:
                 # Mensagem de erro pra Not Found.
                 message = json.loads(str(r.text))["detail"]
                 status = r.status_code
-                return dict({
-                    "success": False, "message": message, "status_code": status,
-                })
+                return dict(
+                    {
+                        "success": False,
+                        "message": message,
+                        "status_code": status,
+                    }
+                )
             else:
-                return dict({"success": False, "status_code": r.status_code, })
+                return dict(
+                    {
+                        "success": False,
+                        "status_code": r.status_code,
+                    }
+                )
 
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.ConnectionError as errc:
             message = "Connection Error: {}".format(errc)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.Timeout as errt:
             message = "Timeout Error: {}".format(errt)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
-            return dict({"success": False, "message": message, })
+            return dict(
+                {
+                    "success": False,
+                    "message": message,
+                }
+            )
 
     def get_entities(self):
-        """ Gets all entities from the API.
+        """Gets all entities from the API.
 
         Returns:
             list: entities list
@@ -304,13 +450,13 @@ class PzServerApi:
         return list(resp.keys())
 
     def get_all(self, entity):
-        """ Returns a list with all records of the entity.
+        """Returns a list with all records of the entity.
 
         Args:
             entity (str): entity name  e.g. "releases", "products", "product-types"
 
         Returns:
-            list: list of records 
+            list: list of records
         """
 
         resp = self._get_request(f"{self._base_api_url}{entity}/")
@@ -321,7 +467,7 @@ class PzServerApi:
         return resp.get("results", [])
 
     def get(self, entity, _id):
-        """ Gets a record from the entity.
+        """Gets a record from the entity.
 
         Args:
             entity (str): entity name  e.g. "releases", "products", "product-types"
@@ -334,7 +480,7 @@ class PzServerApi:
         return self._get_request(f"{self._base_api_url}{entity}/{_id}/")
 
     def get_content(self, _id):
-        """ Gets the contents uploaded by the user 
+        """Gets the contents uploaded by the user
             for a given record.
 
         Args:
@@ -347,7 +493,7 @@ class PzServerApi:
         return self._get_request(f"{self._base_api_url}products/{_id}/content/")
 
     def download_content(self, _id, save_in="."):
-        """ Downloads the product to local 
+        """Downloads the product to local
 
         Args:
             _id (int): record id
@@ -362,17 +508,14 @@ class PzServerApi:
         )
 
     def get_products(self, filters={}, status=1):
-        """ Returns list of products according to a filter
+        """Returns list of products according to a filter
 
         Args:
             filters (dict): products filter   ex: {'release': 'LSST'}
             status (int): products status (1 is viewing only completed products)
         """
 
-        mapping_keys = {
-            "product_type": "product_type_name",
-            "release": "release_name"
-        }
+        mapping_keys = {"product_type": "product_type_name", "release": "release_name"}
 
         url = f"{self._base_api_url}/products/?"
 
@@ -381,8 +524,9 @@ class PzServerApi:
 
         if filters:
             for key, value in filters.items():
-                value = list(map(str, value)) if isinstance(
-                    value, list) else [str(value)]
+                value = (
+                    list(map(str, value)) if isinstance(value, list) else [str(value)]
+                )
                 key = mapping_keys.get(key, key)
                 url += f"&{key}={','.join(value)}"
 

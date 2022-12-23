@@ -1,0 +1,1 @@
+pip3 install --user ipython ipykernel requests pandas matplotlib astropy tables_io Jinja2
