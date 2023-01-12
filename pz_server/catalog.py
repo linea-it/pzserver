@@ -1,8 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from astropy.table import Table
 from IPython.display import display
 # import warnings
 # warnings.filterwarnings('ignore')
+
+
+class Catalog(dict):
+
+    def __init__(self, data=None):
+        # provisorio
+        import numpy as np
+        data = {"redshift": np.array([2.8423803, 2.8887353, 1.2903498, 2.44262, 1.4635979]),
+                "ra": np.array([60.4467, 59.2224, 67.6464, 65.1607, 73.0255]),
+                "dec": np.array([-34.056, -43.1165, -33.5759, -34.4085, -40.2059])}
+
+        super().__init__(data)
+
+    def to_table(self):
+        return Table(data=self)
 
 
 class SpeczCatalog(pd.DataFrame):
@@ -11,6 +27,7 @@ class SpeczCatalog(pd.DataFrame):
         super().__init__(data)
         for key, value in metadata.items():
             self.attrs[key] = value
+        self.attrs['columns'] = list(self.columns)
 
     @property
     def metadata(self):
@@ -20,7 +37,7 @@ class SpeczCatalog(pd.DataFrame):
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "survey", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
-                   "description", "created_at"]
+                   "description", "created_at", "columns"]
         transposed_list = []
         for k, v in self.metadata.items():
             if k in columns:
@@ -38,9 +55,9 @@ class SpeczCatalog(pd.DataFrame):
              ra_name="ra",
              dec_name="dec",
              redshift_name="redshift"):
-        """ Basic plots to characterize a Spec-z catalog. 
+        """ Basic plots to characterize a Spec-z catalog.
 
-        Args: 
+        Args:
             savefig: option to save PNG figure (boolean)
 
         """

@@ -1,4 +1,4 @@
-from .catalog import SpeczCatalog, TrainingSet
+from .catalog import Catalog, SpeczCatalog, TrainingSet
 import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
@@ -13,7 +13,7 @@ class PzServer:
     def __init__(self, token=None, host="pz"):
         """ PzServer class constructor
         Args:
-            host (str): "pz" (production) or 
+            host (str): "pz" (production) or
                         "pz-dev" (test environment)
         """
         if token is None:
@@ -37,9 +37,9 @@ class PzServer:
     def display_product_types(self):
         """Displays the list of product types as dataframe
 
-        Displays a pandas.io.formats.style.Styler object 
-        mapping the product type names to the corresponding 
-        descriptions (optimized for use in Jupyter Notebook).  
+        Displays a pandas.io.formats.style.Styler object
+        mapping the product type names to the corresponding
+        descriptions (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_product_types()
         dataframe = pd.DataFrame(results_dict,
@@ -52,32 +52,32 @@ class PzServer:
     def get_users(self):
         """Fetches the list of registered users.
 
-        Connects to the Photo-z Server's administrative 
-        database and fetches the list of registered 
-        users (first/last name and GitHub username). 
+        Connects to the Photo-z Server's administrative
+        database and fetches the list of registered
+        users (first/last name and GitHub username).
 
-        Returns: 
-            dict of users 
+        Returns:
+            dict of users
         """
         return self.api.get_all("users")
 
     def display_users(self):
         """Displays the list of users as dataframe
 
-        Displays a pandas.io.formats.style.Styler object 
+        Displays a pandas.io.formats.style.Styler object
         mapping the users to corresponding GitHub usernames
-        (optimized for use in Jupyter Notebook).  
+        (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_users()
         dataframe = pd.DataFrame(results_dict,
                                  columns=["username", "last_name"])
         dataframe.rename(columns={"username": "GitHub username",
-                                  "last_name": "User"},
+                                  "last_name": "name"},
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
     def get_releases(self):
-        """Fetches the list of valid data releases. 
+        """Fetches the list of valid data releases.
 
         Connects to the Photo-z Server's administrative
         database and fetches the list of valid LSST
@@ -93,9 +93,9 @@ class PzServer:
     def display_releases(self):
         """Displays the list of data releases as dataframe
 
-        Displays a pandas.io.formats.style.Styler object 
-        mapping the the data release tags to their full 
-        names (optimized for use in Jupyter Notebook).  
+        Displays a pandas.io.formats.style.Styler object
+        mapping the the data release tags to their full
+        names (optimized for use in Jupyter Notebook).
         """
         results_dict = self.api.get_all("releases")
         dataframe = pd.DataFrame(results_dict,
@@ -105,34 +105,34 @@ class PzServer:
         display(dataframe.style.hide(axis="index"))
 
     def get_products_list(self, filters=None):
-        """Fetches the list of data products available. 
+        """Fetches the list of data products available.
 
-        Connects to the Photo-z Server's database and 
-        fetches the filtered list of data products 
-        available. 
+        Connects to the Photo-z Server's database and
+        fetches the filtered list of data products
+        available.
 
         Args:
-            filters (dict): dictionary with strings 
-                (or a list of strings) patterns to 
-                filter the results. 
+            filters (dict): dictionary with strings
+                (or a list of strings) patterns to
+                filter the results.
 
-        Returns: 
-            dict of data products 
+        Returns:
+            dict of data products
         """
         return self.api.get_products(filters)
 
     def display_products_list(self, filters=None):
         """Displays the list of data products as dataframe
 
-        Displays a pandas.io.formats.style.Styler object 
-        with the list of all products available with the 
-        metadata informed by the owners (optimized for use 
-        in Jupyter Notebook).  
+        Displays a pandas.io.formats.style.Styler object
+        with the list of all products available with the
+        metadata informed by the owners (optimized for use
+        in Jupyter Notebook).
 
         Args:
-            filters (dict): dictionary with strings 
-                (or a list of strings) patterns to 
-                filter the results. 
+            filters (dict): dictionary with strings
+                (or a list of strings) patterns to
+                filter the results.
         """
         results_dict = self.get_products_list(filters)
         dataframe = pd.DataFrame(results_dict,
@@ -148,19 +148,19 @@ class PzServer:
         display(dataframe.style.hide(axis="index"))
 
     def get_product_metadata(self, product_id=None):
-        """Fetches the product metadata. 
+        """Fetches the product metadata.
 
-        Connects to the Photo-z Server's database and 
-        fetches the metadata informed by the product 
-        owner. 
+        Connects to the Photo-z Server's database and
+        fetches the metadata informed by the product
+        owner.
 
         Args:
-            product_id (str or int): data product 
-                unique identifier (product id 
+            product_id (str or int): data product
+                unique identifier (product id
                 number or internal name)
 
         Returns:
-            dict of metadata 
+            dict of metadata
         """
         product_id = str(product_id)
         if "_" in product_id:
@@ -170,15 +170,15 @@ class PzServer:
             return self.api.get("products", product_id)
 
     def display_product_metadata(self, product_id=None):
-        """Displays the metadata informed by the product owner. 
+        """Displays the metadata informed by the product owner.
 
-        Displays a pandas.io.formats.style.Styler object 
+        Displays a pandas.io.formats.style.Styler object
         with the metadata informed by the product owner
-        (optimized for use in Jupyter Notebook).  
+        (optimized for use in Jupyter Notebook).
 
         Args:
-            product (str or int): data product 
-                unique identifier (product id 
+            product (str or int): data product
+                unique identifier (product id
                 number or internal name)
         """
 
@@ -201,20 +201,20 @@ class PzServer:
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
-    def get_product(self, product_id=None, save_file=False):
-        """Fetches the data to local. 
+    def get_product(self, product_id=None):
+        """Fetches the data to local.
 
-        Connects to the Photo-z Server's database and 
-        fetches the data stored as registered data 
+        Connects to the Photo-z Server's database and
+        fetches the data stored as registered data
         product.
 
         Args:
-            product_id (str or int): data product 
-                unique identifier (product id 
+            product_id (str or int): data product
+                unique identifier (product id
                 number or internal name)
 
         Returns:
-            SpeczSample or TrainingSet (child class from pd.DataFrame)
+            Catalog (child class from dict)
 
         """
 
@@ -229,14 +229,50 @@ class PzServer:
             results_dict = self.api.get_content(product_id)
             metadata = self.get_product_metadata(product_id)
 
-            if prod_type == "Spec-z Catalog":
-                catalog = SpeczCatalog(results_dict, metadata)
-            elif prod_type == "Training Set":
-                catalog = TrainingSet(results_dict, metadata)
+            if prod_type == "Spec-z Catalog" or prod_type == "Training Set":
+                catalog = Catalog(results_dict)
             else:
                 raise ValueError("Unknown product type")
 
             return catalog
+
+    def get_specz_catalog(self, product_id=None):
+        """Fetches Spec-z Catalog to local.
+
+        Connects to the Photo-z Server's database and
+        fetches the data stored as registered data
+        product. Particular for product type equals
+        Spec-z Catalog.
+
+        Args:
+            product_id (str or int): data product
+                unique identifier (product id
+                number or internal name)
+
+        Returns:
+            SpeczCatalog (child class from pandas.DataFrame)
+
+        """
+
+        prod_type = self.get_product_metadata(product_id)['product_type_name']
+
+        if prod_type != "Spec-z Catalog":
+            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "ERROR:"))
+            print(f"The product {product_id} is not a Spec-z Catalog.")
+            if prod_type == "Training Set":
+                print("Please use the method get_train_set")
+            elif (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
+                print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
+                print("The methods get_...() only supports simple tabular ")
+                print("data (product types: Spec-z Catalog, Training Set).")
+                print(f"For {prod_type}, please use method download_product().")
+        else:
+            results_dict = self.api.get_content(product_id)
+            metadata = self.get_product_metadata(product_id)
+
+            catalog = SpeczCatalog(results_dict, metadata)
+
+        return catalog
 
     def download_product(self, product=None, save_in="."):
         """Download the data to local. 
