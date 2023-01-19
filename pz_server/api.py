@@ -21,8 +21,10 @@ class PzServerApi:
             token (str): token to access the API.
             host (str, optional): host key. Defaults to "pz".
         """
-
-        self._base_api_url = self._enviroments[host]
+        if host in self._enviroments:
+            self._base_api_url = self._enviroments[host]
+        else:
+            self._base_api_url = host
         self._token = token
 
     @staticmethod
