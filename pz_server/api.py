@@ -23,6 +23,7 @@ class PzServerApi:
 
         self._base_api_url = self._enviroments[host]
         self._token = token
+        self._check_token()
 
     @staticmethod
     def safe_list_get(l, idx, default):
@@ -81,6 +82,13 @@ class PzServerApi:
                 return dict({
                     "success": False, "message": message, "status_code": status,
                 })
+            elif r.status_code == 401:
+                # Token invalid.
+                message = r.text
+                status = r.status_code
+                return dict({
+                    "success": False, "message": message, "status_code": status,
+                })
             else:
                 return dict({"success": False, "status_code": r.status_code, })
 
@@ -99,6 +107,20 @@ class PzServerApi:
         except requests.exceptions.RequestException as err:
             message = "Request Error: {}".format(err)
             return dict({"success": False, "message": message, })
+
+    def _check_token(self):
+        """ Checks if the token is valid, otherwise stops class 
+        initialization.
+        """
+
+        cntxt = self._get_request(self._base_api_url)
+
+        if not cntxt.get('success', True):
+            stcode = cntxt.get("status_code")
+            msg = cntxt.get("message", "Unforeseen error")
+            raise requests.exceptions.RequestException(
+                f"Status code {stcode}: {msg}"
+            )
 
     def _download_request(self, url, save_in="."):
         """ Download a record from the API.
