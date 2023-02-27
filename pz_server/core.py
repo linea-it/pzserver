@@ -205,8 +205,8 @@ class PzServer:
         """Fetches the data to local.
 
         Connects to the Photo-z Server's database and
-        fetches the data stored as registered data
-        product.
+        fetches the tabular data stored as registered 
+        data product.
 
         Args:
             product_id (str or int): data product
@@ -219,6 +219,7 @@ class PzServer:
         """
 
         prod_type = self.get_product_metadata(product_id)['product_type_name']
+        print(prod_type)
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
@@ -227,14 +228,16 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
         else:
             results_dict = self.api.get_content(product_id)
-            metadata = self.get_product_metadata(product_id)
+            return results_dict
+        
+            # metadata = self.get_product_metadata(product_id)
 
-            if prod_type == "Spec-z Catalog" or prod_type == "Training Set":
-                catalog = Catalog(results_dict)
-            else:
-                raise ValueError("Unknown product type")
+            # if prod_type == "Spec-z Catalog" or prod_type == "Training Set":
+            #     catalog = Catalog(results_dict)
+            # else:
+            #     raise ValueError("Unknown product type")
 
-            return catalog
+            # return catalog
 
     def get_specz_catalog(self, product_id=None):
         """Fetches Spec-z Catalog to local.
@@ -278,8 +281,8 @@ class PzServer:
         """Download the data to local. 
 
         Connects to the Photo-z Server's database and 
-        download a file containing data and metadata of
-        a given data product.
+        download a compressed zip file containing all 
+        the data and metadata of a given data product.
 
         Args:
             product_id (str or int): data product 
@@ -292,19 +295,19 @@ class PzServer:
         result_dict = self.api.download_content(product, save_in)
         print(f"File saved as: {result_dict['message']}")
 
-        def combine_specz_catalogs(self, catalog_list,
-                                   duplicates_criteria="smallest flag"):
-            # smallest flag
-            # smallest error
-            # newest survey
-            # show progress bar
-            raise NotImplementedError
+    def combine_specz_catalogs(self, catalog_list,
+                                duplicates_criteria="smallest flag"):
+        # smallest flag
+        # smallest error
+        # newest survey
+        # show progress bar
+        raise NotImplementedError
 
-        def make_training_set(self, specz_catalog=None,
-                              photo_catalog=None,
-                              search_radius=1.0,
-                              multiple_match_criteria="select closest"):
-            # "select closest"
-            # keep all
-            # show progress bar
-            raise NotImplementedError
+    def make_training_set(self, specz_catalog=None,
+                            photo_catalog=None,
+                            search_radius=1.0,
+                            multiple_match_criteria="select closest"):
+        # "select closest"
+        # keep all
+        # show progress bar
+        raise NotImplementedError
