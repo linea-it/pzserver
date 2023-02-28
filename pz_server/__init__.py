@@ -1,2 +1,2 @@
 from .core import PzServer
-from .pz_plots import *
+from .catalog import Catalog, SpeczCatalog, TrainingSet
