@@ -140,14 +140,12 @@ class PzServerApi:
                     "data": api_response.json(),
                     "message": json.loads(str(api_response.text))
                 })
-            data.update({"success": True})
-        elif api_response.status_code in (401, 403):
-            # 401: token invalid
-            # 403: did not send user credentials
-            message = json.loads(str(api_response.text))["detail"]
-            data.update({"success": False, "message": message})
+            data.update({"success": True, "message": "Download completed"})
         else:
-            data.update({"success": False})
+            txt = json.loads(api_response.text)
+            msg = txt.get("detail", txt)
+            msg = txt.get("error", msg)
+            data.update({"success": False, "message": msg})
 
         return data
 
@@ -419,7 +417,7 @@ class PzServerApi:
 
         return self._options_request(f"{self._base_api_url}{entity}/")
 
-    def get_content(self, _id):
+    def download_main_file(self, _id):
         """ Gets the contents uploaded by the user 
             for a given record.
 
@@ -432,7 +430,7 @@ class PzServerApi:
 
         return self._download_request(f"{self._base_api_url}products/{_id}/content/")
 
-    def download_content(self, _id, save_in="."):
+    def download_product(self, _id, save_in="."):
         """ Downloads the product to local 
 
         Args:

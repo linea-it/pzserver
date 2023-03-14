@@ -14,24 +14,15 @@ class PzServer:
         """ PzServer class constructor
         Args:
             host (str): "pz" (production) or
-                        "pz-dev" (test environment)
+                        "pz-dev" (test environment) or
+                        "localhost" (dev environment) or
+                        "api url" 
         """
-        
-        if host == "pz": 
-            self._url_base = "https://pz-server.linea.org.br/product/"
-        elif host == "pz-dev": 
-            self._url_base = "https://pz-server-dev.linea.org.br/product/"
-        else:
-            raise ValueError("Please provide a valid host ('pz' or 'pz-dev').")
-        
         if token is None:
             raise ValueError("Please provide a valid token.")
         else:
             self.api = PzServerApi(token, host)
         self._token = token
-        
-
-
 
     def get_product_types(self):
         """Fetches the list of valid product types.
@@ -212,7 +203,6 @@ class PzServer:
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
-
     def download_product(self, product_id=None, save_in="."):
         """Download the data to local. 
 
@@ -228,12 +218,11 @@ class PzServer:
                 be saved
 
         """
-
-        product_url = self._url_base + product_id
-        print(product_url)
-        data = self.api._download_request(product_url, save_in)
-        print(f"File saved as: {data['message']}")
-
+        data = self.api.download_product(product_id, save_in)
+        if data.get("success", False):
+            print(f"File saved as: {data['message']}")
+        else:
+            print(f"Error: {data['message']}")
 
     def get_product(self, product_id=None):
         """Fetches the data to local.
@@ -261,9 +250,9 @@ class PzServer:
             print("data (product types: Spec-z Catalog, Training Set).")
             print(f"For {prod_type}, please use method download_product().")
         else:
-            results_dict = self.api.get_content(product_id)
+            results_dict = self.api.download_main_file(product_id)
             return results_dict
-        
+
             # metadata = self.get_product_metadata(product_id)
 
             # if prod_type == "Spec-z Catalog" or prod_type == "Training Set":
@@ -311,9 +300,8 @@ class PzServer:
 
         return catalog
 
-    
     def combine_specz_catalogs(self, catalog_list,
-                                duplicates_criteria="smallest flag"):
+                               duplicates_criteria="smallest flag"):
         # smallest flag
         # smallest error
         # newest survey
@@ -321,9 +309,9 @@ class PzServer:
         raise NotImplementedError
 
     def make_training_set(self, specz_catalog=None,
-                            photo_catalog=None,
-                            search_radius=1.0,
-                            multiple_match_criteria="select closest"):
+                          photo_catalog=None,
+                          search_radius=1.0,
+                          multiple_match_criteria="select closest"):
         # "select closest"
         # keep all
         # show progress bar
