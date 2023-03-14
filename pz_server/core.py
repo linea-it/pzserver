@@ -212,6 +212,29 @@ class PzServer:
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
+
+    def download_product(self, product_id=None, save_in="."):
+        """Download the data to local. 
+
+        Connects to the Photo-z Server's database and 
+        download a compressed zip file containing all 
+        the data and metadata of a given data product.
+
+        Args:
+            product_id (str or int): data product 
+                unique identifier (product id 
+                number or internal name)
+            save_in (str): location where the file will 
+                be saved
+
+        """
+
+        product_url = self._url_base + product_id
+        print(product_url)
+        data = self.api._download_request(product_url, save_in)
+        print(f"File saved as: {data['message']}")
+
+
     def get_product(self, product_id=None):
         """Fetches the data to local.
 
@@ -288,27 +311,7 @@ class PzServer:
 
         return catalog
 
-    def download_product(self, product_id=None, save_in="."):
-        """Download the data to local. 
-
-        Connects to the Photo-z Server's database and 
-        download a compressed zip file containing all 
-        the data and metadata of a given data product.
-
-        Args:
-            product_id (str or int): data product 
-                unique identifier (product id 
-                number or internal name)
-            save_in (str): location where the file will 
-                be saved
-
-        """
-
-        product_url = self._url_base + product_id
-        print(product_url)
-        data = self.api._download_request(product_url, save_in)
-        print(f"File saved as: {data['message']}")
-
+    
     def combine_specz_catalogs(self, catalog_list,
                                 duplicates_criteria="smallest flag"):
         # smallest flag
