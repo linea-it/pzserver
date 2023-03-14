@@ -16,11 +16,22 @@ class PzServer:
             host (str): "pz" (production) or
                         "pz-dev" (test environment)
         """
+        
+        if host == "pz": 
+            self._url_base = "https://pz-server.linea.org.br/product/"
+        elif host == "pz-dev": 
+            self._url_base = "https://pz-server-dev.linea.org.br/product/"
+        else:
+            raise ValueError("Please provide a valid host ('pz' or 'pz-dev').")
+        
         if token is None:
             raise ValueError("Please provide a valid token.")
         else:
             self.api = PzServerApi(token, host)
         self._token = token
+        
+
+
 
     def get_product_types(self):
         """Fetches the list of valid product types.
@@ -277,7 +288,7 @@ class PzServer:
 
         return catalog
 
-    def download_product(self, product=None, save_in="."):
+    def download_product(self, product_id=None, save_in="."):
         """Download the data to local. 
 
         Connects to the Photo-z Server's database and 
@@ -292,8 +303,11 @@ class PzServer:
                 be saved
 
         """
-        result_dict = self.api.download_content(product, save_in)
-        print(f"File saved as: {result_dict['message']}")
+
+        product_url = self._url_base + product_id
+        print(product_url)
+        data = self.api._download_request(product_url, save_in)
+        print(f"File saved as: {data['message']}")
 
     def combine_specz_catalogs(self, catalog_list,
                                 duplicates_criteria="smallest flag"):
