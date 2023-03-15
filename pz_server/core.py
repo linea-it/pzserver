@@ -23,7 +23,8 @@ class PzServer:
         else:
             self.api = PzServerApi(token, host)
         self._token = token
-
+    
+    #---- methods to get general info ----#
     def get_product_types(self):
         """Fetches the list of valid product types.
 
@@ -139,7 +140,7 @@ class PzServer:
         results_dict = self.get_products_list(filters)
         dataframe = pd.DataFrame(results_dict,
                                  columns=["id", "internal_name", "display_name",
-                                          "product_type_name", "survey", "release_name",
+                                          "product_type_name", "release_name",
                                           "uploaded_by", "official_product",  # "pz_code",
                                           "description", "created_at"])
 
@@ -149,6 +150,7 @@ class PzServer:
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
+    #---- methods to get data or metadata of one data product ----#
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata.
 
@@ -187,7 +189,7 @@ class PzServer:
         results_dict = self.get_product_metadata(product_id)
 
         columns = ["id", "internal_name", "display_name",
-                   "product_type_name", "survey", "release_name",
+                   "product_type_name", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
                    "description", "created_at"]
         transposed_list = []
@@ -261,7 +263,8 @@ class PzServer:
             #     raise ValueError("Unknown product type")
 
             # return catalog
-
+    
+    #---- methods to handle specific prod types ----#
     def get_specz_catalog(self, product_id=None):
         """Fetches Spec-z Catalog to local.
 
