@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 
 class PzServerApi:
@@ -428,8 +429,11 @@ class PzServerApi:
             dict: record data
         """
 
-        return self._download_request(f"{self._base_api_url}products/{_id}/content/")
-
+        os.system("rm -rf .tmp")
+        os.system("mkdir .tmp") 
+        return self._download_request(
+            f"{self._base_api_url}products/{_id}/content/", save_in="./.tmp")
+    
     def download_product(self, _id, save_in="."):
         """ Downloads the product to local 
 
