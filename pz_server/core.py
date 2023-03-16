@@ -3,7 +3,8 @@ import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
 import tables_io
-import os
+import tempfile
+
 pd.options.display.max_colwidth = None
 pd.options.display.max_columns = 500
 pd.options.display.max_rows = 6
@@ -24,8 +25,8 @@ class PzServer:
         else:
             self.api = PzServerApi(token, host)
         self._token = token
-    
-    #---- methods to get general info ----#
+
+    # ---- methods to get general info ----#
     def get_product_types(self):
         """Fetches the list of valid product types.
 
@@ -151,7 +152,7 @@ class PzServer:
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
-    #---- methods to get data or metadata of one particular product ----#
+    # ---- methods to get data or metadata of one particular product ----#
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata.
 
@@ -251,30 +252,44 @@ class PzServer:
             print("The method get_product() only supports simple tabular ")
             print("data (product types: Spec-z Catalog, Training Set).")
             print(f"For {prod_type}, please use method download_product().")
-        else:
-            results_dict = self.api.download_main_file(product_id)
-            
+            return None
+
+        prod_info = self.api.get_main_file_info(product_id)
+        if not prod_info:
+            raise Exception("Product not found")
+
+        prodmain = prod_info["main_file"]
+        file_extension = prodmain["extension"]
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            results_dict = self.api.download_main_file(product_id, tmpdirname)
             if results_dict.get("success", False):
-                file_path = results_dict['message'] 
-                file_extension = file_path.split(".")[-1].lower()
-                if file_extension == "csv":
-                    dataframe = pd.read_csv(file_path)
-                else: 
-                    dataframe = tables_io.read(file_path, 
-                                    tType = tables_io.types.tables_io.types.PD_DATAFRAME)
-                os.system("rm -rf ./.tmp")
+                file_path = results_dict['message']
+                if file_extension == ".csv":
+                    delimiter = prodmain.get("delimiter", None)
+                    has_header = prodmain.get("has_header", False)
+                    if has_header:
+                        dataframe = pd.read_csv(
+                            file_path, header=0, delimiter=delimiter
+                        )
+                    else:
+                        column_names = prodmain.get("columns")
+                        dataframe = pd.read_csv(
+                            file_path,
+                            header=None,
+                            names=column_names,
+                            delimiter=delimiter
+                        )
+                else:
+                    dataframe = tables_io.read(
+                        file_path,
+                        tType=tables_io.types.tables_io.types.PD_DATAFRAME
+                    )
                 return dataframe
             else:
                 print(f"Error: {results_dict['message']}")
-            
-            # TBD: save file as temporary hidden file
-            # open tmp file and read with pandas
-            # delete tmp file
-            # return dataframe
 
-    
-    #---- Training Set Maker functions ----#
-
+    # ---- Training Set Maker functions ----#
     def combine_specz_catalogs(self, catalog_list,
                                duplicates_criterium="smallest flag"):
         # criteria: smallest flag, smallest error
@@ -290,5 +305,5 @@ class PzServer:
         # "select closest"
         # keep all
         # show progress bar
-        # return 
+        # return
         raise NotImplementedError
