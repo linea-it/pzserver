@@ -2,7 +2,9 @@ from .catalog import Catalog, SpeczCatalog, TrainingSet
 import pandas as pd
 from IPython.display import display
 from .api import PzServerApi
-# import tables_io
+import tables_io
+import tempfile
+
 pd.options.display.max_colwidth = None
 pd.options.display.max_columns = 500
 pd.options.display.max_rows = 6
@@ -14,7 +16,9 @@ class PzServer:
         """ PzServer class constructor
         Args:
             host (str): "pz" (production) or
-                        "pz-dev" (test environment)
+                        "pz-dev" (test environment) or
+                        "localhost" (dev environment) or
+                        "api url" 
         """
         if token is None:
             raise ValueError("Please provide a valid token.")
@@ -22,6 +26,7 @@ class PzServer:
             self.api = PzServerApi(token, host)
         self._token = token
 
+    # ---- methods to get general info ----#
     def get_product_types(self):
         """Fetches the list of valid product types.
 
@@ -112,7 +117,7 @@ class PzServer:
         available.
 
         Args:
-            filters (dict): dictionary with strings
+            filters (dict): dictionary with a string
                 (or a list of strings) patterns to
                 filter the results.
 
@@ -137,7 +142,7 @@ class PzServer:
         results_dict = self.get_products_list(filters)
         dataframe = pd.DataFrame(results_dict,
                                  columns=["id", "internal_name", "display_name",
-                                          "product_type_name", "survey", "release_name",
+                                          "product_type_name", "release_name",
                                           "uploaded_by", "official_product",  # "pz_code",
                                           "description", "created_at"])
 
@@ -147,17 +152,18 @@ class PzServer:
                          inplace=True)
         display(dataframe.style.hide(axis="index"))
 
+    # ---- methods to get data or metadata of one particular product ----#
     def get_product_metadata(self, product_id=None):
         """Fetches the product metadata.
 
         Connects to the Photo-z Server's database and
         fetches the metadata informed by the product
-        owner.
+        owner for a particular data product.
 
         Args:
             product_id (str or int): data product
                 unique identifier (product id
-                number or internal name)
+                number or internal_name)
 
         Returns:
             dict of metadata
@@ -179,13 +185,13 @@ class PzServer:
         Args:
             product (str or int): data product
                 unique identifier (product id
-                number or internal name)
+                number or internal_name)
         """
 
         results_dict = self.get_product_metadata(product_id)
 
         columns = ["id", "internal_name", "display_name",
-                   "product_type_name", "survey", "release_name",
+                   "product_type_name", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
                    "description", "created_at"]
         transposed_list = []
@@ -201,8 +207,29 @@ class PzServer:
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
+    def download_product(self, product_id=None, save_in="."):
+        """Download the data to local. 
+
+        Connects to the Photo-z Server's database and 
+        download a compressed zip file containing all 
+        the data and metadata of a given data product.
+
+        Args:
+            product_id (str or int): data product 
+                unique identifier (product id 
+                number or internal_name)
+            save_in (str): location where the file will 
+                be saved
+
+        """
+        results_dict = self.api.download_product(product_id, save_in)
+        if results_dict.get("success", False):
+            print(f"File saved as: {results_dict['message']}")
+        else:
+            print(f"Error: {results_dict['message']}")
+
     def get_product(self, product_id=None):
-        """Fetches the data to local.
+        """Fetches the data product contents to local.
 
         Connects to the Photo-z Server's database and
         fetches the tabular data stored as registered 
@@ -214,100 +241,69 @@ class PzServer:
                 number or internal name)
 
         Returns:
-            Catalog (child class from dict)
+            Pandas DataFrame object 
 
         """
 
         prod_type = self.get_product_metadata(product_id)['product_type_name']
-        print(prod_type)
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
             print("The method get_product() only supports simple tabular ")
             print("data (product types: Spec-z Catalog, Training Set).")
             print(f"For {prod_type}, please use method download_product().")
-        else:
-            results_dict = self.api.get_content(product_id)
-            return results_dict
-        
-            # metadata = self.get_product_metadata(product_id)
+            return None
 
-            # if prod_type == "Spec-z Catalog" or prod_type == "Training Set":
-            #     catalog = Catalog(results_dict)
-            # else:
-            #     raise ValueError("Unknown product type")
+        prod_info = self.api.get_main_file_info(product_id)
+        if not prod_info:
+            raise Exception("Product not found")
 
-            # return catalog
+        prodmain = prod_info["main_file"]
+        file_extension = prodmain["extension"]
 
-    def get_specz_catalog(self, product_id=None):
-        """Fetches Spec-z Catalog to local.
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            results_dict = self.api.download_main_file(product_id, tmpdirname)
+            if results_dict.get("success", False):
+                file_path = results_dict['message']
+                if file_extension == ".csv":
+                    delimiter = prodmain.get("delimiter", None)
+                    has_header = prodmain.get("has_header", False)
+                    if has_header:
+                        dataframe = pd.read_csv(
+                            file_path, header=0, delimiter=delimiter
+                        )
+                    else:
+                        column_names = prodmain.get("columns")
+                        dataframe = pd.read_csv(
+                            file_path,
+                            header=None,
+                            names=column_names,
+                            delimiter=delimiter
+                        )
+                else:
+                    dataframe = tables_io.read(
+                        file_path,
+                        tType=tables_io.types.tables_io.types.PD_DATAFRAME
+                    )
+                return dataframe
+            else:
+                print(f"Error: {results_dict['message']}")
 
-        Connects to the Photo-z Server's database and
-        fetches the data stored as registered data
-        product. Particular for product type equals
-        Spec-z Catalog.
-
-        Args:
-            product_id (str or int): data product
-                unique identifier (product id
-                number or internal name)
-
-        Returns:
-            SpeczCatalog (child class from pandas.DataFrame)
-
-        """
-
-        prod_type = self.get_product_metadata(product_id)['product_type_name']
-
-        if prod_type != "Spec-z Catalog":
-            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "ERROR:"))
-            print(f"The product {product_id} is not a Spec-z Catalog.")
-            if prod_type == "Training Set":
-                print("Please use the method get_train_set")
-            elif (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
-                print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
-                print("The methods get_...() only supports simple tabular ")
-                print("data (product types: Spec-z Catalog, Training Set).")
-                print(f"For {prod_type}, please use method download_product().")
-        else:
-            results_dict = self.api.get_content(product_id)
-            metadata = self.get_product_metadata(product_id)
-
-            catalog = SpeczCatalog(results_dict, metadata)
-
-        return catalog
-
-    def download_product(self, product=None, save_in="."):
-        """Download the data to local. 
-
-        Connects to the Photo-z Server's database and 
-        download a compressed zip file containing all 
-        the data and metadata of a given data product.
-
-        Args:
-            product_id (str or int): data product 
-                unique identifier (product id 
-                number or internal name)
-            save_in (str): location where the file will 
-                be saved
-
-        """
-        result_dict = self.api.download_content(product, save_in)
-        print(f"File saved as: {result_dict['message']}")
-
+    # ---- Training Set Maker functions ----#
     def combine_specz_catalogs(self, catalog_list,
-                                duplicates_criteria="smallest flag"):
-        # smallest flag
-        # smallest error
+                               duplicates_criterium="smallest flag"):
+        # criteria: smallest flag, smallest error
         # newest survey
         # show progress bar
+        # return SpeczCatalog object
         raise NotImplementedError
 
     def make_training_set(self, specz_catalog=None,
-                            photo_catalog=None,
-                            search_radius=1.0,
-                            multiple_match_criteria="select closest"):
+                          photo_catalog=None,
+                          search_radius=1.0,
+                          multiple_match_criteria="select closest"):
         # "select closest"
         # keep all
         # show progress bar
+        # return
         raise NotImplementedError

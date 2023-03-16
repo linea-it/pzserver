@@ -140,14 +140,12 @@ class PzServerApi:
                     "data": api_response.json(),
                     "message": json.loads(str(api_response.text))
                 })
-            data.update({"success": True})
-        elif api_response.status_code in (401, 403):
-            # 401: token invalid
-            # 403: did not send user credentials
-            message = json.loads(str(api_response.text))["detail"]
-            data.update({"success": False, "message": message})
+            data.update({"success": True, "message": "Download completed"})
         else:
-            data.update({"success": False})
+            txt = json.loads(api_response.text)
+            msg = txt.get("detail", txt)
+            msg = txt.get("error", msg)
+            data.update({"success": False, "message": msg})
 
         return data
 
@@ -419,9 +417,25 @@ class PzServerApi:
 
         return self._options_request(f"{self._base_api_url}{entity}/")
 
-    def get_content(self, _id):
+    def download_main_file(self, _id, save_in="."):
         """ Gets the contents uploaded by the user 
             for a given record.
+
+        Args:
+            _id (int): record id
+            save_in (str): location where the file will be saved
+
+        Returns:
+            dict: record data
+        """
+
+        return self._download_request(
+            f"{self._base_api_url}products/{_id}/download_main_file/",
+            save_in
+        )
+
+    def get_main_file_info(self, _id):
+        """ Returns information about the main product file.
 
         Args:
             _id (int): record id
@@ -430,9 +444,17 @@ class PzServerApi:
             dict: record data
         """
 
-        return self._download_request(f"{self._base_api_url}products/{_id}/content/")
+        resp = self._get_request(
+            f"{self._base_api_url}products/{_id}/main_file_info/",
+        )
 
-    def download_content(self, _id, save_in="."):
+        if "success" in resp and resp["success"] is False:
+            print("Error {}: {}".format(resp["status_code"], resp["message"]))
+            return None
+
+        return resp
+
+    def download_product(self, _id, save_in="."):
         """ Downloads the product to local 
 
         Args:
