@@ -1,8 +1,9 @@
 from .catalog import Catalog, SpeczCatalog, TrainingSet
 import pandas as pd
+from astropy.table import Table
 from IPython.display import display
 from .api import PzServerApi
-import tables_io
+import tables_io 
 import tempfile
 
 pd.options.display.max_colwidth = None
@@ -224,14 +225,13 @@ class PzServer:
         """
         print("Connecting to PZ Server...")
         results_dict = self.api.download_product(product_id, save_in)
-        print(f"Downloading {product_id}...")
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
             print("DONE!")
         else:
             print(f"Error: {results_dict['message']}")
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, fmt="pandas"):
         """Fetches the data product contents to local.
 
         Connects to the Photo-z Server's database and
@@ -247,7 +247,7 @@ class PzServer:
             Pandas DataFrame object 
 
         """
-
+        print("Connecting to PZ Server...")
         prod_type = self.get_product_metadata(product_id)['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
@@ -288,9 +288,13 @@ class PzServer:
                         file_path,
                         tType=tables_io.types.tables_io.types.PD_DATAFRAME
                     )
+                if fmt == "astropy":
+                    return Table.from_pandas(dataframe)
                 return dataframe
             else:
                 print(f"Error: {results_dict['message']}")
+
+
 
     # ---- Training Set Maker functions ----#
     def combine_specz_catalogs(self, catalog_list,
