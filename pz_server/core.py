@@ -227,7 +227,7 @@ class PzServer:
         results_dict = self.api.download_product(product_id, save_in)
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
-            print("DONE!")
+            print("Done!")
         else:
             print(f"Error: {results_dict['message']}")
 
@@ -268,12 +268,12 @@ class PzServer:
             results_dict = self.api.download_main_file(product_id, tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
-                if file_extension == ".csv":
+                if file_extension == ".csv": # TBD: add CSV to tables_io supported formats 
                     delimiter = prodmain.get("delimiter", None)
                     has_header = prodmain.get("has_header", False)
                     if has_header:
                         dataframe = pd.read_csv(
-                            file_path, header=0, delimiter=delimiter
+                            file_path, header=0, delimiter=delimiter,
                         )
                     else:
                         column_names = prodmain.get("columns")
@@ -281,16 +281,23 @@ class PzServer:
                             file_path,
                             header=None,
                             names=column_names,
-                            delimiter=delimiter
+                            delimiter=delimiter,
                         )
+                    print("Done!")
+                    if fmt == "astropy":
+                        return Table.from_pandas(dataframe)
+                    else:
+                        return dataframe
                 else:
-                    dataframe = tables_io.read(
-                        file_path,
+                    if fmt == "astropy":
+                        tType=tables_io.types.tables_io.types.AP_TABLE
+                    else: 
                         tType=tables_io.types.tables_io.types.PD_DATAFRAME
-                    )
-                if fmt == "astropy":
-                    return Table.from_pandas(dataframe)
-                return dataframe
+                    
+                    data = tables_io.read(file_path, tType=tType)
+                    print("Done!")
+                    return data
+                
             else:
                 print(f"Error: {results_dict['message']}")
 
