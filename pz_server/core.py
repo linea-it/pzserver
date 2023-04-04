@@ -222,9 +222,12 @@ class PzServer:
                 be saved
 
         """
+        print("Connecting to PZ Server...")
         results_dict = self.api.download_product(product_id, save_in)
+        print(f"Downloading {product_id}...")
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
+            print("DONE!")
         else:
             print(f"Error: {results_dict['message']}")
 
