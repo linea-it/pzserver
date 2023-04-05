@@ -231,7 +231,7 @@ class PzServer:
         else:
             print(f"Error: {results_dict['message']}")
 
-    def get_product(self, product_id=None, fmt="pandas"):
+    def get_product(self, product_id=None, fmt=None):
         """Fetches the data product contents to local.
 
         Connects to the Photo-z Server's database and
@@ -248,7 +248,8 @@ class PzServer:
 
         """
         print("Connecting to PZ Server...")
-        prod_type = self.get_product_metadata(product_id)['product_type_name']
+        metadata = self.get_product_metadata(product_id) 
+        prod_type = metadata['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
@@ -268,7 +269,8 @@ class PzServer:
             results_dict = self.api.download_main_file(product_id, tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
-                if file_extension == ".csv": # TBD: add CSV to tables_io supported formats 
+                if file_extension == ".csv": 
+                    # TBD: add CSV to tables_io supported formats 
                     delimiter = prodmain.get("delimiter", None)
                     has_header = prodmain.get("has_header", False)
                     if has_header:
@@ -283,27 +285,39 @@ class PzServer:
                             names=column_names,
                             delimiter=delimiter,
                         )
-                    print("Done!")
                     if fmt == "astropy":
-                        return Table.from_pandas(dataframe)
-                    else:
-                        return dataframe
+                        results = Table.from_pandas(dataframe)
+                    elif fmt == "pandas":
+                        results = dataframe
+                    else: 
+                        if metadata['product_type_name'] == 'Spec-z Catalog':
+                            results = SpeczCatalog(dataframe, metadata)
+                        elif metadata['product_type_name'] == 'Training Set':
+                            results = TrainingSet(dataframe, metadata)
                 else:
                     if fmt == "astropy":
-                        tType=tables_io.types.tables_io.types.AP_TABLE
+                        results = tables_io.read(file_path, 
+                            tType=tables_io.types.AP_TABLE)
                     else: 
-                        tType=tables_io.types.tables_io.types.PD_DATAFRAME
+                        dataframe = tables_io.read(file_path, 
+                            tType=tables_io.types.PD_DATAFRAME)
+                        if fmt == "pandas":
+                            results = dataframe
+                        else: 
+                            if metadata['product_type_name'] == 'Spec-z Catalog':
+                                results = SpeczCatalog(dataframe, metadata)
+                            elif metadata['product_type_name'] == 'Training Set':
+                                results = TrainingSet(dataframe, metadata)
                     
-                    data = tables_io.read(file_path, tType=tType)
-                    print("Done!")
-                    return data
-                
+                print("Done!")
+                return results 
+                    
             else:
                 print(f"Error: {results_dict['message']}")
 
 
 
-    # ---- Training Set Maker functions ----#
+    # ---- Training Set Maker methods ----#
     def combine_specz_catalogs(self, catalog_list,
                                duplicates_criterium="smallest flag"):
         # criteria: smallest flag, smallest error

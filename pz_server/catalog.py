@@ -1,38 +1,21 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from astropy.table import Table
 from IPython.display import display
 # import warnings
 # warnings.filterwarnings('ignore')
 
 
-class Catalog(dict):
-
-    def __init__(self, data=None):
-        # provisorio
-        import numpy as np
-        data = {"redshift": np.array([2.8423803, 2.8887353, 1.2903498, 2.44262, 1.4635979]),
-                "ra": np.array([60.4467, 59.2224, 67.6464, 65.1607, 73.0255]),
-                "dec": np.array([-34.056, -43.1165, -33.5759, -34.4085, -40.2059])}
-
-        super().__init__(data)
-
-    def to_table(self):
-        return Table(data=self)
-
-
-class SpeczCatalog(pd.DataFrame):
-
-    def __init__(self, data=None, metadata=None):
+class Catalog(pd.DataFrame):
+    def __init__(self, data=None, metadata=None): 
         super().__init__(data)
         for key, value in metadata.items():
             self.attrs[key] = value
-        self.attrs['columns'] = list(self.columns)
+            self.attrs['columns'] = list(self.columns)
 
     @property
     def metadata(self):
         return self.attrs
-
+    
     def display_metadata(self):
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "survey", "release_name",
@@ -51,6 +34,17 @@ class SpeczCatalog(pd.DataFrame):
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
+
+
+class SpeczCatalog(Catalog):
+
+    def __init__(self, data=None, metadata=None): 
+        super().__init__(data, metadata)
+        #self.product_type = "Spec-z Catalog"
+        # TBD: check against product type from prod. metadata to ensure consistency
+        # if prod type is not specz cat, don't acreate the object 
+        #assert  
+        
     def plot(self, savefig=False,
              ra_name="ra",
              dec_name="dec",
@@ -82,7 +76,13 @@ class SpeczCatalog(pd.DataFrame):
             pass
 
 
-class TrainingSet(pd.DataFrame):
+class TrainingSet(Catalog):
+    def __init__(self, data=None, metadata=None): 
+        super().__init__(data, metadata)
+        #assert  
+        #self.product_type = "Training Set"
+        # TBD: check against product type from prod. metadata to ensure consistency
+        # if prod type is not train set, don't acreate the object 
 
     def plot(self, savefig=False,
              redshift_name="redshift",
