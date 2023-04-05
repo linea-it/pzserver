@@ -153,7 +153,7 @@ class PzServer:
         display(dataframe.style.hide(axis="index"))
 
     # ---- methods to get data or metadata of one particular product ----#
-    def get_product_metadata(self, product_id=None):
+    def get_product_metadata(self, product_id=None, mainfile_info=True):
         """Fetches the product metadata.
 
         Connects to the Photo-z Server's database and
@@ -164,16 +164,23 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal_name)
+            mainfile_info (bool, optional): additional
+                information from the main file.
 
         Returns:
             dict of metadata
         """
         product_id = str(product_id)
         if isinstance(product_id, int) or product_id.isdigit():
-            return self.api.get("products", product_id)
+            metaprod = self.api.get("products", product_id)
         else:
             list = self.api.get_products({"internal_name": product_id})
-            return list[0]
+            metaprod = list[0]
+
+        if mainfile_info:
+            metaprod['main_file'] = self.api.get_main_file_info(metaprod['id'])
+        
+        return metaprod
 
     def display_product_metadata(self, product_id=None):
         """Displays the metadata informed by the product owner.
@@ -223,7 +230,7 @@ class PzServer:
 
         """
 
-        prodid = self.get_product_metadata(product_id)['id']
+        prodid = self.get_product_metadata(product_id, mainfile_info=False)['id']
 
         results_dict = self.api.download_product(prodid, save_in)
         if results_dict.get("success", False):
@@ -258,7 +265,7 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
             return None
 
-        prod_info = self.api.get_main_file_info(prod['id'])
+        prod_info = prod['main_file']
         if not prod_info:
             raise Exception("Product not found")
 
