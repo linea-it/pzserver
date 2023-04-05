@@ -169,11 +169,11 @@ class PzServer:
             dict of metadata
         """
         product_id = str(product_id)
-        if "_" in product_id:
+        if isinstance(product_id, int) or product_id.isdigit():
+            return self.api.get("products", product_id)
+        else:
             list = self.api.get_products({"internal_name": product_id})
             return list[0]
-        else:
-            return self.api.get("products", product_id)
 
     def display_product_metadata(self, product_id=None):
         """Displays the metadata informed by the product owner.
@@ -222,7 +222,10 @@ class PzServer:
                 be saved
 
         """
-        results_dict = self.api.download_product(product_id, save_in)
+
+        prodid = self.get_product_metadata(product_id)['id']
+
+        results_dict = self.api.download_product(prodid, save_in)
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
         else:
@@ -245,7 +248,8 @@ class PzServer:
 
         """
 
-        prod_type = self.get_product_metadata(product_id)['product_type_name']
+        prod = self.get_product_metadata(product_id)
+        prod_type = prod['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
@@ -254,7 +258,7 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
             return None
 
-        prod_info = self.api.get_main_file_info(product_id)
+        prod_info = self.api.get_main_file_info(prod['id'])
         if not prod_info:
             raise Exception("Product not found")
 
@@ -262,7 +266,7 @@ class PzServer:
         file_extension = prodmain["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            results_dict = self.api.download_main_file(product_id, tmpdirname)
+            results_dict = self.api.download_main_file(prod['id'], tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
                 if file_extension == ".csv":
