@@ -172,13 +172,13 @@ class PzServer:
         """
         product_id = str(product_id)
         if isinstance(product_id, int) or product_id.isdigit():
-            metaprod = self.api.get("products", product_id)
+            metaprod = dict(self.api.get("products", product_id))
         else:
             list = self.api.get_products({"internal_name": product_id})
-            metaprod = list[0]
+            metaprod = dict(list[0])
 
         if mainfile_info:
-            metaprod['main_file'] = self.api.get_main_file_info(metaprod['id'])
+            metaprod.update(self.api.get_main_file_info(metaprod['id']))
         
         return metaprod
 
