@@ -153,7 +153,7 @@ class PzServer:
         display(dataframe.style.hide(axis="index"))
 
     # ---- methods to get data or metadata of one particular product ----#
-    def get_product_metadata(self, product_id=None):
+    def get_product_metadata(self, product_id=None, mainfile_info=True):
         """Fetches the product metadata.
 
         Connects to the Photo-z Server's database and
@@ -164,16 +164,23 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal_name)
+            mainfile_info (bool, optional): additional
+                information from the main file.
 
         Returns:
             dict of metadata
         """
         product_id = str(product_id)
-        if "_" in product_id:
-            list = self.api.get_products({"internal_name": product_id})
-            return list[0]
+        if isinstance(product_id, int) or product_id.isdigit():
+            metaprod = self.api.get("products", product_id)
         else:
-            return self.api.get("products", product_id)
+            list = self.api.get_products({"internal_name": product_id})
+            metaprod = list[0]
+
+        if mainfile_info:
+            metaprod['main_file'] = self.api.get_main_file_info(metaprod['id'])
+        
+        return metaprod
 
     def display_product_metadata(self, product_id=None):
         """Displays the metadata informed by the product owner.
@@ -222,7 +229,10 @@ class PzServer:
                 be saved
 
         """
-        results_dict = self.api.download_product(product_id, save_in)
+
+        prodid = self.get_product_metadata(product_id, mainfile_info=False)['id']
+
+        results_dict = self.api.download_product(prodid, save_in)
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
         else:
@@ -245,7 +255,8 @@ class PzServer:
 
         """
 
-        prod_type = self.get_product_metadata(product_id)['product_type_name']
+        prod = self.get_product_metadata(product_id)
+        prod_type = prod['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
@@ -254,7 +265,7 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
             return None
 
-        prod_info = self.api.get_main_file_info(product_id)
+        prod_info = prod['main_file']
         if not prod_info:
             raise Exception("Product not found")
 
@@ -262,7 +273,7 @@ class PzServer:
         file_extension = prodmain["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            results_dict = self.api.download_main_file(product_id, tmpdirname)
+            results_dict = self.api.download_main_file(prod['id'], tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
                 if file_extension == ".csv":
