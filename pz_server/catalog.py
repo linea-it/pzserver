@@ -34,6 +34,9 @@ class Catalog(pd.DataFrame):
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
 
+    def plot():
+        raise NotImplemented
+
 
 
 class SpeczCatalog(Catalog):
