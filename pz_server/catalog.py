@@ -49,6 +49,11 @@ class SpeczCatalog(Catalog):
 
         Args:
             savefig: option to save PNG figure (boolean)
+        temporary Args: 
+            ra_name
+            dec_name
+            redshift_name
+        TBD: get column names from product metadata 
 
         """
 
@@ -79,6 +84,17 @@ class TrainingSet(Catalog):
     def plot(self, savefig=False,
              redshift_name="redshift",
              mag_name="mag_i_cModel"):
+
+        """ Very basic plots to characterize a Training Set.
+
+        Args:
+            savefig: option to save PNG figure (boolean)
+        temporary Args: 
+            redshift_name
+            mag_name
+        TBD: get column names from product metadata 
+
+        """
 
         if self.data[mag_name].min() < 16.:
             mag_min = 16.
