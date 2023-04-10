@@ -16,6 +16,7 @@ class PzServer:
     def __init__(self, token=None, host="pz"):
         """ PzServer class constructor
         Args:
+            token: (str): user's token generated on the PZ Server website
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
@@ -252,9 +253,14 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
+            fmt (str): output table format 
+                'pandas' -> pandas.DataFrame
+                'astropy' -> astropy.Table
+                None (default) -> object class from catalog.py
 
         Returns:
-            Pandas DataFrame object 
+            SpeczCatalog or TrainingSet (pandas.DataFrame extensions) 
+            object, or pure pandas.DataFrame, or astropy.Table  
 
         """
         print("Connecting to PZ Server...")
@@ -268,7 +274,7 @@ class PzServer:
             print(f"For {prod_type}, please use method download_product().")
             return None
 
-        prod_info = prod['main_file']
+        prod_info = metadata['main_file']
         if not prod_info:
             raise Exception("Product not found")
 
@@ -276,7 +282,7 @@ class PzServer:
         file_extension = prodmain["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            results_dict = self.api.download_main_file(prod['id'], tmpdirname)
+            results_dict = self.api.download_main_file(metadata['id'], tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
                 if file_extension == ".csv": 
@@ -313,7 +319,7 @@ class PzServer:
                             tType=tables_io.types.PD_DATAFRAME)
                         if fmt == "pandas":
                             results = dataframe
-                        else: 
+                        else:
                             if metadata['product_type_name'] == 'Spec-z Catalog':
                                 results = SpeczCatalog(dataframe, metadata)
                             elif metadata['product_type_name'] == 'Training Set':
@@ -329,7 +335,7 @@ class PzServer:
 
     # ---- Training Set Maker methods ----#
     def combine_specz_catalogs(self, catalog_list,
-                               duplicates_criterium="smallest flag"):
+                               duplicates_critera="smallest flag"):
         # criteria: smallest flag, smallest error
         # newest survey
         # show progress bar
