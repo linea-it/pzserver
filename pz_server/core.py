@@ -9,6 +9,8 @@ pd.options.display.max_colwidth = None
 pd.options.display.max_columns = 500
 pd.options.display.max_rows = 6
 
+FONTCOLORERR = "\033[38;2;255;0;0m"
+FONTCOLOREND = "\033[0m"
 
 class PzServer:
 
@@ -21,7 +23,9 @@ class PzServer:
                         "api url" 
         """
         if token is None:
-            raise ValueError("Please provide a valid token.")
+            raise ValueError(
+                f"{FONTCOLORERR}Please provide a valid token.{FONTCOLOREND}"
+            )
         else:
             self.api = PzServerApi(token, host)
         self._token = token
@@ -171,14 +175,22 @@ class PzServer:
             dict of metadata
         """
         product_id = str(product_id)
-        if isinstance(product_id, int) or product_id.isdigit():
-            metaprod = dict(self.api.get("products", product_id))
-        else:
-            list = self.api.get_products({"internal_name": product_id})
-            metaprod = dict(list[0])
+        try:
+            if isinstance(product_id, int) or product_id.isdigit():
+                metaprod = dict(self.api.get("products", product_id))
+            else:
+                plist = self.api.get_products({"internal_name": product_id})
+                metaprod = dict(plist[0])
+        except:
+            
+            msg = "product not found.\n{}".format(FONTCOLORERR)
+            msg += "Please find the list of products available with "
+            msg += "display_products_list() or get_products_list()"
+            msg += FONTCOLOREND
+            raise ValueError(msg)
 
         if mainfile_info:
-            metaprod.update(self.api.get_main_file_info(metaprod['id']))
+            metaprod["main_file"] = self.api.get_main_file_info(metaprod['id'])
         
         return metaprod
 
@@ -236,7 +248,7 @@ class PzServer:
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
         else:
-            print(f"Error: {results_dict['message']}")
+            print(f"{FONTCOLORERR}Error: {results_dict['message']}{FONTCOLORERR}")
 
     def get_product(self, product_id=None):
         """Fetches the data product contents to local.
@@ -259,17 +271,17 @@ class PzServer:
         prod_type = prod['product_type_name']
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
-            print("\033[38;2;{};{};{}m{} ".format(255, 0, 0, "WARNING:"))
-            print("The method get_product() only supports simple tabular ")
-            print("data (product types: Spec-z Catalog, Training Set).")
-            print(f"For {prod_type}, please use method download_product().")
-            return None
+            msg = f"does not support non-tabular data\n{FONTCOLORERR}"
+            msg += "The method get_product() only supports simple tabular "
+            msg += "data (product types: Spec-z Catalog, Training Set). "
+            msg += f"For {prod_type}, please use method download_product()."
+            msg += FONTCOLOREND
+            raise ValueError(msg)
 
-        prod_info = prod['main_file']
-        if not prod_info:
+        prodmain = prod['main_file']
+        if not prodmain:
             raise Exception("Product not found")
 
-        prodmain = prod_info["main_file"]
         file_extension = prodmain["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
@@ -294,7 +306,7 @@ class PzServer:
                 else:
                     dataframe = tables_io.read(
                         file_path,
-                        tType=tables_io.types.tables_io.types.PD_DATAFRAME
+                        tType=tables_io.types.PD_DATAFRAME
                     )
                 return dataframe
             else:
