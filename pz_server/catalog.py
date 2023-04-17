@@ -9,7 +9,6 @@ class Catalog:
     
     def __init__(self, data=None, metadata=None): 
         self.data = pd.DataFrame(data)
-        self.data = pd.DataFrame(data, dtype=self.data.dtypes.values)
         self.metadata = metadata
 
     
