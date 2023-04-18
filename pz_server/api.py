@@ -62,9 +62,6 @@ class PzServerApi:
 
         if not filter_opt:
             filter_opt = self.options(entity)
-            if 'success' in filter_opt and filter_opt.get('success') == False:
-                raise Exception(filter_opt.get('message'))
-
             self._filter_options[entity] = filter_opt
 
         api_params = list()
@@ -123,6 +120,7 @@ class PzServerApi:
                                             "message": str,
                                             "data": str,
                                             "success": bool,
+                                            "response_object": request.Response,
                                         }
         """
         status_code = api_response.status_code
@@ -131,16 +129,14 @@ class PzServerApi:
             "status_code": status_code,
             "message": str(),
             "data": str(),
+            "response_object": api_response,
         }
 
         if status_code >= 200 and status_code < 300:
             content_type = api_response.headers.get("content-type", "")
+            data.update({"success": True, "message": "Request completed"})
             if status_code != 204 and content_type.strip().startswith("application/json"):
-                data.update({
-                    "data": api_response.json(),
-                    "message": json.loads(str(api_response.text))
-                })
-            data.update({"success": True, "message": "Download completed"})
+                data.update({"data": api_response.json()})
         else:
             txt = json.loads(api_response.text)
             msg = txt.get("detail", txt)
@@ -187,7 +183,6 @@ class PzServerApi:
                 verify=verify, cert=cert, proxies=proxies
             )
             data.update(self._check_response(api_response))
-            data.update({"response_object": api_response})
         except requests.exceptions.HTTPError as errh:
             message = "Http Error: {}".format(errh)
             data.update({"success": False, "message": message, })
@@ -226,11 +221,11 @@ class PzServerApi:
                 "Authorization": "Token {}".format(self._token),
             }),
         )
-        resp = self._send_request(req.prepare())
-        if resp.get('success', False):
-            return resp.get('data', None)
+        return self._send_request(req.prepare())
+        # if resp.get('success', False):
+        #     return resp.get('data', None)
 
-        return resp
+        # return resp
 
     def _options_request(self, url):
         """ Returns the options and settings for a given endpoint.
@@ -250,11 +245,11 @@ class PzServerApi:
                 "Authorization": "Token {}".format(self._token),
             }),
         )
-        resp = self._send_request(req.prepare())
-        if resp.get('success', False):
-            return resp.get('data', None)
+        return self._send_request(req.prepare())
+        # if resp.get('success', False):
+        #     return resp.get('data', None)
 
-        return resp
+        # return resp
 
     def _check_token(self):
         """ Checks if the token is valid, otherwise stops class 
@@ -326,11 +321,11 @@ class PzServerApi:
                 "Authorization": "Token {}".format(self._token),
             }),
         )
-        resp = self._send_request(req.prepare())
-        if resp.get('success', False):
-            return resp.get('data', None)
+        return self._send_request(req.prepare())
+        # if resp.get('success', False):
+        #     return resp.get('data', None)
 
-        return resp
+        # return resp
 
     def _delete_request(self, url):
         """ Remove a record from the API.
@@ -371,7 +366,7 @@ class PzServerApi:
         resp = self._get_request(self._base_api_url)
 
         if "success" in resp and resp["success"] is False:
-            return resp
+            raise Exception(resp["message"])
 
         return list(resp.keys())
 
@@ -388,9 +383,9 @@ class PzServerApi:
         resp = self._get_request(f"{self._base_api_url}{entity}/")
 
         if "success" in resp and resp["success"] is False:
-            return resp
+            raise Exception(resp["message"])
 
-        return resp.get("results", [])
+        return resp.get("data").get("results")
 
     def get(self, entity, _id):
         """ Gets a record from the entity.
@@ -403,7 +398,12 @@ class PzServerApi:
             dict: record metadata
         """
 
-        return self._get_request(f"{self._base_api_url}{entity}/{_id}/")
+        data = self._get_request(f"{self._base_api_url}{entity}/{_id}/")
+
+        if "success" in data and data["success"] is False:
+            raise Exception(data["message"])
+        
+        return data.get("data")
 
     def options(self, entity):
         """ Gets options (filters, search and ordering) from the entity.
@@ -415,7 +415,11 @@ class PzServerApi:
             dict: options metadata (filters, search and ordering).
         """
 
-        return self._options_request(f"{self._base_api_url}{entity}/")
+        opt = self._options_request(f"{self._base_api_url}{entity}/")
+        if "success" in opt and opt["success"] is False:
+            raise Exception(opt["message"])
+        
+        return opt.get("data")
 
     def download_main_file(self, _id, save_in="."):
         """ Gets the contents uploaded by the user 
@@ -434,7 +438,7 @@ class PzServerApi:
             save_in
         )
 
-    def get_main_file_info(self, _id):
+    def get_main_file_info(self, _id, column_association=True):
         """ Returns information about the main product file.
 
         Args:
@@ -449,10 +453,18 @@ class PzServerApi:
         )
 
         if "success" in resp and resp["success"] is False:
-            print("Error {}: {}".format(resp["status_code"], resp["message"]))
-            return None
+            raise Exception(resp["message"])
+        
+        data = resp.get("data").get("main_file")
 
-        return resp
+        if column_association:
+            assoc = self._get_request(
+                f"{self._base_api_url}product-contents?product={_id}",
+            )
+            if assoc.get("success", False):
+                data["columns_association"] = assoc.get("data").get("results")
+
+        return data
 
     def download_product(self, _id, save_in="."):
         """ Downloads the product to local 
@@ -492,6 +504,6 @@ class PzServerApi:
         resp = self._get_request(url)
 
         if "success" in resp and resp["success"] is False:
-            return resp
+            raise Exception(resp["message"])
 
-        return resp.get("results", [])
+        return resp.get("data").get("results")
