@@ -16,7 +16,7 @@ class Catalog:
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "survey", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
-                   "description", "created_at", "columns"]
+                   "description", "created_at", "main_file"]
         transposed_list = []
         for k, v in self.metadata.items():
             if k in columns:
@@ -26,6 +26,8 @@ class Catalog:
                     k = "product_type"
                 if k == "display_name":
                     k = "product_name"
+                if k == "main_file": 
+                    v = v['name']
                 transposed_list.append({"key": k, "value": v})
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))

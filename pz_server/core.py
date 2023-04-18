@@ -149,8 +149,8 @@ class PzServer:
         dataframe = pd.DataFrame(results_dict,
                                  columns=["id", "internal_name", "display_name",
                                           "product_type_name", "release_name",
-                                          "uploaded_by", "official_product",  # "pz_code",
-                                          "description", "created_at"])
+                                          "uploaded_by", "official_product", 
+                                          "pz_code", "description", "created_at"])
 
         dataframe.rename(columns={"display_name": "product_name",
                                   "release_name": "release",
@@ -214,7 +214,7 @@ class PzServer:
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
-                   "description", "created_at"]
+                   "description", "created_at", "main_file"]
         transposed_list = []
         for k, v in results_dict.items():
             if k in columns:
@@ -224,6 +224,8 @@ class PzServer:
                     k = "product_type"
                 if k == "display_name":
                     k = "product_name"
+                if k == "main_file": 
+                    v = v['name']
                 transposed_list.append({"key": k, "value": v})
         dataframe = pd.DataFrame(transposed_list)
         display(dataframe.style.hide(axis="index"))
@@ -291,7 +293,7 @@ class PzServer:
         if not prod_info:
             raise Exception("Product not found")
 
-        file_extension = prodmain["extension"]
+        file_extension = prod_info["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             results_dict = self.api.download_main_file(metadata['id'], tmpdirname)
@@ -299,14 +301,14 @@ class PzServer:
                 file_path = results_dict['message']
                 if file_extension == ".csv": 
                     # TBD: add CSV to tables_io supported formats 
-                    delimiter = prodmain.get("delimiter", None)
-                    has_header = prodmain.get("has_header", False)
+                    delimiter = prod_info.get("delimiter", None)
+                    has_header = prod_info.get("has_header", False)
                     if has_header:
                         dataframe = pd.read_csv(
                             file_path, header=0, delimiter=delimiter,
                         )
                     else:
-                        column_names = prodmain.get("columns")
+                        column_names = prod_info.get("columns")
                         dataframe = pd.read_csv(
                             file_path,
                             header=None,
