@@ -18,7 +18,7 @@ setup(
     python_requires=">=3.9, <4",
     setup_requires=["pytest-runner", "numpy", "astropy"],
     install_requires=[
-        "numpy>=1.19.4",
+        "numpy>=1.23, <1.24",
         "pandas>=1.2.0",
         "requests>=2.23.0",
         "astropy>=5.0.0",
