@@ -8,13 +8,22 @@ from IPython.display import display
 class Catalog: 
     
     def __init__(self, data=None, metadata=None): 
+        """ Catalog class constructor """
         self.data = pd.DataFrame(data)
         self.metadata = metadata
         self.columns = metadata.get("main_file").get("columns_association")
 
     
     def display_metadata(self):
-        # TBD: this method is duplicate with other from core.py, need refactoring  
+        """Displays the catalog's metadata 
+
+        Displays a pandas.io.formats.style.Styler object
+        with the metadata informed by the product owner
+        (optimized for use in Jupyter Notebook).
+
+        TBD: this method is duplicate with other from core.py, need refactoring  
+
+        """
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "survey", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
@@ -118,7 +127,7 @@ class TrainingSet(Catalog):
                 mag_max = 28.
             else:
                 mag_max = self.data[mag_name].max() + 0.2
-                
+
             plt.figure(figsize=[12, 4])
             plt.subplot(131)
             plt.hist(self.data[mag_name], bins=30, histtype="bar")
