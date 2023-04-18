@@ -10,9 +10,11 @@ class Catalog:
     def __init__(self, data=None, metadata=None): 
         self.data = pd.DataFrame(data)
         self.metadata = metadata
+        self.columns = metadata.get("main_file").get("columns_association")
 
     
     def display_metadata(self):
+        # TBD: this method is duplicate with other from core.py, need refactoring  
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "survey", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
@@ -43,30 +45,28 @@ class SpeczCatalog(Catalog):
         super().__init__(data, metadata)
     
         
-    def plot(self, savefig=False,
-             ra_name="ra",
-             dec_name="dec",
-             redshift_name="redshift"):
+    def plot(self, savefig=False):
         """ Very basic plots to characterize a Spec-z catalog.
 
         Args:
             savefig: option to save PNG figure (boolean)
-        temporary Args: 
-            ra_name
-            dec_name
-            redshift_name
-        TBD: get column names from product metadata 
-
+        
         """
-
+        for col in self.columns: 
+            if col["ucd"] == "pos.eq.ra;meta.main":
+                ra_name = col["column_name"]    
+            if col["ucd"] == "pos.eq.dec;meta.main":
+                dec_name = col["column_name"]         
+            if col["ucd"] == "src.redshift":
+                redshift_name = col["column_name"] 
         plt.figure(figsize=[8, 3])
         plt.subplot(121)
         plt.scatter(self.data[ra_name], self.data[dec_name])
-        plt.xlabel("R.A. (deg)")
-        plt.ylabel("Dec. (deg)")
+        plt.xlabel(f"{ra_name} (deg)")
+        plt.ylabel(f"{dec_name} (deg)")
         plt.subplot(122)
         plt.hist(self.data[redshift_name], bins=30, histtype="bar")
-        plt.xlabel("redshift")
+        plt.xlabel(redshift_name)
         plt.ylabel("counts")
         plt.tight_layout()
 
@@ -83,29 +83,16 @@ class TrainingSet(Catalog):
     def __init__(self, data=None, metadata=None): 
         super().__init__(data, metadata)
 
-    def plot(self, savefig=False,
-             redshift_name="redshift",
-             mag_name="mag_i_cModel"):
+    def plot(self, mag_name = None, savefig=False):
 
         """ Very basic plots to characterize a Training Set.
 
         Args:
             savefig: option to save PNG figure (boolean)
-        temporary Args: 
-            redshift_name
-            mag_name
-        TBD: get column names from product metadata 
-
         """
-
-        if self.data[mag_name].min() < 16.:
-            mag_min = 16.
-        else:
-            mag_min = self.data[mag_name].min() - 0.2
-        if self.data[mag_name].max() > 30.:
-            mag_max = 28.
-        else:
-            mag_max = self.data[mag_name].max() + 0.2
+        for col in self.columns:           
+            if col["ucd"] == "src.redshift":
+                redshift_name = col["column_name"] 
 
         if self.data[redshift_name].min() <= 0.1:
             redshift_min = 0.
@@ -116,27 +103,43 @@ class TrainingSet(Catalog):
         else:
             redshift_max = self.data[redshift_name].max() + 0.1
 
-        plt.figure(figsize=[12, 4])
-        plt.subplot(131)
-        plt.hist(self.data[mag_name], bins=30, histtype="bar")
-        plt.xlabel(mag_name)
-        plt.ylabel("counts")
-        plt.xlim(mag_min, mag_max)
+        if mag_name is None: 
+            plt.hist(self.data[redshift_name], bins=30, histtype="bar")
+            plt.xlabel(redshift_name)
+            plt.ylabel("counts")
+            plt.xlim(redshift_min, redshift_max)
+            plt.tight_layout()
+        else: 
+            if self.data[mag_name].min() < 16.:
+                mag_min = 16.
+            else:
+                mag_min = self.data[mag_name].min() - 0.2
+            if self.data[mag_name].max() > 30.:
+                mag_max = 28.
+            else:
+                mag_max = self.data[mag_name].max() + 0.2
+                
+            plt.figure(figsize=[12, 4])
+            plt.subplot(131)
+            plt.hist(self.data[mag_name], bins=30, histtype="bar")
+            plt.xlabel(mag_name)
+            plt.ylabel("counts")
+            plt.xlim(mag_min, mag_max)
 
-        plt.subplot(132)
-        plt.hist(self.data[redshift_name], bins=30, histtype="bar")
-        plt.xlabel(redshift_name)
-        plt.ylabel("counts")
-        plt.xlim(redshift_min, redshift_max)
+            plt.subplot(132)
+            plt.hist(self.data[redshift_name], bins=30, histtype="bar")
+            plt.xlabel(redshift_name)
+            plt.ylabel("counts")
+            plt.xlim(redshift_min, redshift_max)
 
-        plt.subplot(133)
-        plt.plot(self.data[redshift_name], self.data[mag_name], '.')
-        plt.xlabel(redshift_name)
-        plt.ylabel(mag_name)
-        plt.xlim(redshift_min, redshift_max)
-        plt.ylim(mag_min, mag_max)
+            plt.subplot(133)
+            plt.plot(self.data[redshift_name], self.data[mag_name], '.')
+            plt.xlabel(redshift_name)
+            plt.ylabel(mag_name)
+            plt.xlim(redshift_min, redshift_max)
+            plt.ylim(mag_min, mag_max)
 
-        plt.tight_layout()
+            plt.tight_layout()
 
         if savefig:
             filename = "train_set.png"
