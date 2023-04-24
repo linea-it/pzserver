@@ -1,18 +1,18 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from IPython.display import display
+from IPython.display import display 
 # import warnings
 # warnings.filterwarnings('ignore')
 
 
 class Catalog: 
     
-    def __init__(self, data=None, metadata=None): 
+    def __init__(self, data=None, metadata=None, metadata_df=None): 
         """ Catalog class constructor """
         self.data = pd.DataFrame(data)
         self.metadata = metadata
         self.columns = metadata.get("main_file").get("columns_association")
-
+        self.metadata_df = metadata_df 
     
     def display_metadata(self):
         """Displays the catalog's metadata 
@@ -21,27 +21,8 @@ class Catalog:
         with the metadata informed by the product owner
         (optimized for use in Jupyter Notebook).
 
-        TBD: this method is duplicate with other from core.py, need refactoring  
-
         """
-        columns = ["id", "internal_name", "display_name",
-                   "product_type_name", "survey", "release_name",
-                   "uploaded_by", "official_product",  "pz_code",
-                   "description", "created_at", "main_file"]
-        transposed_list = []
-        for k, v in self.metadata.items():
-            if k in columns:
-                if k == "release_name":
-                    k = "release"
-                if k == "product_type_name":
-                    k = "product_type"
-                if k == "display_name":
-                    k = "product_name"
-                if k == "main_file": 
-                    v = v['name']
-                transposed_list.append({"key": k, "value": v})
-        dataframe = pd.DataFrame(transposed_list)
-        display(dataframe.style.hide(axis="index"))
+        display(self.metadata_df.style.hide(axis="index"))
     
     def plot(self):
         raise NotImplemented
@@ -50,8 +31,8 @@ class Catalog:
 
 class SpeczCatalog(Catalog):
 
-    def __init__(self, data=None, metadata=None): 
-        super().__init__(data, metadata)
+    def __init__(self, data=None, metadata=None, metadata_df=None): 
+        super().__init__(data, metadata, metadata_df)
     
         
     def plot(self, savefig=False):
@@ -89,8 +70,8 @@ class SpeczCatalog(Catalog):
 
 class TrainingSet(Catalog):
     
-    def __init__(self, data=None, metadata=None): 
-        super().__init__(data, metadata)
+    def __init__(self, data=None, metadata=None, metadata_df=None): 
+        super().__init__(data, metadata, metadata_df)
 
     def plot(self, mag_name = None, savefig=False):
 

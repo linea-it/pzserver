@@ -196,7 +196,7 @@ class PzServer:
         
         return metaprod
 
-    def display_product_metadata(self, product_id=None):
+    def display_product_metadata(self, product_id=None, show=True):
         """Displays the metadata informed by the product owner.
 
         Displays a pandas.io.formats.style.Styler object
@@ -228,7 +228,10 @@ class PzServer:
                     v = v['name']
                 transposed_list.append({"key": k, "value": v})
         dataframe = pd.DataFrame(transposed_list)
-        display(dataframe.style.hide(axis="index"))
+        if show: 
+            display(dataframe.style.hide(axis="index"))
+        else:
+            return dataframe
 
     def download_product(self, product_id=None, save_in="."):
         """Download the data to local. 
@@ -280,6 +283,7 @@ class PzServer:
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id) 
         prod_type = metadata['product_type_name']
+        metadata_df = self.display_product_metadata(product_id, show=False)
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             msg = f"does not support non-tabular data\n{FONTCOLORERR}"
@@ -321,9 +325,9 @@ class PzServer:
                         results = dataframe
                     else: 
                         if metadata['product_type_name'] == 'Spec-z Catalog':
-                            results = SpeczCatalog(dataframe, metadata)
+                            results = SpeczCatalog(dataframe, metadata, metadata_df)
                         elif metadata['product_type_name'] == 'Training Set':
-                            results = TrainingSet(dataframe, metadata)
+                            results = TrainingSet(dataframe, metadata, metadata_df)
                 else:
                     if fmt == "astropy":
                         results = tables_io.read(file_path, 
@@ -335,9 +339,9 @@ class PzServer:
                             results = dataframe
                         else:
                             if metadata['product_type_name'] == 'Spec-z Catalog':
-                                results = SpeczCatalog(dataframe, metadata)
+                                results = SpeczCatalog(dataframe, metadata, metadata_df)
                             elif metadata['product_type_name'] == 'Training Set':
-                                results = TrainingSet(dataframe, metadata)
+                                results = TrainingSet(dataframe, metadata, metadata_df)
                     
                 print("Done!")
                 return results 
