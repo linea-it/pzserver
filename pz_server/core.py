@@ -1,8 +1,9 @@
 from .catalog import Catalog, SpeczCatalog, TrainingSet
 import pandas as pd
+from astropy.table import Table
 from IPython.display import display
 from .api import PzServerApi
-import tables_io
+import tables_io 
 import tempfile
 
 pd.options.display.max_colwidth = None
@@ -17,6 +18,7 @@ class PzServer:
     def __init__(self, token=None, host="pz"):
         """ PzServer class constructor
         Args:
+            token: (str): user's token generated on the PZ Server website
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
@@ -147,8 +149,8 @@ class PzServer:
         dataframe = pd.DataFrame(results_dict,
                                  columns=["id", "internal_name", "display_name",
                                           "product_type_name", "release_name",
-                                          "uploaded_by", "official_product",  # "pz_code",
-                                          "description", "created_at"])
+                                          "uploaded_by", "official_product", 
+                                          "pz_code", "description", "created_at"])
 
         dataframe.rename(columns={"display_name": "product_name",
                                   "release_name": "release",
@@ -194,7 +196,7 @@ class PzServer:
         
         return metaprod
 
-    def display_product_metadata(self, product_id=None):
+    def display_product_metadata(self, product_id=None, show=True):
         """Displays the metadata informed by the product owner.
 
         Displays a pandas.io.formats.style.Styler object
@@ -212,7 +214,7 @@ class PzServer:
         columns = ["id", "internal_name", "display_name",
                    "product_type_name", "release_name",
                    "uploaded_by", "official_product",  "pz_code",
-                   "description", "created_at"]
+                   "description", "created_at", "main_file"]
         transposed_list = []
         for k, v in results_dict.items():
             if k in columns:
@@ -222,9 +224,14 @@ class PzServer:
                     k = "product_type"
                 if k == "display_name":
                     k = "product_name"
+                if k == "main_file": 
+                    v = v['name']
                 transposed_list.append({"key": k, "value": v})
         dataframe = pd.DataFrame(transposed_list)
-        display(dataframe.style.hide(axis="index"))
+        if show: 
+            display(dataframe.style.hide(axis="index"))
+        else:
+            return dataframe
 
     def download_product(self, product_id=None, save_in="."):
         """Download the data to local. 
@@ -241,16 +248,18 @@ class PzServer:
                 be saved
 
         """
+        print("Connecting to PZ Server...")
 
         prodid = self.get_product_metadata(product_id, mainfile_info=False)['id']
 
         results_dict = self.api.download_product(prodid, save_in)
         if results_dict.get("success", False):
             print(f"File saved as: {results_dict['message']}")
+            print("Done!")
         else:
             print(f"{FONTCOLORERR}Error: {results_dict['message']}{FONTCOLORERR}")
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, fmt=None):
         """Fetches the data product contents to local.
 
         Connects to the Photo-z Server's database and
@@ -261,14 +270,20 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
+            fmt (str): output table format 
+                'pandas' -> pandas.DataFrame
+                'astropy' -> astropy.Table
+                None (default) -> object class from catalog.py
 
         Returns:
-            Pandas DataFrame object 
+            SpeczCatalog or TrainingSet (pandas.DataFrame extensions) 
+            object, or pure pandas.DataFrame, or astropy.Table  
 
         """
-
-        prod = self.get_product_metadata(product_id)
-        prod_type = prod['product_type_name']
+        print("Connecting to PZ Server...")
+        metadata = self.get_product_metadata(product_id) 
+        prod_type = metadata['product_type_name']
+        metadata_df = self.display_product_metadata(product_id, show=False)
 
         if (prod_type == "Validation Results" or prod_type == "Photo-z Table"):
             msg = f"does not support non-tabular data\n{FONTCOLORERR}"
@@ -278,43 +293,67 @@ class PzServer:
             msg += FONTCOLOREND
             raise ValueError(msg)
 
-        prodmain = prod['main_file']
-        if not prodmain:
+        prod_info = metadata['main_file']
+        if not prod_info:
             raise Exception("Product not found")
 
-        file_extension = prodmain["extension"]
+        file_extension = prod_info["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            results_dict = self.api.download_main_file(prod['id'], tmpdirname)
+            results_dict = self.api.download_main_file(metadata['id'], tmpdirname)
             if results_dict.get("success", False):
                 file_path = results_dict['message']
-                if file_extension == ".csv":
-                    delimiter = prodmain.get("delimiter", None)
-                    has_header = prodmain.get("has_header", False)
+                if file_extension == ".csv": 
+                    # TBD: add CSV to tables_io supported formats 
+                    delimiter = prod_info.get("delimiter", None)
+                    has_header = prod_info.get("has_header", False)
                     if has_header:
                         dataframe = pd.read_csv(
-                            file_path, header=0, delimiter=delimiter
+                            file_path, header=0, delimiter=delimiter,
                         )
                     else:
-                        column_names = prodmain.get("columns")
+                        column_names = prod_info.get("columns")
                         dataframe = pd.read_csv(
                             file_path,
                             header=None,
                             names=column_names,
-                            delimiter=delimiter
+                            delimiter=delimiter,
                         )
+                    if fmt == "astropy":
+                        results = Table.from_pandas(dataframe)
+                    elif fmt == "pandas":
+                        results = dataframe
+                    else: 
+                        if metadata['product_type_name'] == 'Spec-z Catalog':
+                            results = SpeczCatalog(dataframe, metadata, metadata_df)
+                        elif metadata['product_type_name'] == 'Training Set':
+                            results = TrainingSet(dataframe, metadata, metadata_df)
                 else:
-                    dataframe = tables_io.read(
-                        file_path,
-                        tType=tables_io.types.PD_DATAFRAME
-                    )
-                return dataframe
+                    if fmt == "astropy":
+                        results = tables_io.read(file_path, 
+                            tType=tables_io.types.AP_TABLE)
+                    else: 
+                        dataframe = tables_io.read(file_path, 
+                            tType=tables_io.types.PD_DATAFRAME)
+                        if fmt == "pandas":
+                            results = dataframe
+                        else:
+                            if metadata['product_type_name'] == 'Spec-z Catalog':
+                                results = SpeczCatalog(dataframe, metadata, metadata_df)
+                            elif metadata['product_type_name'] == 'Training Set':
+                                results = TrainingSet(dataframe, metadata, metadata_df)
+                    
+                print("Done!")
+                return results 
+                    
             else:
                 print(f"Error: {results_dict['message']}")
 
-    # ---- Training Set Maker functions ----#
+
+
+    # ---- Training Set Maker methods ----#
     def combine_specz_catalogs(self, catalog_list,
-                               duplicates_criterium="smallest flag"):
+                               duplicates_critera="smallest flag"):
         # criteria: smallest flag, smallest error
         # newest survey
         # show progress bar
