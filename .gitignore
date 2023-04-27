@@ -134,3 +134,6 @@ dmypy.json
 
 # Downloaded ZIP files 
 *.zip 
+
+# User's token 
+token.txt 
