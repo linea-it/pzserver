@@ -1,4 +1,4 @@
-# pz-server-lib
+# pzserver
 
 A Python library to access data from the [Photo-z Server](https://pz-server-dev.linea.org.br/). 
 
