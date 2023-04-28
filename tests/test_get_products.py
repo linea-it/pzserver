@@ -1,7 +1,7 @@
 import sys
 sys.path.append('..')
 print(sys.path)
-from pz_server import PzServer
+from pzserver import PzServer
 token = '6c5035393d4153b1996481092e31578130f9f8a3'
 pz_server = PzServer(token=token, host='pz-dev')
 
