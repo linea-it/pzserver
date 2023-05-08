@@ -21,10 +21,9 @@ class Catalog:
         self.columns = metadata.get("main_file").get("columns_association")
         self.metadata_df = metadata_df
 
-
     def display_metadata(self):
         """
-        Displays the catalog's metadata 
+        Displays the catalog's metadata
 
         Displays a pandas.io.formats.style.Styler object
         with the metadata informed by the product owner
@@ -51,7 +50,6 @@ class SpeczCatalog(Catalog):
     #         metadata_df (_type_, optional): _description_. Defaults to None.
     #     """
     #     super().__init__(data, metadata, metadata_df)
-
 
     def plot(self, savefig=False):
         """
@@ -102,12 +100,12 @@ class TrainingSet(Catalog):
     Args:
         Catalog (_type_): _description_
     """
+
     # def __init__(self, data=None, metadata=None, metadata_df=None):
     #     super().__init__(data, metadata, metadata_df)
 
     def plot(self, mag_name=None, savefig=False):
-
-        """ Very basic plots to characterize a Training Set.
+        """Very basic plots to characterize a Training Set.
 
         Args:
             savefig: option to save PNG figure (boolean)
@@ -126,11 +124,11 @@ class TrainingSet(Catalog):
 
         redshift_min = self.data[redshift_name].min() - 0.1
         if self.data[redshift_name].min() <= 0.1:
-            redshift_min = 0.
+            redshift_min = 0.0
 
         redshift_max = self.data[redshift_name].max() + 0.1
-        if self.data[redshift_name].max() > 10.:
-            redshift_max = 10.
+        if self.data[redshift_name].max() > 10.0:
+            redshift_max = 10.0
 
         if mag_name is None:
             plt.hist(self.data[redshift_name], bins=30, histtype="bar")
@@ -140,11 +138,11 @@ class TrainingSet(Catalog):
             plt.tight_layout()
         else:
             mag_min = self.data[mag_name].min() - 0.2
-            if self.data[mag_name].min() < 16.:
-                mag_min = 16.
+            if self.data[mag_name].min() < 16.0:
+                mag_min = 16.0
             mag_max = self.data[mag_name].max() + 0.2
-            if self.data[mag_name].max() > 30.:
-                mag_max = 28.
+            if self.data[mag_name].max() > 30.0:
+                mag_max = 28.0
 
             plt.figure(figsize=[12, 4])
             plt.subplot(131)
@@ -160,7 +158,7 @@ class TrainingSet(Catalog):
             plt.xlim(redshift_min, redshift_max)
 
             plt.subplot(133)
-            plt.plot(self.data[redshift_name], self.data[mag_name], '.')
+            plt.plot(self.data[redshift_name], self.data[mag_name], ".")
             plt.xlabel(redshift_name)
             plt.ylabel(mag_name)
             plt.xlim(redshift_min, redshift_max)

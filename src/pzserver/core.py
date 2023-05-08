@@ -19,13 +19,14 @@ pd.options.display.max_rows = 6
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
 
+
 class PzServer:
     """
     Responsible for managing user interactions with the Pz Server app.
     """
 
     def __init__(self, token=None, host="pz"):
-        """ 
+        """
         PzServer class constructor
 
         Args:
@@ -33,7 +34,7 @@ class PzServer:
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
-                        "api url" 
+                        "api url"
         """
 
         if token is None:
@@ -67,15 +68,11 @@ class PzServer:
         descriptions (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_product_types()
-        dataframe = pd.DataFrame(
-                        results_dict,
-                        columns=["display_name", "description"]
-                    )
+        dataframe = pd.DataFrame(results_dict, columns=["display_name", "description"])
         dataframe.rename(
-            columns={
-                "display_name": "Product type",
-                "description": "Description"
-            }, inplace=True)
+            columns={"display_name": "Product type", "description": "Description"},
+            inplace=True,
+        )
         display(dataframe.style.hide(axis="index"))
 
     def get_users(self) -> list[dict]:
@@ -100,12 +97,9 @@ class PzServer:
         (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_users()
-        dataframe = pd.DataFrame(
-            results_dict, columns=["username", "last_name"]
-        )
+        dataframe = pd.DataFrame(results_dict, columns=["username", "last_name"])
         dataframe.rename(
-            columns={"username": "GitHub username", "last_name": "name"},
-            inplace=True
+            columns={"username": "GitHub username", "last_name": "name"}, inplace=True
         )
         display(dataframe.style.hide(axis="index"))
 
@@ -133,12 +127,10 @@ class PzServer:
         names (optimized for use in Jupyter Notebook).
         """
         results_dict = self.api.get_all("releases")
-        dataframe = pd.DataFrame(
-            results_dict, columns=["display_name", "description"]
-        )
+        dataframe = pd.DataFrame(results_dict, columns=["display_name", "description"])
         dataframe.rename(
             columns={"display_name": "Release", "description": "Description"},
-            inplace=True
+            inplace=True,
         )
         display(dataframe.style.hide(axis="index"))
 
@@ -175,18 +167,30 @@ class PzServer:
                 filter the results.
         """
         results_dict = self.get_products_list(filters)
-        dataframe = pd.DataFrame(results_dict, columns=[
-            "id", "internal_name", "display_name",
-            "product_type_name", "release_name",
-            "uploaded_by", "official_product", 
-            "pz_code", "description", "created_at"
-        ])
+        dataframe = pd.DataFrame(
+            results_dict,
+            columns=[
+                "id",
+                "internal_name",
+                "display_name",
+                "product_type_name",
+                "release_name",
+                "uploaded_by",
+                "official_product",
+                "pz_code",
+                "description",
+                "created_at",
+            ],
+        )
 
-        dataframe.rename(columns={
-            "display_name": "product_name",
-            "release_name": "release",
-            "product_type_name": "product_type"
-        },inplace=True)
+        dataframe.rename(
+            columns={
+                "display_name": "product_name",
+                "release_name": "release",
+                "product_type_name": "product_type",
+            },
+            inplace=True,
+        )
 
         display(dataframe.style.hide(axis="index"))
 
@@ -224,7 +228,7 @@ class PzServer:
             raise ValueError(msg) from excp
 
         if mainfile_info:
-            metaprod["main_file"] = self.api.get_main_file_info(metaprod['id'])
+            metaprod["main_file"] = self.api.get_main_file_info(metaprod["id"])
 
         return metaprod
 
@@ -245,10 +249,17 @@ class PzServer:
         results_dict = self.get_product_metadata(product_id)
 
         columns = [
-            "id", "internal_name", "display_name",
-            "product_type_name", "release_name",
-            "uploaded_by", "official_product",  "pz_code",
-            "description", "created_at", "main_file"
+            "id",
+            "internal_name",
+            "display_name",
+            "product_type_name",
+            "release_name",
+            "uploaded_by",
+            "official_product",
+            "pz_code",
+            "description",
+            "created_at",
+            "main_file",
         ]
         transposed_list = []
         for key, value in results_dict.items():
@@ -260,7 +271,7 @@ class PzServer:
                 if key == "display_name":
                     key = "product_name"
                 if key == "main_file":
-                    value = value['name']
+                    value = value["name"]
                 transposed_list.append({"key": key, "value": value})
         dataframe = pd.DataFrame(transposed_list)
         if show:
@@ -271,23 +282,23 @@ class PzServer:
 
     def download_product(self, product_id=None, save_in="."):
         """
-        Download the data to local. 
+        Download the data to local.
 
-        Connects to the Photo-z Server's database and 
-        download a compressed zip file containing all 
+        Connects to the Photo-z Server's database and
+        download a compressed zip file containing all
         the data and metadata of a given data product.
 
         Args:
-            product_id (str or int): data product 
-                unique identifier (product id 
+            product_id (str or int): data product
+                unique identifier (product id
                 number or internal_name)
-            save_in (str): location where the file will 
+            save_in (str): location where the file will
                 be saved
 
         """
         print("Connecting to PZ Server...")
 
-        prodid = self.get_product_metadata(product_id, mainfile_info=False)['id']
+        prodid = self.get_product_metadata(product_id, mainfile_info=False)["id"]
 
         results_dict = self.api.download_product(prodid, save_in)
         if results_dict.get("success", False):
@@ -301,26 +312,26 @@ class PzServer:
         Fetches the data product contents to local.
 
         Connects to the Photo-z Server's database and
-        fetches the tabular data stored as registered 
+        fetches the tabular data stored as registered
         data product.
 
         Args:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
-            fmt (str): output table format 
+            fmt (str): output table format
                 'pandas' -> pandas.DataFrame
                 'astropy' -> astropy.Table
                 None (default) -> object class from catalog.py
 
         Returns:
-            SpeczCatalog or TrainingSet (pandas.DataFrame extensions) 
-            object, or pure pandas.DataFrame, or astropy.Table  
+            SpeczCatalog or TrainingSet (pandas.DataFrame extensions)
+            object, or pure pandas.DataFrame, or astropy.Table
 
         """
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id)
-        prod_type = metadata['product_type_name']
+        prod_type = metadata["product_type_name"]
 
         if prod_type in ("Validation Results", "Photo-z Table"):
             msg = f"does not support non-tabular data\n{FONTCOLORERR}"
@@ -330,34 +341,34 @@ class PzServer:
             msg += FONTCOLOREND
             raise ValueError(msg)
 
-        if not metadata['main_file']:
-            raise FileNotFoundError(
-                f"Product ID ({product_id}): main file not found"
-            )
+        if not metadata["main_file"]:
+            raise FileNotFoundError(f"Product ID ({product_id}): main file not found")
 
-        file_extension = metadata['main_file']["extension"]
+        file_extension = metadata["main_file"]["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
-            results_dict = self.api.download_main_file(metadata['id'], tmpdirname)
+            results_dict = self.api.download_main_file(metadata["id"], tmpdirname)
 
             if not results_dict.get("success", False):
                 print(f"Error: {results_dict['message']}")
                 return None
 
-            file_path = results_dict['message']
+            file_path = results_dict["message"]
             if file_extension == ".csv":
                 # TBD: add CSV to tables_io supported formats
-                delimiter = metadata['main_file'].get("delimiter", None)
-                has_header = metadata['main_file'].get("has_header", False)
+                delimiter = metadata["main_file"].get("delimiter", None)
+                has_header = metadata["main_file"].get("has_header", False)
                 if has_header:
                     dataframe = pd.read_csv(
-                        file_path, header=0, delimiter=delimiter,
+                        file_path,
+                        header=0,
+                        delimiter=delimiter,
                     )
                 else:
                     dataframe = pd.read_csv(
                         file_path,
                         header=None,
-                        names=metadata['main_file'].get("columns"),
+                        names=metadata["main_file"].get("columns"),
                         delimiter=delimiter,
                     )
                 if fmt == "astropy":
@@ -389,11 +400,11 @@ class PzServer:
             metadata (dict): product metadata
         """
 
-        metadata_df = self.display_product_metadata(metadata['id'], show=False)
+        metadata_df = self.display_product_metadata(metadata["id"], show=False)
 
-        if metadata['product_type_name'] == 'Spec-z Catalog':
+        if metadata["product_type_name"] == "Spec-z Catalog":
             results = SpeczCatalog(dataframe, metadata, metadata_df)
-        elif metadata['product_type_name'] == 'Training Set':
+        elif metadata["product_type_name"] == "Training Set":
             results = TrainingSet(dataframe, metadata, metadata_df)
         else:
             results = dataframe
@@ -401,9 +412,7 @@ class PzServer:
         return results
 
     # ---- Training Set Maker methods ----#
-    def combine_specz_catalogs(
-        self, catalog_list, duplicates_critera="smallest flag"
-    ):
+    def combine_specz_catalogs(self, catalog_list, duplicates_critera="smallest flag"):
         """_summary_
 
         Args:
@@ -420,8 +429,11 @@ class PzServer:
         raise NotImplementedError
 
     def make_training_set(
-        self, specz_catalog=None, photo_catalog=None,
-        search_radius=1.0, multiple_match_criteria="select closest"
+        self,
+        specz_catalog=None,
+        photo_catalog=None,
+        search_radius=1.0,
+        multiple_match_criteria="select closest",
     ):
         """_summary_
 
