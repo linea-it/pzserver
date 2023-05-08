@@ -1,21 +1,29 @@
-pz\_server package
+pzserver package
 ==================
 
 Submodules
 ----------
 
-pz\_server.core module
+pzserver.core module
 ----------------------
 
-.. automodule:: pz_server.core
+.. automodule:: pzserver.core
    :members:
    :undoc-members:
    :show-inheritance:
 
-pz\_server.plots module
+pzserver.catalog module
 -----------------------
 
-.. automodule:: pz_server.pz_plots
+.. automodule:: pzserver.catalog
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pzserver.communicate module
+---------------------------
+
+.. automodule:: pzserver.communicate
    :members:
    :undoc-members:
    :show-inheritance:
