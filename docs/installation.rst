@@ -14,9 +14,9 @@ The PZ Server API is avalialble on **pip** as  `pzserver`. To install the API an
 
 
 
-+++++++++++++
-With setup.py
-+++++++++++++
++++++++++++++++
+For developers
++++++++++++++++
 
 Alternatively, you can clone the repository and install the library with:
 

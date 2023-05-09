@@ -33,4 +33,4 @@ jobs:
         sphinx-build -T -E -b html -d docs/build/doctrees ./docs docs/build/html
     - name: Run ghp-import
       run: | 
-        ghp-import -n -p -f -x docs docs/build/html
+        ghp-import -n -p -f -x docs/ docs/build/html
