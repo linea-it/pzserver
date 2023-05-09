@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier
+_commit: v1.3.3
+_src_path: gh:lincc-frameworks/python-project-template
+author_email: itteam@linea.org.br
+author_name: LIneA
+create_example_module: true
+custom_install: false
+include_notebooks: true
+module_name: pzserver
+mypy_type_checking: none
+preferred_linter: pylint
+project_license: MIT
+project_name: pzserver
+use_gitlfs: none
+use_isort: true

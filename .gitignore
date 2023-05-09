@@ -26,6 +26,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+_version.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -70,6 +71,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+_readthedocs/
 
 # PyBuilder
 target/
@@ -109,7 +111,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-.vscode/
 
 # Spyder project settings
 .spyderproject
@@ -129,8 +130,14 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# VS Code
-.DS_Store
+# vscode
+.vscode/
+
+# dask
+dask-worker-space/
+
+# tmp directory
+tmp/
 
 # Downloaded ZIP files 
 *.zip 
