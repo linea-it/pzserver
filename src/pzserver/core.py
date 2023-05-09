@@ -46,7 +46,7 @@ class PzServer:
         self._token = token
 
     # ---- methods to get general info ----#
-    def get_product_types(self) -> list[dict]:
+    def get_product_types(self) -> list:
         """
         Fetches the list of valid product types.
 
@@ -75,7 +75,7 @@ class PzServer:
         )
         display(dataframe.style.hide(axis="index"))
 
-    def get_users(self) -> list[dict]:
+    def get_users(self) -> list:
         """
         Fetches the list of registered users.
 
@@ -103,7 +103,7 @@ class PzServer:
         )
         display(dataframe.style.hide(axis="index"))
 
-    def get_releases(self) -> list[dict]:
+    def get_releases(self) -> list:
         """
         Fetches the list of valid data releases.
 
@@ -134,7 +134,7 @@ class PzServer:
         )
         display(dataframe.style.hide(axis="index"))
 
-    def get_products_list(self, filters=None) -> list[dict]:
+    def get_products_list(self, filters=None) -> list:
         """
         Fetches the list of data products available.
 
