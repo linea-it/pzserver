@@ -26,6 +26,7 @@ dependencies = [
     "Jinja2>=3.1.2",
     "ipython>=8.5.0",
     "h5py>=3.8.0",
+    "jupyterlab",
 ]
 
 # On a mac, install optional dependencies with `pip install '.[dev]'` (include the single quotes)
