@@ -57,6 +57,7 @@ class PzRequests:
         Returns:
             value of the list by index.
         """
+
         try:
             return _list[idx]
         except IndexError:
@@ -70,6 +71,7 @@ class PzRequests:
             entity (str): entity name  e.g. "releases", "products", "product-types"
             filters (list): selected filters
         """
+
         filter_opt = self._filter_options.get(entity, None)
 
         if not filter_opt:
@@ -113,6 +115,16 @@ class PzRequests:
         """
 
         def check_filter(filter_name):
+            """
+            Check filter name
+
+            Args:
+                filter_name (str): filter name
+
+            Returns:
+                list: filter names
+            """
+
             for key, value in self._mapping_filters.items():
                 if filter_name == value:
                     return key
@@ -128,13 +140,7 @@ class PzRequests:
             api_response (request.Response): Response object
 
         Returns:
-            dict: response content. e.g.{
-                                            "status_code": int,
-                                            "message": str,
-                                            "data": str,
-                                            "success": bool,
-                                            "response_object": request.Response,
-                                        }
+            dict: response content.
         """
         status_code = api_response.status_code
 
@@ -185,14 +191,18 @@ class PzRequests:
             proxies (optional): The proxies dictionary to apply to the request.
 
         Returns:
-            dict: response content. e.g.{
-                                            "status_code": int,
-                                            "message": str,
-                                            "data": str,
-                                            "success": bool,
-                                            "response_object": request.Response
-                                        }
+            dict: response content
         """
+
+        # Response example:
+        # {
+        #     "status_code": int,
+        #     "message": str,
+        #     "data": str,
+        #     "success": bool,
+        #     "response_object": request.Response
+        # }
+
         data = {
             "success": False,
             "message": "",
@@ -299,6 +309,7 @@ class PzRequests:
         """
         Checks if the token is valid, otherwise stops class
         initialization.
+
         """
 
         cntxt = self._get_request(self._base_api_url)
@@ -315,7 +326,6 @@ class PzRequests:
         Args:
             url (str): url to get
             save_in (str): location where the file will be saved
-
         """
 
         req = requests.Request(
@@ -548,6 +558,7 @@ class PzRequests:
         Returns:
             list: list of records
         """
+
         url = f"{self._base_api_url}/products/?"
 
         if status:
