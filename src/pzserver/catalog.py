@@ -41,16 +41,6 @@ class SpeczCatalog(Catalog):
         Catalog (_type_): _description_
     """
 
-    # def __init__(self, data=None, metadata=None, metadata_df=None):
-    #     """_summary_
-
-    #     Args:
-    #         data (_type_, optional): _description_. Defaults to None.
-    #         metadata (_type_, optional): _description_. Defaults to None.
-    #         metadata_df (_type_, optional): _description_. Defaults to None.
-    #     """
-    #     super().__init__(data, metadata, metadata_df)
-
     def plot(self, savefig=False):
         """
         Very basic plots to characterize a Spec-z catalog.
@@ -100,9 +90,6 @@ class TrainingSet(Catalog):
     Args:
         Catalog (_type_): _description_
     """
-
-    # def __init__(self, data=None, metadata=None, metadata_df=None):
-    #     super().__init__(data, metadata, metadata_df)
 
     def plot(self, mag_name=None, savefig=False):
         """Very basic plots to characterize a Training Set.
