@@ -1,3 +1,8 @@
+![PyPI](https://img.shields.io/pypi/v/pzserver?label=PyPI)
+![PyPI - Status](https://img.shields.io/pypi/status/pzserver)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/linea-it/pzserver/build-documentation.yml?label=docs)
+![GitHub](https://img.shields.io/github/license/linea-it/pzserver)
+
 # Pz Server Library
 
 A Python library to access data from the [Photo-z Server](https://pz-server-dev.linea.org.br/). 
