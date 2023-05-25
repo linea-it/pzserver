@@ -15,7 +15,7 @@ The Photo-z Server Library is a Python package to support the Photo-z Server use
    Home page <self>
    Install <installation>
    API Reference <autoapi/index>
-   Notebooks <notebooks>
+   Notebooks <nbs>
 
 
 Indices and tables

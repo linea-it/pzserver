@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/postgres
 {
-	"name": "Python 3 & PostgreSQL",
+	"name": "PZServer Library",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
@@ -17,11 +17,11 @@
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or the host.
-	"forwardPorts": [
-		8000
-	],
+	// "forwardPorts": [
+	// 	8000
+	// ],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "pip install --user -r requirements.txt",
+	"postCreateCommand": "pip install -e . && pip install '.[dev]' && pre-commit install",
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
