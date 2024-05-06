@@ -11,3 +11,4 @@ nbsphinx
 ipython
 jupyterlab
 matplotlib
+ghp-import
