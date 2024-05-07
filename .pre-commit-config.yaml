@@ -117,7 +117,7 @@ repos:
                   # Note: -M requires next 3 args to be builder, source, output
             "html", # Specify builder
             "./docs", # Source directory of documents
-            "./docs/build/html", # Output directory for rendered documents
+            "./build", # Output directory for rendered documents
             "-T", # Show full trace back on exception
             "-E", # Don't use saved env; always read all files
             "-d", # Flag for cached environment and doctrees
