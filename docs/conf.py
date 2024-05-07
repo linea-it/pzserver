@@ -32,7 +32,7 @@ extensions.append("autoapi.extension")
 extensions.append("nbsphinx")
 
 templates_path = []
-exclude_patterns = ["build", "**.ipynb_checkpoints"]
+exclude_patterns = ["build", "**.ipynb_checkpoints", "html"]
 
 master_doc = "index"  # This assumes that sphinx-build is called from the root directory
 html_show_sourcelink = (
