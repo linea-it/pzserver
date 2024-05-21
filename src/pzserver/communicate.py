@@ -547,6 +547,41 @@ class PzRequests:
             f"{self._base_api_url}products/{_id}/download", save_in
         )
 
+    def upload_basic_info(self, name, product_type, release=None, pz_code=None, description=None):
+        """
+        Upload product with basic informations
+
+        Args:
+            name (str):
+            product_type (int):
+            release (int):
+            pz_code (str):
+            description (str):
+
+        Returns:
+            dict: record data
+        """
+
+        upload_data = {
+            "display_name": name,
+            "product_type": product_type,
+            "release": release,
+            "official_product": False,
+            "pz_code": pz_code,
+            "description": description,
+            "status": 1    # status 1 is registering
+        }
+
+        upload = self._post_request(
+            f"{self._base_api_url}products/", payload=upload_data
+        )
+
+        if "success" in upload and upload["success"] is False:
+            raise requests.exceptions.RequestException(upload["message"])
+
+        return upload.get("data")
+
+
     def get_products(self, filters=None, status=1) -> list:
         """
         Returns list of products according to a filter
