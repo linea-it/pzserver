@@ -37,17 +37,17 @@ class UploadData(BaseModel):
         }
 
     @validator('main_file', pre=True)
-    def validate_main_file(self, value):
+    def validate_main_file(cls, value):    # pylint: disable=no-self-argument
         """ Validate main_file field """
-        self.__file_exist(value)
+        cls.__file_exist(value)
         return value
 
     @validator('auxiliary_files', pre=True)
-    def validate_auxiliary_files(self, value):
+    def validate_auxiliary_files(cls, value):    # pylint: disable=no-self-argument
         """ Validate auxiliary_files """
         if value:
             for aux in value:
-                self.__file_exist(aux)
+                cls.__file_exist(aux)
         return value
 
     @staticmethod
