@@ -11,6 +11,7 @@ from IPython.display import display
 
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
+from .upload import PzUpload, UploadData
 
 pd.options.display.max_colwidth = None
 pd.options.display.max_columns = 500
@@ -43,7 +44,6 @@ class PzServer:
             )
 
         self.api = PzRequests(token, host)
-        self._token = token
 
     # ---- methods to get general info ----#
     def get_product_types(self) -> list:
@@ -388,6 +388,37 @@ class PzServer:
 
         print("Done!")
         return results
+
+    def upload(self, name: str, product_type: str, main_file: str,
+                    release: str = None, pz_code: str = None,
+                    auxiliary_files: list = None, description: str = None):
+        """ Make upload
+
+        Args:
+            name (str): name
+            product_type (str): product type name
+            main_file (str): main file path
+            release (str, optional): release name. Defaults to None.
+            auxiliary_files (list, optional): auxiliary files path list. Defaults to None.
+            pz_code (str, optional): pz code. Defaults to None.
+            description (str, optional): description. Defaults to None.
+
+        Args:
+            upload (PzUpload): Upload object
+        """
+
+        data = {
+            "name": name,
+            "product_type": product_type,
+            "release": release,
+            "main_file": main_file,
+            "auxiliary_files": auxiliary_files,
+            "pz_code": pz_code,
+            "description": description
+        }
+
+        prod = UploadData(**data)
+        return PzUpload(prod, self.api)
 
     def __transform_df(self, dataframe, metadata):
         """

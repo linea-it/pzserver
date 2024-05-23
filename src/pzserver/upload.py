@@ -1,69 +1,115 @@
-""" 
-Classes responsible for managing user interaction 
+"""
+Classes responsible for managing user interaction
 """
 
-import dataclasses
+import mimetypes
+import pathlib
 from typing import Optional
 
-from .communicate import PzRequests
+from pydantic import BaseModel, validator
 
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
 
 
-@dataclasses.dataclass
-class Upload:
-    """_summary_
+class UploadData(BaseModel):
+    """ Upload data
     """
     name: str
     product_type: str
     main_file: str
     release: Optional[str] = None
     pz_code: Optional[str] = None
-    auxiliary_files: Optional[list] = []
+    auxiliary_files: Optional[list] = None
     description: Optional[str] = None
+
+    @property
+    def system_columns(self):
+        """ Returns system columns """
+        return {
+            "id": ("ID", "meta.id;meta.main"),
+            "ra": ("RA", "pos.eq.ra;meta.main"),
+            "dec": ("Dec", "pos.eq.dec;meta.main"),
+            "z": ("z", "src.redshift"),
+            "z_err": ("z_err", "stat.error;src.redshift"),
+            "z_flag": ("z_flag", "stat.rank"),
+            "survey": ("survey", "meta.curation"),
+        }
+
+    @validator('main_file', pre=True)
+    def validate_main_file(self, value):
+        """ Validate main_file field """
+        self.__file_exist(value)
+        return value
+
+    @validator('auxiliary_files', pre=True)
+    def validate_auxiliary_files(self, value):
+        """ Validate auxiliary_files """
+        if value:
+            for aux in value:
+                self.__file_exist(aux)
+        return value
+
+    @staticmethod
+    def __file_exist(filepath):
+        """ Verify if path exist """
+        _file = pathlib.Path(filepath)
+        if not _file.is_file():
+            raise FileNotFoundError(f"{_file} not found")
 
 
 class PzUpload:
-    """
-    Responsible for managing user interactions with upload.
+    """ Responsible for managing user interactions with upload.
     """
 
-    def __init__(self, upload: Upload, token: Optional[str]=None,
-                 host: Optional[str]="pz"):
+    def __init__(self, upload: UploadData, api):
         """
         PzUpload class constructor
 
         Args:
             upload (Upload)
-            token (str): user's token generated on the PZ Server website
-            host (str): "pz" (production) or
-                        "pz-dev" (test environment) or
-                        "localhost" (dev environment) or
-                        "api url"
+            api (PzRequests)
         """
 
-        if token is None:
-            raise ValueError(
-                f"{FONTCOLORERR}Please provide a valid token.{FONTCOLOREND}"
-            )
-
-        self._token = token
-        self.api = PzRequests(self._token, host)
+        self.api = api
         self.upload = upload
-        self.__save_basic_info()
+        self.product_id = self.__save_basic_info()
+        self.files_id = self.__save_upload_files()
+        self.api.registry_upload(self.product_id)
+        self.__columns = self.get_product_columns()
+        self.save()
 
-        self.__save_upload_files()
+    @property
+    def columns(self):
+        """ Get columns """
+        if not self.__columns:
+            return None
+        return self.__columns.keys()
 
-    def add_columns_association(self):
-        """_summary_
+    def make_columns_association(self, data: dict):
+        """ Associates upload columns
+
+        Args:
+            data (dict): dictionary with associations
         """
-        pass
+
+        for key, value in data.items():
+            id_attr = self.__columns.get(key)
+            col = self.upload.system_columns.get(value.lower(), (value,None))
+            data = {
+                "ucd": col[1],
+                "alias": col[0]
+            }
+            self.api.update_upload_column(id_attr, data)
 
     def __save_basic_info(self):
-        """_summary_
+        """ Saves the basic upload information in the database.
+
+        Args:
+            product_id (int): product id
         """
-        self.api.upload_basic_info(
+
+        data = self.api.upload_basic_info(
             self.upload.name,
             self.upload.product_type,
             self.upload.release,
@@ -71,12 +117,88 @@ class PzUpload:
             self.upload.description
         )
 
+        return data.get("id")
+
     def __save_upload_files(self):
-        """_summary_
+        """ Saves the upload files in the database.
+
+        Returns:
+            file_ids (list): file ids list
         """
-        pass
+
+        files = [self.__upload_file(
+            self.upload.main_file, "main"
+        )]
+
+        if self.upload.auxiliary_files:
+            for auxfile in self.upload.auxiliary_files:
+                try:
+                    fid = self.__upload_file(auxfile, "auxiliary")
+                except Exception as _:  # pylint: disable=broad-except
+                    fid = None
+
+                if fid:
+                    files.append(fid)
+
+        return files
+
+    def get_product_columns(self):
+        """ Gets product columns in database
+
+        Returns:
+            columns (dict): dict with product columns
+        """
+        try:
+            data = self.api.get_by_attribute(
+                "product-contents", "product", self.product_id
+            )
+            columns = self.__dict_columns(data.get('results'))
+        except Exception as _:  # pylint: disable=broad-except
+            columns = {}
+
+        return columns
+
+    @staticmethod
+    def __dict_columns(items):
+        """ Returns the product columns in dict
+
+        Args:
+            items (list): product columns
+
+        Returns:
+            dict: product columns
+        """
+
+        columns = {}
+
+        for item in items:
+            columns[item.get("column_name")] = item.get("id")
+
+        return columns
+
+    def __upload_file(self, filepath, role):
+        """ Upload file
+
+        Args:
+            filepath (str): filepath
+            role (str): file role
+
+        Returns:
+            product_id (int): product id
+        """
+
+        data = self.api.upload_file(
+            self.product_id, filepath, role,
+            mimetype=self.__check_mimetype(filepath)
+        )
+
+        return data.get("id")
+
+    @staticmethod
+    def __check_mimetype(filepath):
+        return mimetypes.guess_type(filepath)[0]
 
     def save(self):
-        """_summary_
+        """ Finishs the upload by modifying the status in the database
         """
-        pass
+        self.api.finish_upload(self.product_id)
