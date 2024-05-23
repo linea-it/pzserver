@@ -398,8 +398,7 @@ class PzRequests:
 
         if upload_files:
             for key, value in upload_files.items():
-                with open(value, 'rb') as _file:
-                    files[key] = _file
+                files[key] = open(value, 'rb')    # pylint: disable=consider-using-with
 
         req = requests.Request(
             "POST",
