@@ -398,14 +398,18 @@ class PzRequests:
 
         if upload_files:
             for key, value in upload_files.items():
-                files[key] = open(value, 'rb')    # pylint: disable=consider-using-with
+                files[key] = open(value, "rb")  # pylint: disable=consider-using-with
 
         req = requests.Request(
             "POST",
             url,
             data=payload,
             files=files,
-            headers=dict({"Authorization": f"Token {self._token}",}),
+            headers=dict(
+                {
+                    "Authorization": f"Token {self._token}",
+                }
+            ),
         )
         return self._send_request(req.prepare())
 
@@ -645,7 +649,9 @@ class PzRequests:
             f"{self._base_api_url}products/{_id}/download", save_in
         )
 
-    def upload_basic_info(self, name, product_type, release=None, pz_code=None, description=None):
+    def upload_basic_info(
+        self, name, product_type, release=None, pz_code=None, description=None
+    ):
         """
         Upload product with basic informations
 
@@ -662,10 +668,14 @@ class PzRequests:
 
         if product_type:
             prodtype_obj = self.get_by_name("product-types", product_type)
+            if not prodtype_obj:
+                raise ValueError(f"Product type not found: {product_type}")
             product_type = prodtype_obj.get("id")
 
         if release:
             release_obj = self.get_by_name("releases", release)
+            if not release_obj:
+                raise ValueError(f"Release not found: {release}")
             release = release_obj.get("id")
 
         upload_data = {
@@ -675,7 +685,7 @@ class PzRequests:
             "official_product": False,
             "pz_code": pz_code,
             "description": description,
-            "status": 0    # status 0 is registering
+            "status": 0,  # status 0 is registering
         }
 
         upload = self._post_request(
@@ -688,7 +698,7 @@ class PzRequests:
         return upload.get("data")
 
     def upload_file(self, product_id, filepath, role, mimetype=None):
-        """ Upload file
+        """Upload file
 
         Args:
             product_id (int): product id
@@ -698,8 +708,8 @@ class PzRequests:
         """
 
         file_roles = {
-            'main': 0,
-            'auxiliary': 2, 
+            "main": 0,
+            "auxiliary": 2,
         }
 
         upload_file_data = {
@@ -711,8 +721,9 @@ class PzRequests:
         files = {"file": filepath}
 
         upload = self._upload_request(
-            f"{self._base_api_url}product-files/", payload=upload_file_data,
-            upload_files=files
+            f"{self._base_api_url}product-files/",
+            payload=upload_file_data,
+            upload_files=files,
         )
 
         if "success" in upload and upload["success"] is False:
@@ -721,14 +732,12 @@ class PzRequests:
         return upload.get("data")
 
     def registry_upload(self, product_id):
-        """ Registry upload
+        """Registry upload
 
         Args:
             id (int): product id
         """
-        data = self._get_request(
-            f"{self._base_api_url}products/{product_id}/registry/"
-        )
+        data = self._get_request(f"{self._base_api_url}products/{product_id}/registry/")
 
         if "success" in data and data["success"] is False:
             raise requests.exceptions.RequestException(data["message"])
@@ -736,7 +745,7 @@ class PzRequests:
         return data.get("data")
 
     def update_upload_column(self, id_attr, data):
-        """ Update upload column
+        """Update upload column
 
         Args:
             id_attr (int): attribute id
@@ -753,7 +762,7 @@ class PzRequests:
         return update.get("data")
 
     def finish_upload(self, product_id):
-        """ Finish upload
+        """Finish upload
 
         Args:
             product_id (int): product id

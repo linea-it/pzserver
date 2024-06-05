@@ -13,8 +13,8 @@ FONTCOLOREND = "\033[0m"
 
 
 class UploadData(BaseModel):
-    """ Upload data
-    """
+    """Upload data"""
+
     name: str
     product_type: str
     main_file: str
@@ -25,7 +25,7 @@ class UploadData(BaseModel):
 
     @property
     def system_columns(self):
-        """ Returns system columns """
+        """Returns system columns"""
         return {
             "id": ("ID", "meta.id;meta.main"),
             "ra": ("RA", "pos.eq.ra;meta.main"),
@@ -36,15 +36,15 @@ class UploadData(BaseModel):
             "survey": ("survey", "meta.curation"),
         }
 
-    @validator('main_file', pre=True)
-    def validate_main_file(cls, value):    # pylint: disable=no-self-argument
-        """ Validate main_file field """
+    @validator("main_file", pre=True)
+    def validate_main_file(cls, value):  # pylint: disable=no-self-argument
+        """Validate main_file field"""
         cls.__file_exist(value)
         return value
 
-    @validator('auxiliary_files', pre=True)
-    def validate_auxiliary_files(cls, value):    # pylint: disable=no-self-argument
-        """ Validate auxiliary_files """
+    @validator("auxiliary_files", pre=True)
+    def validate_auxiliary_files(cls, value):  # pylint: disable=no-self-argument
+        """Validate auxiliary_files"""
         if value:
             for aux in value:
                 cls.__file_exist(aux)
@@ -52,15 +52,14 @@ class UploadData(BaseModel):
 
     @staticmethod
     def __file_exist(filepath):
-        """ Verify if path exist """
+        """Verify if path exist"""
         _file = pathlib.Path(filepath)
         if not _file.is_file():
             raise FileNotFoundError(f"{_file} not found")
 
 
 class PzUpload:
-    """ Responsible for managing user interactions with upload.
-    """
+    """Responsible for managing user interactions with upload."""
 
     def __init__(self, upload: UploadData, api):
         """
@@ -81,13 +80,18 @@ class PzUpload:
 
     @property
     def columns(self):
-        """ Get columns """
+        """Get columns"""
         if not self.__columns:
             return None
         return self.__columns.keys()
 
+    @property
+    def system_columns(self):
+        """Get system columns"""
+        return self.upload.system_columns
+
     def make_columns_association(self, data: dict):
-        """ Associates upload columns
+        """Associates upload columns
 
         Args:
             data (dict): dictionary with associations
@@ -95,15 +99,12 @@ class PzUpload:
 
         for key, value in data.items():
             id_attr = self.__columns.get(key)
-            col = self.upload.system_columns.get(value.lower(), (value,None))
-            data = {
-                "ucd": col[1],
-                "alias": col[0]
-            }
+            col = self.upload.system_columns.get(value.lower(), (value, None))
+            data = {"ucd": col[1], "alias": col[0]}
             self.api.update_upload_column(id_attr, data)
 
     def __save_basic_info(self):
-        """ Saves the basic upload information in the database.
+        """Saves the basic upload information in the database.
 
         Args:
             product_id (int): product id
@@ -114,21 +115,19 @@ class PzUpload:
             self.upload.product_type,
             self.upload.release,
             self.upload.pz_code,
-            self.upload.description
+            self.upload.description,
         )
 
         return data.get("id")
 
     def __save_upload_files(self):
-        """ Saves the upload files in the database.
+        """Saves the upload files in the database.
 
         Returns:
             file_ids (list): file ids list
         """
 
-        files = [self.__upload_file(
-            self.upload.main_file, "main"
-        )]
+        files = [self.__upload_file(self.upload.main_file, "main")]
 
         if self.upload.auxiliary_files:
             for auxfile in self.upload.auxiliary_files:
@@ -143,7 +142,7 @@ class PzUpload:
         return files
 
     def get_product_columns(self):
-        """ Gets product columns in database
+        """Gets product columns in database
 
         Returns:
             columns (dict): dict with product columns
@@ -152,7 +151,7 @@ class PzUpload:
             data = self.api.get_by_attribute(
                 "product-contents", "product", self.product_id
             )
-            columns = self.__dict_columns(data.get('results'))
+            columns = self.__dict_columns(data.get("results"))
         except Exception as _:  # pylint: disable=broad-except
             columns = {}
 
@@ -160,7 +159,7 @@ class PzUpload:
 
     @staticmethod
     def __dict_columns(items):
-        """ Returns the product columns in dict
+        """Returns the product columns in dict
 
         Args:
             items (list): product columns
@@ -177,7 +176,7 @@ class PzUpload:
         return columns
 
     def __upload_file(self, filepath, role):
-        """ Upload file
+        """Upload file
 
         Args:
             filepath (str): filepath
@@ -188,8 +187,7 @@ class PzUpload:
         """
 
         data = self.api.upload_file(
-            self.product_id, filepath, role,
-            mimetype=self.__check_mimetype(filepath)
+            self.product_id, filepath, role, mimetype=self.__check_mimetype(filepath)
         )
 
         return data.get("id")
@@ -199,6 +197,5 @@ class PzUpload:
         return mimetypes.guess_type(filepath)[0]
 
     def save(self):
-        """ Finishs the upload by modifying the status in the database
-        """
+        """Finishs the upload by modifying the status in the database"""
         self.api.finish_upload(self.product_id)
