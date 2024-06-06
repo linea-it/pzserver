@@ -377,7 +377,7 @@ class PzServer:
                     return dataframe
                 results = self.__transform_df(dataframe, metadata)
             else:
-                dataframe = tables_io.read(file_path)  # default types in Astropy Table
+                dataframe = tables_io.read(file_path, tables_io.types.AP_TABLE)
 
                 if fmt == "astropy":
                     return dataframe
