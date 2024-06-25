@@ -1,0 +1,78 @@
+pzserver.catalog
+================
+
+.. py:module:: pzserver.catalog
+
+.. autoapi-nested-parse::
+
+   Classes responsible for loading the datasets (products) of the Pz Server app
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.catalog.Catalog
+   pzserver.catalog.SpeczCatalog
+   pzserver.catalog.TrainingSet
+
+
+Module Contents
+---------------
+
+.. py:class:: Catalog(data=None, metadata=None, metadata_df=None)
+
+   Main class for loading catalog
+
+
+   .. py:method:: display_metadata()
+
+      Displays the catalog's metadata
+
+      Displays a pandas.io.formats.style.Styler object
+      with the metadata informed by the product owner
+      (optimized for use in Jupyter Notebook).
+
+
+
+
+.. py:class:: SpeczCatalog(data=None, metadata=None, metadata_df=None)
+
+   Bases: :py:obj:`Catalog`
+
+
+   SpeczCatalog
+
+   :param Catalog: _description_
+   :type Catalog: _type_
+
+
+   .. py:method:: plot(savefig=False)
+
+      Very basic plots to characterize a Spec-z catalog.
+
+      :param savefig: option to save PNG figure (boolean)
+
+
+
+.. py:class:: TrainingSet(data=None, metadata=None, metadata_df=None)
+
+   Bases: :py:obj:`Catalog`
+
+
+   TrainingSet
+
+   :param Catalog: _description_
+   :type Catalog: _type_
+
+
+   .. py:method:: plot(mag_name=None, savefig=False)
+
+      Very basic plots to characterize a Training Set.
+
+      :param savefig: option to save PNG figure (boolean)
+
+
+
