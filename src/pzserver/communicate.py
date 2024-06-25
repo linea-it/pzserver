@@ -159,9 +159,9 @@ class PzRequests:
             ):
                 data.update({"data": api_response.json()})
         else:
-            txt = json.loads(api_response.text)
-            msg = txt.get("detail", txt)
-            msg = txt.get("error", msg)
+            msg = api_response.text
+            # msg = txt.get("detail", txt)
+            # msg = txt.get("error", msg)
             data.update({"success": False, "message": msg})
 
         return data
@@ -354,6 +354,65 @@ class PzRequests:
 
         return data
 
+    def _patch_request(self, url, data) -> dict:
+        """
+        Patchs a record to the API.
+
+        Args:
+            url (str): url to patch.
+            data (str): data to patch.
+
+        Returns:
+            dict: data of the request.
+        """
+
+        req = requests.Request(
+            "PATCH",
+            url,
+            # data=json.dumps(data),
+            data=data,
+            headers=dict(
+                {
+                    # "Accept": "application/json",
+                    # "Content-Type": "application/json",
+                    "Authorization": f"Token {self._token}",
+                }
+            ),
+        )
+
+        return self._send_request(req.prepare())
+
+    def _upload_request(self, url, payload, upload_files=None) -> dict:
+        """
+        Posts a record to the API.
+
+        Args:
+            url (str): url to post.
+            payload (str): payload to post.
+
+        Returns:
+            dict: data of the request.
+        """
+
+        files = {}
+
+        if upload_files:
+            for key, value in upload_files.items():
+                files[key] = open(value, "rb")  # pylint: disable=consider-using-with
+
+        req = requests.Request(
+            "POST",
+            url,
+            data=payload,
+            files=files,
+            headers=dict(
+                {
+                    "Authorization": f"Token {self._token}",
+                }
+            ),
+        )
+        return self._send_request(req.prepare())
+
     def _post_request(self, url, payload) -> dict:
         """
         Posts a record to the API.
@@ -469,6 +528,49 @@ class PzRequests:
 
         return data.get("data")
 
+    def get_by_name(self, entity, name) -> dict:
+        """
+        Gets a record from the entity by name.
+
+        Args:
+            entity (str): entity name  e.g. "releases", "products", "product-types"
+            _id (int): record id
+
+        Returns:
+            dict: record metadata
+        """
+
+        data = self.get_by_attribute(entity, "name", name)
+
+        nobj = data.get("count")
+        if nobj > 1:
+            raise requests.exceptions.RequestException(
+                f"The return should be unique [return = {nobj} objects]"
+            )
+
+        result = data.get("results")
+        return result[0] if result else None
+
+    def get_by_attribute(self, entity, attribute, value) -> dict:
+        """
+        Gets a record from the entity by some attribute.
+
+        Args:
+            entity (str): entity name  e.g. "releases", "products", "product-types"
+            attribute (str): entity field
+            value (str): entity field value
+
+        Returns:
+            dict: record metadata
+        """
+
+        data = self._get_request(f"{self._base_api_url}{entity}/?{attribute}={value}")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
     def options(self, entity) -> dict:
         """
         Gets options (filters, search and ordering) from the entity.
@@ -546,6 +648,135 @@ class PzRequests:
         return self._download_request(
             f"{self._base_api_url}products/{_id}/download", save_in
         )
+
+    def upload_basic_info(
+        self, name, product_type, release=None, pz_code=None, description=None
+    ):
+        """
+        Upload product with basic informations
+
+        Args:
+            name (str):
+            product_type (int):
+            release (int):
+            pz_code (str):
+            description (str):
+
+        Returns:
+            dict: record data
+        """
+
+        if product_type:
+            prodtype_obj = self.get_by_name("product-types", product_type)
+            if not prodtype_obj:
+                raise ValueError(f"Product type not found: {product_type}")
+            product_type = prodtype_obj.get("id")
+
+        if release:
+            release_obj = self.get_by_name("releases", release)
+            if not release_obj:
+                raise ValueError(f"Release not found: {release}")
+            release = release_obj.get("id")
+
+        upload_data = {
+            "display_name": name,
+            "product_type": product_type,
+            "release": release,
+            "official_product": False,
+            "pz_code": pz_code,
+            "description": description,
+            "status": 0,  # status 0 is registering
+        }
+
+        upload = self._post_request(
+            f"{self._base_api_url}products/", payload=upload_data
+        )
+
+        if "success" in upload and upload["success"] is False:
+            raise requests.exceptions.RequestException(upload["message"])
+
+        return upload.get("data")
+
+    def upload_file(self, product_id, filepath, role, mimetype=None):
+        """Upload file
+
+        Args:
+            product_id (int): product id
+            filepath (str): filepath
+            role (str): file role
+            mimetype (str, optional): file mimetype. Defaults to None.
+        """
+
+        file_roles = {
+            "main": 0,
+            "auxiliary": 2,
+        }
+
+        upload_file_data = {
+            "product": product_id,
+            "role": file_roles.get(role),
+            "type": mimetype,
+        }
+
+        files = {"file": filepath}
+
+        upload = self._upload_request(
+            f"{self._base_api_url}product-files/",
+            payload=upload_file_data,
+            upload_files=files,
+        )
+
+        if "success" in upload and upload["success"] is False:
+            raise requests.exceptions.RequestException(upload["message"])
+
+        return upload.get("data")
+
+    def registry_upload(self, product_id):
+        """Registry upload
+
+        Args:
+            id (int): product id
+        """
+        data = self._get_request(f"{self._base_api_url}products/{product_id}/registry/")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
+    def update_upload_column(self, id_attr, data):
+        """Update upload column
+
+        Args:
+            id_attr (int): attribute id
+            data (dict): attribute that will be updated
+        """
+
+        update = self._patch_request(
+            f"{self._base_api_url}product-contents/{id_attr}/", data=data
+        )
+
+        if "success" in update and update["success"] is False:
+            raise requests.exceptions.RequestException(update["message"])
+
+        return update.get("data")
+
+    def finish_upload(self, product_id):
+        """Finish upload
+
+        Args:
+            product_id (int): product id
+        """
+        data = {"status": 1}
+
+        update = self._patch_request(
+            f"{self._base_api_url}products/{product_id}/", data=data
+        )
+
+        if "success" in update and update["success"] is False:
+            raise requests.exceptions.RequestException(update["message"])
+
+        return update.get("data")
 
     def get_products(self, filters=None, status=1) -> list:
         """
