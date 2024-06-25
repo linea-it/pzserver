@@ -377,13 +377,16 @@ class PzServer:
                     return dataframe
                 results = self.__transform_df(dataframe, metadata)
             else:
+                dataframe = tables_io.read(file_path, tables_io.types.AP_TABLE)
+
                 if fmt == "astropy":
-                    return tables_io.read(file_path, tType=tables_io.types.AP_TABLE)
-                dataframe = tables_io.read(
-                    file_path, tType=tables_io.types.PD_DATAFRAME
-                )
+                    return dataframe
+
+                dataframe = dataframe.to_pandas()
+
                 if fmt == "pandas":
                     return dataframe
+
                 results = self.__transform_df(dataframe, metadata)
 
         print("Done!")

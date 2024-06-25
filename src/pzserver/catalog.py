@@ -3,7 +3,6 @@ Classes responsible for loading the datasets (products) of the Pz Server app
 """
 
 import matplotlib.pyplot as plt
-import pandas as pd
 from IPython.display import display
 
 
@@ -16,7 +15,8 @@ class Catalog:
         """
         Catalog class constructor
         """
-        self.data = pd.DataFrame(data)
+
+        self.data = data
         self.metadata = metadata
         self.columns = metadata.get("main_file").get("columns_association")
         self.metadata_df = metadata_df
