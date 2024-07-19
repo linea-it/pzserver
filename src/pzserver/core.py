@@ -385,7 +385,10 @@ class PzServer:
                 if fmt == "astropy":
                     return dataframe
 
-                dataframe = dataframe.to_pandas()
+                try:
+                    dataframe = dataframe.to_pandas()
+                except ValueError as _:
+                    dataframe = tables_io.read(file_path, tables_io.types.PD_DATAFRAME)
 
                 if fmt == "pandas":
                     return dataframe
