@@ -6,13 +6,13 @@ Tutorial Notebook 2 - Training Sets
 
 Contact author: `Julia Gschwend <mailto:julia@linea.org.br>`__
 
-Last verified run: **2024-Jul-04**
+Last verified run: **2024-Jul-22**
 
 Introduction
 ~~~~~~~~~~~~
 
-Welcome to the PZ Server tutorials. If you are reading this notebooks
-for the first time, we recommend to not skip the introduction notebook:
+Welcome to the PZ Server tutorials. If you are reading this notebook for
+the first time, we recommend not to skip the introduction notebook:
 ``0_introduction.ipynb`` also available in this same repository.
 
 Imports and Setup
@@ -55,34 +55,29 @@ particular product types. Let’s recap the product types available:
 
     <style type="text/css">
     </style>
-    <table id="T_38438">
+    <table id="T_846cd">
       <thead>
         <tr>
-          <th id="T_38438_level0_col0" class="col_heading level0 col0" >Product Type</th>
-          <th id="T_38438_level0_col1" class="col_heading level0 col1" >product_type</th>
-          <th id="T_38438_level0_col2" class="col_heading level0 col2" >Description</th>
+          <th id="T_846cd_level0_col0" class="col_heading level0 col0" >Product type</th>
+          <th id="T_846cd_level0_col1" class="col_heading level0 col1" >Description</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td id="T_38438_row0_col0" class="data row0 col0" >Spec-z Catalog</td>
-          <td id="T_38438_row0_col1" class="data row0 col1" >specz_catalog</td>
-          <td id="T_38438_row0_col2" class="data row0 col2" >Catalog of spectroscopic redshifts and positions (usually equatorial coordinates).</td>
+          <td id="T_846cd_row0_col0" class="data row0 col0" >Spec-z Catalog</td>
+          <td id="T_846cd_row0_col1" class="data row0 col1" >Catalog of spectroscopic redshifts and positions (usually equatorial coordinates).</td>
         </tr>
         <tr>
-          <td id="T_38438_row1_col0" class="data row1 col0" >Training Set</td>
-          <td id="T_38438_row1_col1" class="data row1 col1" >training_set</td>
-          <td id="T_38438_row1_col2" class="data row1 col2" >Training set for photo-z algorithms (tabular data). It usually contains magnitudes, errors, and true redshifts.</td>
+          <td id="T_846cd_row1_col0" class="data row1 col0" >Training Set</td>
+          <td id="T_846cd_row1_col1" class="data row1 col1" >Training set for photo-z algorithms (tabular data). It usually contains magnitudes, errors, and true redshifts.</td>
         </tr>
         <tr>
-          <td id="T_38438_row2_col0" class="data row2 col0" >Validation Results</td>
-          <td id="T_38438_row2_col1" class="data row2 col1" >validation_results</td>
-          <td id="T_38438_row2_col2" class="data row2 col2" >Results of a photo-z validation procedure (free format). Usually contains photo-z estimates (single estimates and/or pdf) of a validation set and photo-z validation metrics.</td>
+          <td id="T_846cd_row2_col0" class="data row2 col0" >Validation Results</td>
+          <td id="T_846cd_row2_col1" class="data row2 col1" >Results of a photo-z validation procedure (free format). Usually contains photo-z estimates (single estimates and/or pdf) of a validation set and photo-z validation metrics.</td>
         </tr>
         <tr>
-          <td id="T_38438_row3_col0" class="data row3 col0" >Photo-z Table</td>
-          <td id="T_38438_row3_col1" class="data row3 col1" >photoz_table</td>
-          <td id="T_38438_row3_col2" class="data row3 col2" >Results of a photo-z estimation procedure. If the data is larger than the file upload limit (200MB), the product entry stores only the metadata (instructions on accessing the data should be provided in the description field.</td>
+          <td id="T_846cd_row3_col0" class="data row3 col0" >Photo-z Table</td>
+          <td id="T_846cd_row3_col1" class="data row3 col1" >Results of a photo-z estimation procedure. If the data is larger than the file upload limit (200MB), the product entry stores only the metadata (instructions on accessing the data should be provided in the description field.</td>
         </tr>
       </tbody>
     </table>
@@ -124,14 +119,14 @@ LSST Objects Catalog - ``float`` \* Observable errors: magnitude errors
 PZ Server Pipelines
 ^^^^^^^^^^^^^^^^^^^
 
-Trainind Sets can be uploaded by users on PZ Server website or via the
+Training Sets can be uploaded by users on PZ Server website or via the
 ``pzserver`` library. Also, they can be created as the spatial
 cross-matching between a given Spec-z Catalog previously registered in
 the system and an Object table from a given LSST Data Release available
 in the Brazilian IDAC by the PZ Sever’s pipeline “Training Set Maker”
 (under development). Any Training Set built by the pipeline is
-automaticaly registered as a regular user-generated data product and has
-no difference from the uploaded ones.
+automatically registered as a regular user-generated data product and
+has no difference from the uploaded ones.
 
 .. code:: ipython3
 
@@ -154,58 +149,58 @@ no difference from the uploaded ones.
 
     <style type="text/css">
     </style>
-    <table id="T_2e75f">
+    <table id="T_2f6aa">
       <thead>
         <tr>
-          <th id="T_2e75f_level0_col0" class="col_heading level0 col0" >key</th>
-          <th id="T_2e75f_level0_col1" class="col_heading level0 col1" >value</th>
+          <th id="T_2f6aa_level0_col0" class="col_heading level0 col0" >key</th>
+          <th id="T_2f6aa_level0_col1" class="col_heading level0 col1" >value</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td id="T_2e75f_row0_col0" class="data row0 col0" >id</td>
-          <td id="T_2e75f_row0_col1" class="data row0 col1" >9</td>
+          <td id="T_2f6aa_row0_col0" class="data row0 col0" >id</td>
+          <td id="T_2f6aa_row0_col1" class="data row0 col1" >9</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row1_col0" class="data row1 col0" >release</td>
-          <td id="T_2e75f_row1_col1" class="data row1 col1" >None</td>
+          <td id="T_2f6aa_row1_col0" class="data row1 col0" >release</td>
+          <td id="T_2f6aa_row1_col1" class="data row1 col1" >None</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row2_col0" class="data row2 col0" >product_type</td>
-          <td id="T_2e75f_row2_col1" class="data row2 col1" >Training Set</td>
+          <td id="T_2f6aa_row2_col0" class="data row2 col0" >product_type</td>
+          <td id="T_2f6aa_row2_col1" class="data row2 col1" >Training Set</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row3_col0" class="data row3 col0" >uploaded_by</td>
-          <td id="T_2e75f_row3_col1" class="data row3 col1" >gschwend</td>
+          <td id="T_2f6aa_row3_col0" class="data row3 col0" >uploaded_by</td>
+          <td id="T_2f6aa_row3_col1" class="data row3 col1" >gschwend</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row4_col0" class="data row4 col0" >internal_name</td>
-          <td id="T_2e75f_row4_col1" class="data row4 col1" >9_goldenspike_train_data_hdf5</td>
+          <td id="T_2f6aa_row4_col0" class="data row4 col0" >internal_name</td>
+          <td id="T_2f6aa_row4_col1" class="data row4 col1" >9_goldenspike_train_data_hdf5</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row5_col0" class="data row5 col0" >product_name</td>
-          <td id="T_2e75f_row5_col1" class="data row5 col1" >Goldenspike train data hdf5</td>
+          <td id="T_2f6aa_row5_col0" class="data row5 col0" >product_name</td>
+          <td id="T_2f6aa_row5_col1" class="data row5 col1" >Goldenspike train data hdf5</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row6_col0" class="data row6 col0" >official_product</td>
-          <td id="T_2e75f_row6_col1" class="data row6 col1" >False</td>
+          <td id="T_2f6aa_row6_col0" class="data row6 col0" >official_product</td>
+          <td id="T_2f6aa_row6_col1" class="data row6 col1" >False</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row7_col0" class="data row7 col0" >pz_code</td>
-          <td id="T_2e75f_row7_col1" class="data row7 col1" ></td>
+          <td id="T_2f6aa_row7_col0" class="data row7 col0" >pz_code</td>
+          <td id="T_2f6aa_row7_col1" class="data row7 col1" ></td>
         </tr>
         <tr>
-          <td id="T_2e75f_row8_col0" class="data row8 col0" >description</td>
-          <td id="T_2e75f_row8_col1" class="data row8 col1" >A mock training set created using the example notebook goldenspike.ipynb available in RAIL's repository.  
+          <td id="T_2f6aa_row8_col0" class="data row8 col0" >description</td>
+          <td id="T_2f6aa_row8_col1" class="data row8 col1" >A mock training set created using the example notebook goldenspike.ipynb available in RAIL's repository.  
     Test upload of files in hdf5 format.</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row9_col0" class="data row9 col0" >created_at</td>
-          <td id="T_2e75f_row9_col1" class="data row9 col1" >2023-03-29T19:12:59.746096Z</td>
+          <td id="T_2f6aa_row9_col0" class="data row9 col0" >created_at</td>
+          <td id="T_2f6aa_row9_col1" class="data row9 col1" >2023-03-29T19:12:59.746096Z</td>
         </tr>
         <tr>
-          <td id="T_2e75f_row10_col0" class="data row10 col0" >main_file</td>
-          <td id="T_2e75f_row10_col1" class="data row10 col1" >goldenspike_train_data.hdf5</td>
+          <td id="T_2f6aa_row10_col0" class="data row10 col0" >main_file</td>
+          <td id="T_2f6aa_row10_col1" class="data row10 col1" >goldenspike_train_data.hdf5</td>
         </tr>
       </tbody>
     </table>
