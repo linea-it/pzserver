@@ -6,13 +6,13 @@ Tutorial Notebook 1 - Spec-z Catalogs
 
 Contact author: `Julia Gschwend <mailto:julia@linea.org.br>`__
 
-Last verified run: **2024-Jul-04**
+Last verified run: **2024-Jul-22**
 
 Introduction
 ~~~~~~~~~~~~
 
-Welcome to the PZ Server tutorials. If you are reading this notebooks
-for the first time, we recommend to not skip the introduction notebook:
+Welcome to the PZ Server tutorials. If you are reading this notebook for
+the first time, we recommend not to skip the introduction notebook:
 ``0_introduction.ipynb`` also available in this same repository.
 
 Imports and Setup
@@ -55,34 +55,29 @@ particular product types. Let’s recap the product types available:
 
     <style type="text/css">
     </style>
-    <table id="T_b648b">
+    <table id="T_e14b7">
       <thead>
         <tr>
-          <th id="T_b648b_level0_col0" class="col_heading level0 col0" >Product Type</th>
-          <th id="T_b648b_level0_col1" class="col_heading level0 col1" >product_type</th>
-          <th id="T_b648b_level0_col2" class="col_heading level0 col2" >Description</th>
+          <th id="T_e14b7_level0_col0" class="col_heading level0 col0" >Product type</th>
+          <th id="T_e14b7_level0_col1" class="col_heading level0 col1" >Description</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td id="T_b648b_row0_col0" class="data row0 col0" >Spec-z Catalog</td>
-          <td id="T_b648b_row0_col1" class="data row0 col1" >specz_catalog</td>
-          <td id="T_b648b_row0_col2" class="data row0 col2" >Catalog of spectroscopic redshifts and positions (usually equatorial coordinates).</td>
+          <td id="T_e14b7_row0_col0" class="data row0 col0" >Spec-z Catalog</td>
+          <td id="T_e14b7_row0_col1" class="data row0 col1" >Catalog of spectroscopic redshifts and positions (usually equatorial coordinates).</td>
         </tr>
         <tr>
-          <td id="T_b648b_row1_col0" class="data row1 col0" >Training Set</td>
-          <td id="T_b648b_row1_col1" class="data row1 col1" >training_set</td>
-          <td id="T_b648b_row1_col2" class="data row1 col2" >Training set for photo-z algorithms (tabular data). It usually contains magnitudes, errors, and true redshifts.</td>
+          <td id="T_e14b7_row1_col0" class="data row1 col0" >Training Set</td>
+          <td id="T_e14b7_row1_col1" class="data row1 col1" >Training set for photo-z algorithms (tabular data). It usually contains magnitudes, errors, and true redshifts.</td>
         </tr>
         <tr>
-          <td id="T_b648b_row2_col0" class="data row2 col0" >Validation Results</td>
-          <td id="T_b648b_row2_col1" class="data row2 col1" >validation_results</td>
-          <td id="T_b648b_row2_col2" class="data row2 col2" >Results of a photo-z validation procedure (free format). Usually contains photo-z estimates (single estimates and/or pdf) of a validation set and photo-z validation metrics.</td>
+          <td id="T_e14b7_row2_col0" class="data row2 col0" >Validation Results</td>
+          <td id="T_e14b7_row2_col1" class="data row2 col1" >Results of a photo-z validation procedure (free format). Usually contains photo-z estimates (single estimates and/or pdf) of a validation set and photo-z validation metrics.</td>
         </tr>
         <tr>
-          <td id="T_b648b_row3_col0" class="data row3 col0" >Photo-z Table</td>
-          <td id="T_b648b_row3_col1" class="data row3 col1" >photoz_table</td>
-          <td id="T_b648b_row3_col2" class="data row3 col2" >Results of a photo-z estimation procedure. If the data is larger than the file upload limit (200MB), the product entry stores only the metadata (instructions on accessing the data should be provided in the description field.</td>
+          <td id="T_e14b7_row3_col0" class="data row3 col0" >Photo-z Table</td>
+          <td id="T_e14b7_row3_col1" class="data row3 col1" >Results of a photo-z estimation procedure. If the data is larger than the file upload limit (200MB), the product entry stores only the metadata (instructions on accessing the data should be provided in the description field.</td>
         </tr>
       </tbody>
     </table>
@@ -98,8 +93,8 @@ redshift measurements (or, analogously, true redshifts from
 simulations). A Spec-z Catalog can include data from a single
 spectroscopic survey or a combination of data from several sources. To
 be considered as a single Spec-z Catalog, the data should be provided as
-a single file to PZ Server’s the upload tool. For multi-survey catalogs,
-it is recommended to add the survey name or identification as an extra
+a single file to PZ Server’s upload tool. For multi-survey catalogs, it
+is recommended to add the survey name or identification as an extra
 column.
 
 Mandatory columns: \* Right ascension [degrees] - ``float`` \*
@@ -144,57 +139,57 @@ Let’s see an example of Spec-z Catalog:
 
     <style type="text/css">
     </style>
-    <table id="T_e23ef">
+    <table id="T_ff974">
       <thead>
         <tr>
-          <th id="T_e23ef_level0_col0" class="col_heading level0 col0" >key</th>
-          <th id="T_e23ef_level0_col1" class="col_heading level0 col1" >value</th>
+          <th id="T_ff974_level0_col0" class="col_heading level0 col0" >key</th>
+          <th id="T_ff974_level0_col1" class="col_heading level0 col1" >value</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td id="T_e23ef_row0_col0" class="data row0 col0" >id</td>
-          <td id="T_e23ef_row0_col1" class="data row0 col1" >14</td>
+          <td id="T_ff974_row0_col0" class="data row0 col0" >id</td>
+          <td id="T_ff974_row0_col1" class="data row0 col1" >14</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row1_col0" class="data row1 col0" >release</td>
-          <td id="T_e23ef_row1_col1" class="data row1 col1" >None</td>
+          <td id="T_ff974_row1_col0" class="data row1 col0" >release</td>
+          <td id="T_ff974_row1_col1" class="data row1 col1" >None</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row2_col0" class="data row2 col0" >product_type</td>
-          <td id="T_e23ef_row2_col1" class="data row2 col1" >Spec-z Catalog</td>
+          <td id="T_ff974_row2_col0" class="data row2 col0" >product_type</td>
+          <td id="T_ff974_row2_col1" class="data row2 col1" >Spec-z Catalog</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row3_col0" class="data row3 col0" >uploaded_by</td>
-          <td id="T_e23ef_row3_col1" class="data row3 col1" >gschwend</td>
+          <td id="T_ff974_row3_col0" class="data row3 col0" >uploaded_by</td>
+          <td id="T_ff974_row3_col1" class="data row3 col1" >gschwend</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row4_col0" class="data row4 col0" >internal_name</td>
-          <td id="T_e23ef_row4_col1" class="data row4 col1" >14_gama_specz_subsample</td>
+          <td id="T_ff974_row4_col0" class="data row4 col0" >internal_name</td>
+          <td id="T_ff974_row4_col1" class="data row4 col1" >14_gama_specz_subsample</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row5_col0" class="data row5 col0" >product_name</td>
-          <td id="T_e23ef_row5_col1" class="data row5 col1" >GAMA spec-z subsample</td>
+          <td id="T_ff974_row5_col0" class="data row5 col0" >product_name</td>
+          <td id="T_ff974_row5_col1" class="data row5 col1" >GAMA spec-z subsample</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row6_col0" class="data row6 col0" >official_product</td>
-          <td id="T_e23ef_row6_col1" class="data row6 col1" >False</td>
+          <td id="T_ff974_row6_col0" class="data row6 col0" >official_product</td>
+          <td id="T_ff974_row6_col1" class="data row6 col1" >False</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row7_col0" class="data row7 col0" >pz_code</td>
-          <td id="T_e23ef_row7_col1" class="data row7 col1" ></td>
+          <td id="T_ff974_row7_col0" class="data row7 col0" >pz_code</td>
+          <td id="T_ff974_row7_col1" class="data row7 col1" ></td>
         </tr>
         <tr>
-          <td id="T_e23ef_row8_col0" class="data row8 col0" >description</td>
-          <td id="T_e23ef_row8_col1" class="data row8 col1" >A small subsample of the GAMA DR3 spec-z catalog (Baldry et al. 2018) as an example of a typical spec-z catalog from the literature.</td>
+          <td id="T_ff974_row8_col0" class="data row8 col0" >description</td>
+          <td id="T_ff974_row8_col1" class="data row8 col1" >A small subsample of the GAMA DR3 spec-z catalog (Baldry et al. 2018) as an example of a typical spec-z catalog from the literature.</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row9_col0" class="data row9 col0" >created_at</td>
-          <td id="T_e23ef_row9_col1" class="data row9 col1" >2023-03-29T20:02:45.223568Z</td>
+          <td id="T_ff974_row9_col0" class="data row9 col0" >created_at</td>
+          <td id="T_ff974_row9_col1" class="data row9 col1" >2023-03-29T20:02:45.223568Z</td>
         </tr>
         <tr>
-          <td id="T_e23ef_row10_col0" class="data row10 col0" >main_file</td>
-          <td id="T_e23ef_row10_col1" class="data row10 col1" >specz_subsample_gama_example.csv</td>
+          <td id="T_ff974_row10_col0" class="data row10 col0" >main_file</td>
+          <td id="T_ff974_row10_col1" class="data row10 col1" >specz_subsample_gama_example.csv</td>
         </tr>
       </tbody>
     </table>
