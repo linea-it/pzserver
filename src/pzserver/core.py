@@ -68,9 +68,12 @@ class PzServer:
         descriptions (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_product_types()
-        dataframe = pd.DataFrame(results_dict, columns=["display_name", "description"])
+        dataframe = pd.DataFrame(results_dict, columns=["display_name", "name", "description"])
         dataframe.rename(
-            columns={"display_name": "Product type", "description": "Description"},
+            columns={
+                     "display_name": "Product Type", 
+                     "name": "product_type",
+                     "description": "Description"},
             inplace=True,
         )
         display(dataframe.style.hide(axis="index"))
@@ -99,7 +102,7 @@ class PzServer:
         results_dict = self.get_users()
         dataframe = pd.DataFrame(results_dict, columns=["username", "last_name"])
         dataframe.rename(
-            columns={"username": "GitHub username", "last_name": "name"}, inplace=True
+            columns={"username": "GitHub Username", "last_name": "Name"}, inplace=True
         )
         display(dataframe.style.hide(axis="index"))
 
