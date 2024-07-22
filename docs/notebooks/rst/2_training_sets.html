@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo-z Server &mdash; pzserver 0.1.dev1+ged91100 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=c758b81a"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Photo-z Server" href="1_specz_catalogs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../nbs.html">Notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="0_introduction.html">Photo-z Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0_introduction.html#the-pz-server">The PZ Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="0_introduction.html#the-pz-server-api-python-library-pzserver">The PZ Server API (Python library <code class="docutils literal notranslate"><span class="pre">pzserver</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_specz_catalogs.html">Specz Catalogs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Training Sets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tutorial-notebook-2-training-sets">Tutorial Notebook 2 - Training Sets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#imports-and-setup">Imports and Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#product-types">Product types</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#training-sets">Training Sets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#users-feedback">Users feedback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../nbs.html">Notebooks</a></li>
+      <li class="breadcrumb-item active">Photo-z Server</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="photo-z-server">
+<h1>Photo-z Server<a class="headerlink" href="#photo-z-server" title="Link to this heading"></a></h1>
+<section id="tutorial-notebook-2-training-sets">
+<h2>Tutorial Notebook 2 - Training Sets<a class="headerlink" href="#tutorial-notebook-2-training-sets" title="Link to this heading"></a></h2>
+<p>Contact author: <a class="reference external" href="mailto:julia&#37;&#52;&#48;linea&#46;org&#46;br">Julia Gschwend</a></p>
+<p>Last verified run: <strong>2024-Jul-22</strong></p>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h3>
+<p>Welcome to the PZ Server tutorials. If you are reading this notebook for
+the first time, we recommend not to skip the introduction notebook:
+<code class="docutils literal notranslate"><span class="pre">0_introduction.ipynb</span></code> also available in this same repository.</p>
+</section>
+<section id="imports-and-setup">
+<h3>Imports and Setup<a class="headerlink" href="#imports-and-setup" title="Link to this heading"></a></h3>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pzserver</span> <span class="kn">import</span> <span class="n">PzServer</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># pz_server = PzServer(token=&quot;&lt;your token&gt;&quot;, host=&quot;pz-dev&quot;) # &quot;pz-dev&quot; is the temporary host for test phase</span>
+</pre></div>
+</div>
+<p>For convenience, the token can be saved into a file named as
+<code class="docutils literal notranslate"><span class="pre">token.txt</span></code> (which is already listed in the .gitignore file in this
+repository).</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;token.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">pz_server</span> <span class="o">=</span> <span class="n">PzServer</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;pz-dev&quot;</span><span class="p">)</span> <span class="c1"># &quot;pz-dev&quot; is the temporary host for test phase</span>
+</pre></div>
+</div>
+</section>
+<section id="product-types">
+<h3>Product types<a class="headerlink" href="#product-types" title="Link to this heading"></a></h3>
+<p>The PZ Server API provides Python classes with useful methods to handle
+particular product types. Let’s recap the product types available:</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_product_types</span><span class="p">()</span>
+</pre></div>
+</div>
+<style type="text/css">
+</style>
+<table id="T_846cd">
+  <thead>
+    <tr>
+      <th id="T_846cd_level0_col0" class="col_heading level0 col0" >Product type</th>
+      <th id="T_846cd_level0_col1" class="col_heading level0 col1" >Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_846cd_row0_col0" class="data row0 col0" >Spec-z Catalog</td>
+      <td id="T_846cd_row0_col1" class="data row0 col1" >Catalog of spectroscopic redshifts and positions (usually equatorial coordinates).</td>
+    </tr>
+    <tr>
+      <td id="T_846cd_row1_col0" class="data row1 col0" >Training Set</td>
+      <td id="T_846cd_row1_col1" class="data row1 col1" >Training set for photo-z algorithms (tabular data). It usually contains magnitudes, errors, and true redshifts.</td>
+    </tr>
+    <tr>
+      <td id="T_846cd_row2_col0" class="data row2 col0" >Validation Results</td>
+      <td id="T_846cd_row2_col1" class="data row2 col1" >Results of a photo-z validation procedure (free format). Usually contains photo-z estimates (single estimates and/or pdf) of a validation set and photo-z validation metrics.</td>
+    </tr>
+    <tr>
+      <td id="T_846cd_row3_col0" class="data row3 col0" >Photo-z Table</td>
+      <td id="T_846cd_row3_col1" class="data row3 col1" >Results of a photo-z estimation procedure. If the data is larger than the file upload limit (200MB), the product entry stores only the metadata (instructions on accessing the data should be provided in the description field.</td>
+    </tr>
+  </tbody>
+</table></section>
+</section>
+<section id="training-sets">
+<h2>Training Sets<a class="headerlink" href="#training-sets" title="Link to this heading"></a></h2>
+<p>In the context of the PZ Server, Training Sets are defined as the
+product of matching (spatially) a given Spec-z Catalog (single survey or
+compilation) to the photometric data, in this case, the LSST Objects
+Catalog. The PZ Server API offers a tool called <em>Training Set Maker</em> for
+users to build customized Training Sets based on the Spec-z Catalogs
+available. Please see the companion Jupyter Notebook
+<code class="docutils literal notranslate"><span class="pre">pz_tsm_tutorial.ipynb</span></code> for details.</p>
+<p><em>Note 1: Commonly the training set is split into two or more subsets for
+photo-z validation purposes. If the Training Set owner has previously
+defined which objects should belong to each subset (trainining and
+validation/test sets), this information must be available as an extra
+column in the table or as clear instructions for reproducing the subsets
+separation in the data product description.</em></p>
+<p><em>Note 2: The PZ Server only supports catalog-level Training Sets.
+Image-based Training Sets, e.g., for deep-learning algorithms, are not
+supported yet.</em></p>
+<p>Mandatory column: * Spectroscopic (or true) redshift - <code class="docutils literal notranslate"><span class="pre">float</span></code></p>
+<p>Other expected columns * Object ID from LSST Objects Catalog -
+<code class="docutils literal notranslate"><span class="pre">integer</span></code> * Observables: magnitudes (and/or colors, or fluxes) from
+LSST Objects Catalog - <code class="docutils literal notranslate"><span class="pre">float</span></code> * Observable errors: magnitude errors
+(and/or color errors, or flux errors) from LSST Objects Catalog -
+<code class="docutils literal notranslate"><span class="pre">float</span></code> * Right ascension [degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code> * Declination
+[degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code> * Quality Flag - <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">string</span></code> * Subset Flag - <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code></p>
+<p>Training Sets can be uploaded by users on PZ Server website or via the
+<code class="docutils literal notranslate"><span class="pre">pzserver</span></code> library. Also, they can be created as the spatial
+cross-matching between a given Spec-z Catalog previously registered in
+the system and an Object table from a given LSST Data Release available
+in the Brazilian IDAC by the PZ Sever’s pipeline “Training Set Maker”
+(under development). Any Training Set built by the pipeline is
+automatically registered as a regular user-generated data product and
+has no difference from the uploaded ones.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Connecting to PZ Server...
+Done!
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+<style type="text/css">
+</style>
+<table id="T_2f6aa">
+  <thead>
+    <tr>
+      <th id="T_2f6aa_level0_col0" class="col_heading level0 col0" >key</th>
+      <th id="T_2f6aa_level0_col1" class="col_heading level0 col1" >value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="T_2f6aa_row0_col0" class="data row0 col0" >id</td>
+      <td id="T_2f6aa_row0_col1" class="data row0 col1" >9</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row1_col0" class="data row1 col0" >release</td>
+      <td id="T_2f6aa_row1_col1" class="data row1 col1" >None</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row2_col0" class="data row2 col0" >product_type</td>
+      <td id="T_2f6aa_row2_col1" class="data row2 col1" >Training Set</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row3_col0" class="data row3 col0" >uploaded_by</td>
+      <td id="T_2f6aa_row3_col1" class="data row3 col1" >gschwend</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row4_col0" class="data row4 col0" >internal_name</td>
+      <td id="T_2f6aa_row4_col1" class="data row4 col1" >9_goldenspike_train_data_hdf5</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row5_col0" class="data row5 col0" >product_name</td>
+      <td id="T_2f6aa_row5_col1" class="data row5 col1" >Goldenspike train data hdf5</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row6_col0" class="data row6 col0" >official_product</td>
+      <td id="T_2f6aa_row6_col1" class="data row6 col1" >False</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row7_col0" class="data row7 col0" >pz_code</td>
+      <td id="T_2f6aa_row7_col1" class="data row7 col1" ></td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row8_col0" class="data row8 col0" >description</td>
+      <td id="T_2f6aa_row8_col1" class="data row8 col1" >A mock training set created using the example notebook goldenspike.ipynb available in RAIL's repository.
+Test upload of files in hdf5 format.</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row9_col0" class="data row9 col0" >created_at</td>
+      <td id="T_2f6aa_row9_col1" class="data row9 col1" >2023-03-29T19:12:59.746096Z</td>
+    </tr>
+    <tr>
+      <td id="T_2f6aa_row10_col0" class="data row10 col0" >main_file</td>
+      <td id="T_2f6aa_row10_col1" class="data row10 col1" >goldenspike_train_data.hdf5</td>
+    </tr>
+  </tbody>
+</table><p>Display basic statistics</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>mag_err_g_lsst</th>
+      <th>mag_err_i_lsst</th>
+      <th>mag_err_r_lsst</th>
+      <th>mag_err_u_lsst</th>
+      <th>mag_err_y_lsst</th>
+      <th>mag_err_z_lsst</th>
+      <th>mag_g_lsst</th>
+      <th>mag_i_lsst</th>
+      <th>mag_r_lsst</th>
+      <th>mag_u_lsst</th>
+      <th>mag_y_lsst</th>
+      <th>mag_z_lsst</th>
+      <th>redshift</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>62.000000</td>
+      <td>62.000000</td>
+      <td>62.000000</td>
+      <td>61.000000</td>
+      <td>61.000000</td>
+      <td>62.000000</td>
+      <td>62.000000</td>
+      <td>62.000000</td>
+      <td>62.000000</td>
+      <td>61.000000</td>
+      <td>61.000000</td>
+      <td>62.000000</td>
+      <td>62.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.038182</td>
+      <td>0.016165</td>
+      <td>0.018770</td>
+      <td>0.188050</td>
+      <td>0.054682</td>
+      <td>0.021478</td>
+      <td>24.820000</td>
+      <td>23.384804</td>
+      <td>24.003970</td>
+      <td>25.446008</td>
+      <td>22.932354</td>
+      <td>23.074481</td>
+      <td>0.780298</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.036398</td>
+      <td>0.010069</td>
+      <td>0.013750</td>
+      <td>0.193747</td>
+      <td>0.115875</td>
+      <td>0.014961</td>
+      <td>1.314112</td>
+      <td>1.381587</td>
+      <td>1.387358</td>
+      <td>1.269277</td>
+      <td>1.540284</td>
+      <td>1.400673</td>
+      <td>0.355365</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.028309</td>
+      <td>0.013390</td>
+      <td>0.016660</td>
+      <td>0.133815</td>
+      <td>0.034199</td>
+      <td>0.018540</td>
+      <td>25.069970</td>
+      <td>23.748506</td>
+      <td>24.470215</td>
+      <td>25.577029</td>
+      <td>23.293384</td>
+      <td>23.514185</td>
+      <td>0.764600</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.049576</td>
+      <td>0.024650</td>
+      <td>0.025802</td>
+      <td>0.238859</td>
+      <td>0.063585</td>
+      <td>0.032557</td>
+      <td>25.705486</td>
+      <td>24.488654</td>
+      <td>24.985225</td>
+      <td>26.263284</td>
+      <td>23.993010</td>
+      <td>24.165944</td>
+      <td>0.948494</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.198195</td>
+      <td>0.036932</td>
+      <td>0.065360</td>
+      <td>1.154073</td>
+      <td>0.909230</td>
+      <td>0.051883</td>
+      <td>27.296152</td>
+      <td>24.949645</td>
+      <td>26.036958</td>
+      <td>28.482391</td>
+      <td>27.342151</td>
+      <td>24.693132</td>
+      <td>1.755764</td>
+    </tr>
+  </tbody>
+</table>
+<p>8 rows × 13 columns</p>
+</div><p>The training set object has a very basic plot method for quick
+visualization of catalog properties. For advanced interactive data
+visualization tips, we recommend the notebook
+<a class="reference external" href="https://github.com/rubin-dp0/tutorial-notebooks/blob/main/DP02_06b_Interactive_Catalog_Visualization.ipynb">DP02_06b_Interactive_Catalog_Visualization.ipynb</a>
+from Rubin Observatory’s DP0.2 <a class="reference external" href="https://github.com/rubin-dp0/tutorial-notebooks/tree/main">tutorial-notebooks
+repository</a>.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mag_name</span><span class="o">=</span><span class="s2">&quot;mag_i_lsst&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/output_18_0.png" src="../../_images/output_18_0.png" />
+<hr class="docutils" />
+<section id="users-feedback">
+<h3>Users feedback<a class="headerlink" href="#users-feedback" title="Link to this heading"></a></h3>
+<p>Is something important missing? <a class="reference external" href="https://github.com/linea-it/pzserver/issues/new">Click here to open an issue in the PZ
+Server library repository on
+GitHub</a>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="1_specz_catalogs.html" class="btn btn-neutral float-left" title="Photo-z Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
