@@ -649,6 +649,39 @@ class PzRequests:
             f"{self._base_api_url}products/{_id}/download", save_in
         )
 
+    def start_process(self, data):
+        """
+        Start process in Pz Server
+
+        Args:
+            data (dict): data process
+
+        Returns:
+            dict: record data
+        """
+
+        process = self._post_request(f"{self._base_api_url}processes/", payload=data)
+
+        if "success" in process and process["success"] is False:
+            raise requests.exceptions.RequestException(process["message"])
+
+        return process.get("data")
+
+    def stop_process(self, process_id):
+        """
+        Stop process in Pz Server
+
+        Args:
+            process_id (int): process ID
+        """
+
+        data = self._get_request(f"{self._base_api_url}processes/{process_id}/stop")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
     def upload_basic_info(
         self, name, product_type, release=None, pz_code=None, description=None
     ):
