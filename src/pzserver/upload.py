@@ -8,9 +8,6 @@ from typing import Optional
 
 from pydantic import BaseModel, validator
 
-FONTCOLORERR = "\033[38;2;255;0;0m"
-FONTCOLOREND = "\033[0m"
-
 
 class UploadData(BaseModel):
     """Upload data"""

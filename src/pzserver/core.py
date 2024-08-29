@@ -3,6 +3,7 @@ Classes responsible for managing user interaction
 """
 
 import tempfile
+import time
 
 import pandas as pd
 import tables_io
@@ -11,6 +12,7 @@ from IPython.display import display
 
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
+from .process import TSMProcess
 from .upload import PzUpload, UploadData
 
 pd.options.display.max_colwidth = None
@@ -31,7 +33,7 @@ class PzServer:
         PzServer class constructor
 
         Args:
-            token: (str): user's token generated on the PZ Server website
+            token (str): user's token generated on the PZ Server website
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
@@ -68,12 +70,15 @@ class PzServer:
         descriptions (optimized for use in Jupyter Notebook).
         """
         results_dict = self.get_product_types()
-        dataframe = pd.DataFrame(results_dict, columns=["display_name", "name", "description"])
+        dataframe = pd.DataFrame(
+            results_dict, columns=["display_name", "name", "description"]
+        )
         dataframe.rename(
             columns={
-                     "display_name": "Product Type", 
-                     "name": "product_type",
-                     "description": "Description"},
+                "display_name": "Product Type",
+                "name": "product_type",
+                "description": "Description",
+            },
             inplace=True,
         )
         display(dataframe.style.hide(axis="index"))
@@ -398,10 +403,17 @@ class PzServer:
         print("Done!")
         return results
 
-    def upload(self, name: str, product_type: str, main_file: str,
-                    release: str = None, pz_code: str = None,
-                    auxiliary_files: list = None, description: str = None):
-        """ Make upload
+    def upload(
+        self,
+        name: str,
+        product_type: str,
+        main_file: str,
+        release: str = None,
+        pz_code: str = None,
+        auxiliary_files: list = None,
+        description: str = None,
+    ):
+        """Make upload
 
         Args:
             name (str): name
@@ -423,7 +435,7 @@ class PzServer:
             "main_file": main_file,
             "auxiliary_files": auxiliary_files,
             "pz_code": pz_code,
-            "description": description
+            "description": description,
         }
 
         prod = UploadData(**data)
@@ -468,26 +480,34 @@ class PzServer:
         # return SpeczCatalog object
         raise NotImplementedError
 
-    def make_training_set(
-        self,
-        specz_catalog=None,
-        photo_catalog=None,
-        search_radius=1.0,
-        multiple_match_criteria="select closest",
-    ):
-        """_summary_
+    def make_training_set(self, name):
+        """
+        Make training set
 
         Args:
-            specz_catalog (_type_, optional): _description_. Defaults to None.
-            photo_catalog (_type_, optional): _description_. Defaults to None.
-            search_radius (float, optional): _description_. Defaults to 1.0.
-            multiple_match_criteria (str, optional): _description_. Defaults to "select closest".
+            name (str): training set name
 
-        Raises:
-            NotImplementedError: _description_
+        Return:
+            TSMProcess: TSMProcess object
         """
-        # "select closest"
-        # keep all
-        # show progress bar
-        # return
-        raise NotImplementedError
+        return TSMProcess(name, self.api)
+
+    def wait_processing(self, process):
+        """
+        Wait for processing to finish (30 minute tolerance time)
+
+        Args:
+            process (TSMProcess or CombSpeczProcess): process object
+
+        Return:
+            dict: process status
+        """
+
+        retry = 30
+        process.run()
+
+        while process.check_status() in ("Running", "Pending") and retry:
+            time.sleep(60)
+            retry = retry - 1
+
+        return process.check_status()
