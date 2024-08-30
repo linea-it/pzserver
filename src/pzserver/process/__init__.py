@@ -2,38 +2,38 @@
 Classes responsible for managing user interaction with processes
 """
 
-from .pipeline import Pipeline
+from pzserver.pipeline import Pipeline
 
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
 
 
-class TSMProcess:
-    """Responsible for managing user interactions with TSM process."""
+class Process:
+    """ Responsible for managing user interactions with process """
 
     # pylint: disable=too-many-instance-attributes
     # Eight is reasonable in this case.
 
-    def __init__(self, name, api):
-        """TSM process class constructor
+    def __init__(self, pipeline, name, api):
+        """Process class constructor
 
         Args:
-            name (str): TSM name
+            pipeline (str): Pipeline name
+            name (str): Product name
             api (PzRequests): PzRequests
         """
 
         self.__api = api
         self.name = name
         self.comment = None
-        self.pipeline = Pipeline("training_set_maker", self.__api)
+        self.pipeline = Pipeline(pipeline, self.__api)
         self.__config = self.pipeline.parameters
-        self.__release = None
-        self.__specz = None
+        self.__inputs = []
         self.__process = None
         self.__upload = None
 
     def __available_product_types_by_attribute(self, attr):
-        """List the product types available for TSM by attribute
+        """List the product types available by attribute
 
         Returns:
             list: product types available
@@ -46,7 +46,7 @@ class TSMProcess:
         return available_inputs
 
     def available_product_types(self):
-        """List the product types available for TSM
+        """List the product types available
 
         Returns:
             list: product types available
@@ -54,7 +54,7 @@ class TSMProcess:
         return self.__available_product_types_by_attribute("name")
 
     def available_product_types_id(self):
-        """List the product types id available for TSM
+        """List the product types id available
 
         Returns:
             list: product types id available
@@ -63,7 +63,7 @@ class TSMProcess:
 
     @property
     def output(self):
-        """TSM output info
+        """Process output info
 
         Returns:
             dict: output info
@@ -79,7 +79,7 @@ class TSMProcess:
 
     @property
     def process(self):
-        """TSM process info
+        """Process info
 
         Returns:
             dict: process info
@@ -94,69 +94,22 @@ class TSMProcess:
         }
 
     @property
-    def release(self):
-        """Gets release info
+    def inputs(self):
+        """Gets inputs
 
         Returns:
-            dict: release info
+            list: inputs
         """
-        return self.__release
+        return self.__inputs
 
-    def set_release(self, release_id=None, name=None):
-        """Set release
+    def append_input(self, input_id):
+        """Append input
 
         Args:
-            release_id (int, optional): release ID. Defaults to None.
-            name (str, optional): release name. Defaults to None.
-
-        Raises:
-            ValueError: when neither release_id nor name is informed, the raise is triggered
+            input_id (int): input id
         """
-        if release_id:
-            release = self.__api.get("releases", release_id)
-        elif name:
-            release = self.__api.get_by_name("releases", name)
-        else:
-            raise ValueError(f"{FONTCOLORERR}No release selected{FONTCOLOREND}")
-        self.__release = release
+        self.__inputs.append(input_id)
 
-    @property
-    def specz(self):
-        """Gets specz info
-
-        Returns:
-            dict: specz info
-        """
-        return self.__specz
-
-    def set_specz(self, specz_id=None, internal_name=None):
-        """Set specz
-
-        Args:
-            specz_id (int, optional): product ID. Defaults to None.
-            internal_name (str, optional): internal name. Defaults to None.
-
-        Raises:
-            ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
-        """
-        if specz_id:
-            specz = self.__api.get("products", specz_id)
-        elif internal_name:
-            specz = self.__api.get_by_attribute(
-                "products", "internal_name", internal_name
-            )
-            specz = specz.get("results")[0]
-        else:
-            raise ValueError(f"{FONTCOLORERR}No specz selected{FONTCOLOREND}")
-
-        specz_pt = specz.get("product_type")
-
-        if not specz_pt in self.available_product_types_id():
-            raise ValueError(
-                f"{FONTCOLORERR}Input is not of the expected type.{FONTCOLOREND}"
-            )
-
-        self.__specz = specz
 
     @property
     def config(self):
@@ -175,57 +128,87 @@ class TSMProcess:
         """
         self.__config.update(config)
 
-    @property
-    def summary(self):
+    def get_product(self, product_id=None, internal_name=None):
+        """_summary_
+
+        Args:
+            product_id (int, optional): product ID. Defaults to None.
+            internal_name (str, optional): internal name. Defaults to None.
+
+        Raises:
+            ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+        """
+
+        if product_id:
+            specz = self.__api.get("products", product_id)
+        elif internal_name:
+            specz = self.__api.get_by_attribute(
+                "products", "internal_name", internal_name
+            )
+            specz = specz.get("results")[0]
+        else:
+            raise ValueError(f"{FONTCOLORERR}No specz selected{FONTCOLOREND}")
+
+        specz_pt = specz.get("product_type")
+
+        if not specz_pt in self.available_product_types_id():
+            raise ValueError(
+                f"{FONTCOLORERR}Input is not of the expected type.{FONTCOLOREND}"
+            )
+
+        return specz
+
+    def summary(self, extra_info=None):
         """Summary of what will be executed"""
 
-        dn_specz = {
-            "name": self.specz.get("display_name"),
-            "internal_name": self.specz.get("internal_name"),
-            "id": self.specz.get("id"),
-        }
-
         print('-'*30)
-        print(f"Training Set Maker: {self.name}")
-        print(f"Release: {self.release.get('display_name')}")
-        print(f"Specz: {dn_specz}")
+        print(f"{self.pipeline.display_name}: {self.name}")
         print(f"Configuration: {self.config}")
+
+        if isinstance(extra_info, list):
+            for line in extra_info:
+                print(line)
+
         if self.output:
             print(f"Output: {self.output}")
+
         print(f"Status: {self.check_status()}")
         print('-'*30)
 
     def run(self):
-        """Starts TSM processing
-
-        Raises:
-            ValueError: Fired when no release is set
-            ValueError: Fired when no specz is set
+        """Starts processing
 
         Returns:
             dict: process info
         """
+
         if self.__process:
             print(f"Process has already been initialized: {self.process}")
             return {}
 
-        if not self.release:
-            raise ValueError(f"{FONTCOLORERR}No release selected{FONTCOLOREND}")
-
-        if not self.specz:
-            raise ValueError(f"{FONTCOLORERR}No specz selected{FONTCOLOREND}")
-
         data_process = {
-            "release": self.release.get("id"),
             "display_name": self.name,
             "used_config": {"param": self.config},
             "pipeline": self.pipeline.pipeline_id,
-            "inputs": [self.specz.get("id")],
+            "inputs": self.inputs,
         }
+        return self.submit(data_process)
 
-        process = self.__api.start_process(data_process)
-        data_process["id"] = process.get("id")
-        self.__process = data_process
+
+    def submit(self, data):
+        """Submit process
+
+        Args:
+            data (dict): process data
+
+        Returns:
+            dict: process info
+        """
+
+
+        process = self.__api.start_process(data)
+        data["id"] = process.get("id")
+        self.__process = data
         self.__upload = self.__api.get("products", process.get("upload"))
 
         return self.process
@@ -252,3 +235,4 @@ class TSMProcess:
             return "No process is running"
 
         return self.__api.stop_process(self.__process.get("id"))
+    
