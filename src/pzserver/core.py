@@ -12,8 +12,10 @@ from IPython.display import display
 
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
+
 from .process.csc import CSCProcess
 from .process.tsm import TSMProcess
+
 from .upload import PzUpload, UploadData
 
 pd.options.display.max_colwidth = None
@@ -493,6 +495,7 @@ class PzServer:
         Wait for processing to finish (30 minute tolerance time)
 
         Args:
+
             process (TSMProcess or CombSpeczProcess): process object
 
         Return:
