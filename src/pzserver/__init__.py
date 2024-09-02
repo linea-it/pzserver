@@ -7,3 +7,4 @@ TrainingSet:
 
 from .catalog import Catalog, SpeczCatalog, TrainingSet
 from .core import PzServer
+from .pipeline import Pipeline
