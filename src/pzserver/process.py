@@ -309,13 +309,21 @@ class TSMProcess(Process):
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
 
-        dn_specz = {
-            "name": self.specz.get("display_name"),
-            "internal_name": self.specz.get("internal_name"),
-            "id": self.specz.get("id"),
-        }
+        if not extra_info:
+            extra_info = []
 
-        extra_info = [f"Specz: {dn_specz}"]
+        if self.specz:
+            dn_specz = {
+                "name": self.specz.get("display_name"),
+                "internal_name": self.specz.get("internal_name"),
+                "id": self.specz.get("id"),
+            }
+
+            extra_info.append(f"Specz: {dn_specz}")
+
+        if self.release:
+            extra_info.append(f"Release: {self.release}")
+
         super().summary(extra_info=extra_info)
 
 
@@ -392,5 +400,10 @@ class CSCProcess(Process):
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
 
-        extra_info = [f"Input catalogs: {self.__catalogs}"]
+        if not extra_info:
+            extra_info = []
+
+        if self.input_catalogs:
+            extra_info.append(f"Input catalogs: {self.input_catalogs}")
+
         super().summary(extra_info=extra_info)
