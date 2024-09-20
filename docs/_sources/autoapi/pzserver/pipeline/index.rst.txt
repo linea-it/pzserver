@@ -1,0 +1,90 @@
+pzserver.pipeline
+=================
+
+.. py:module:: pzserver.pipeline
+
+.. autoapi-nested-parse::
+
+   Pipeline package
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.pipeline.Pipeline
+
+
+Module Contents
+---------------
+
+.. py:class:: Pipeline(name, api)
+
+   Pipeline data class
+
+
+   .. py:attribute:: __api
+
+
+   .. py:attribute:: __data
+
+
+   .. py:attribute:: acceptable_product_types
+      :value: []
+
+
+
+   .. py:attribute:: output_product_type
+
+
+   .. py:property:: pipeline_id
+      Get pipeline ID
+
+      :returns: pipeline ID
+      :rtype: int
+
+
+   .. py:property:: name
+      Get pipeline name
+
+      :returns: pipeline name
+      :rtype: str
+
+
+   .. py:property:: display_name
+      Get pipeline display name
+
+      :returns: pipeline display name
+      :rtype: str
+
+
+   .. py:property:: system_config
+      Get pipeline config
+
+      :returns: pipeline config
+      :rtype: dict
+
+
+   .. py:property:: parameters
+      Get pipeline parameters
+
+      :returns: pipeline parameters
+      :rtype: dict
+
+
+   .. py:property:: version
+      Get pipeline version
+
+      :returns: pipeline version
+      :rtype: str
+
+
+   .. py:property:: description
+      Get pipeline description
+
+      :returns: pipeline description
+      :rtype: str
+
+

@@ -1,0 +1,194 @@
+pzserver.upload
+===============
+
+.. py:module:: pzserver.upload
+
+.. autoapi-nested-parse::
+
+   Classes responsible for managing user interaction
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.upload.UploadData
+   pzserver.upload.PzUpload
+
+
+Module Contents
+---------------
+
+.. py:class:: UploadData(/, **data: Any)
+
+   Bases: :py:obj:`pydantic.BaseModel`
+
+
+   Upload data
+
+
+   .. py:attribute:: name
+      :type:  str
+
+
+   .. py:attribute:: product_type
+      :type:  str
+
+
+   .. py:attribute:: main_file
+      :type:  str
+
+
+   .. py:attribute:: release
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: pz_code
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:attribute:: auxiliary_files
+      :type:  Optional[list]
+      :value: None
+
+
+
+   .. py:attribute:: description
+      :type:  Optional[str]
+      :value: None
+
+
+
+   .. py:property:: system_columns
+      Returns system columns
+
+
+   .. py:method:: validate_main_file(value)
+
+      Validate main_file field
+
+
+
+   .. py:method:: validate_auxiliary_files(value)
+
+      Validate auxiliary_files
+
+
+
+   .. py:method:: __file_exist(filepath)
+      :staticmethod:
+
+
+      Verify if path exist
+
+
+
+.. py:class:: PzUpload(upload: UploadData, api)
+
+   Responsible for managing user interactions with upload.
+
+
+   .. py:attribute:: api
+
+
+   .. py:attribute:: upload
+
+
+   .. py:attribute:: product_id
+
+
+   .. py:attribute:: files_id
+
+
+   .. py:attribute:: __columns
+
+
+   .. py:property:: columns
+      Get columns
+
+
+   .. py:property:: system_columns
+      Get system columns
+
+
+   .. py:method:: make_columns_association(data: dict)
+
+      Associates upload columns
+
+      :param data: dictionary with associations
+      :type data: dict
+
+
+
+   .. py:method:: __save_basic_info()
+
+      Saves the basic upload information in the database.
+
+      :param product_id: product id
+      :type product_id: int
+
+
+
+   .. py:method:: __save_upload_files()
+
+      Saves the upload files in the database.
+
+      :returns: file ids list
+      :rtype: file_ids (list)
+
+
+
+   .. py:method:: get_product_columns()
+
+      Gets product columns in database
+
+      :returns: dict with product columns
+      :rtype: columns (dict)
+
+
+
+   .. py:method:: __dict_columns(items)
+      :staticmethod:
+
+
+      Returns the product columns in dict
+
+      :param items: product columns
+      :type items: list
+
+      :returns: product columns
+      :rtype: dict
+
+
+
+   .. py:method:: __upload_file(filepath, role)
+
+      Upload file
+
+      :param filepath: filepath
+      :type filepath: str
+      :param role: file role
+      :type role: str
+
+      :returns: product id
+      :rtype: product_id (int)
+
+
+
+   .. py:method:: __check_mimetype(filepath)
+      :staticmethod:
+
+
+
+   .. py:method:: save()
+
+      Finishs the upload by modifying the status in the database
+
+
+
