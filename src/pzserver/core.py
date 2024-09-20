@@ -12,7 +12,7 @@ from IPython.display import display
 
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
-from .process import TSMProcess
+from .process import CSCProcess, TSMProcess
 from .upload import PzUpload, UploadData
 
 pd.options.display.max_colwidth = None
@@ -463,22 +463,17 @@ class PzServer:
 
         return results
 
-    # ---- Training Set Maker methods ----#
-    def combine_specz_catalogs(self, catalog_list, duplicates_critera="smallest flag"):
-        """_summary_
+    def combine_specz_catalogs(self, name):
+        """
+        Make combine specz
 
         Args:
-            catalog_list (_type_): _description_
-            duplicates_critera (str, optional): _description_. Defaults to "smallest flag".
+            name (str): combine specz name
 
-        Raises:
-            NotImplementedError: _description_
+        Return:
+            CSCProcess: CSCProcess object
         """
-        # criteria: smallest flag, smallest error
-        # newest survey
-        # show progress bar
-        # return SpeczCatalog object
-        raise NotImplementedError
+        return CSCProcess(name, self.api)
 
     def make_training_set(self, name):
         """
@@ -497,6 +492,7 @@ class PzServer:
         Wait for processing to finish (30 minute tolerance time)
 
         Args:
+
             process (TSMProcess or CombSpeczProcess): process object
 
         Return:
