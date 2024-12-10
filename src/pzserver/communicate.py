@@ -626,7 +626,7 @@ class PzRequests:
 
         if column_association:
             assoc = self._get_request(
-                f"{self._base_api_url}product-contents?product={_id}",
+                f"{self._base_api_url}product-contents/?product={_id}",
             )
             if assoc.get("success", False):
                 data["columns_association"] = assoc.get("data").get("results")
@@ -675,7 +675,7 @@ class PzRequests:
             process_id (int): process ID
         """
 
-        data = self._get_request(f"{self._base_api_url}processes/{process_id}/stop")
+        data = self._get_request(f"{self._base_api_url}processes/{process_id}/stop/")
 
         if "success" in data and data["success"] is False:
             raise requests.exceptions.RequestException(data["message"])
