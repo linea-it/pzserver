@@ -423,6 +423,7 @@ disable=raw-checker-failed,
         use-symbolic-message-instead,
         missing-module-docstring,
         unnecessary-pass,
+        too-many-arguments,
 
 
 # Enable the message, report, category or checker with the given id(s). You can
