@@ -646,7 +646,7 @@ class PzRequests:
         """
 
         return self._download_request(
-            f"{self._base_api_url}products/{_id}/download", save_in
+            f"{self._base_api_url}products/{_id}/download/", save_in
         )
 
     def start_process(self, data):
