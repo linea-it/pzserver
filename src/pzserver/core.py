@@ -59,7 +59,7 @@ class PzServer:
         Returns:
             product types list
         """
-        return self.api.get_all("product-types")
+        return self.api.get_all("product-types", ordering="order")
 
     def display_product_types(self):
         """

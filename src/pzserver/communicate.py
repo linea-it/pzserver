@@ -491,18 +491,24 @@ class PzRequests:
 
         return list(resp.keys())
 
-    def get_all(self, entity) -> list:
+    def get_all(self, entity, ordering=None) -> list:
         """
         Returns a list with all records of the entity.
 
         Args:
             entity (str): entity name  e.g. "releases", "products", "product-types"
+            ordering (None or str): column name to be ordered
 
         Returns:
             list: list of records
         """
 
-        resp = self._get_request(f"{self._base_api_url}{entity}/")
+        uri = f"{self._base_api_url}{entity}/"
+
+        if ordering:
+            uri += f"?ordering={ordering}"
+
+        resp = self._get_request(uri)
 
         if "success" in resp and resp["success"] is False:
             raise requests.exceptions.RequestException(resp["message"])
