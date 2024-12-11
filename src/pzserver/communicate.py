@@ -491,18 +491,24 @@ class PzRequests:
 
         return list(resp.keys())
 
-    def get_all(self, entity) -> list:
+    def get_all(self, entity, ordering=None) -> list:
         """
         Returns a list with all records of the entity.
 
         Args:
             entity (str): entity name  e.g. "releases", "products", "product-types"
+            ordering (None or str): column name to be ordered
 
         Returns:
             list: list of records
         """
 
-        resp = self._get_request(f"{self._base_api_url}{entity}/")
+        uri = f"{self._base_api_url}{entity}/"
+
+        if ordering:
+            uri += f"?ordering={ordering}"
+
+        resp = self._get_request(uri)
 
         if "success" in resp and resp["success"] is False:
             raise requests.exceptions.RequestException(resp["message"])
@@ -626,7 +632,7 @@ class PzRequests:
 
         if column_association:
             assoc = self._get_request(
-                f"{self._base_api_url}product-contents?product={_id}",
+                f"{self._base_api_url}product-contents/?product={_id}",
             )
             if assoc.get("success", False):
                 data["columns_association"] = assoc.get("data").get("results")
@@ -646,7 +652,7 @@ class PzRequests:
         """
 
         return self._download_request(
-            f"{self._base_api_url}products/{_id}/download", save_in
+            f"{self._base_api_url}products/{_id}/download/", save_in
         )
 
     def start_process(self, data):
@@ -675,7 +681,7 @@ class PzRequests:
             process_id (int): process ID
         """
 
-        data = self._get_request(f"{self._base_api_url}processes/{process_id}/stop")
+        data = self._get_request(f"{self._base_api_url}processes/{process_id}/stop/")
 
         if "success" in data and data["success"] is False:
             raise requests.exceptions.RequestException(data["message"])
