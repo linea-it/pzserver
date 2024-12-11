@@ -1,0 +1,331 @@
+pzserver.process
+================
+
+.. py:module:: pzserver.process
+
+.. autoapi-nested-parse::
+
+   Classes responsible for managing user interaction with processes
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   pzserver.process.FONTCOLORERR
+   pzserver.process.FONTCOLOREND
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.process.Process
+   pzserver.process.TSMProcess
+   pzserver.process.CSCProcess
+
+
+Module Contents
+---------------
+
+.. py:data:: FONTCOLORERR
+   :value: '\x1b[38;2;255;0;0m'
+
+
+.. py:data:: FONTCOLOREND
+   :value: '\x1b[0m'
+
+
+.. py:class:: Process(pipeline, name, api)
+
+   Responsible for managing user interactions with process
+
+
+   .. py:attribute:: __api
+
+
+   .. py:attribute:: name
+
+
+   .. py:attribute:: comment
+      :value: None
+
+
+
+   .. py:attribute:: pipeline
+
+
+   .. py:attribute:: __config
+
+
+   .. py:attribute:: __inputs
+      :value: []
+
+
+
+   .. py:attribute:: __process
+      :value: None
+
+
+
+   .. py:attribute:: __upload
+      :value: None
+
+
+
+   .. py:method:: __available_product_types_by_attribute(attr)
+
+      List the product types available by attribute
+
+      :returns: product types available
+      :rtype: list
+
+
+
+   .. py:method:: available_product_types()
+
+      List the product types available
+
+      :returns: product types available
+      :rtype: list
+
+
+
+   .. py:method:: available_product_types_id()
+
+      List the product types id available
+
+      :returns: product types id available
+      :rtype: list
+
+
+
+   .. py:property:: output
+
+      Process output info
+
+      :returns: output info
+      :rtype: dict
+
+
+   .. py:property:: process
+
+      Process info
+
+      :returns: process info
+      :rtype: dict
+
+
+   .. py:property:: inputs
+
+      Gets inputs
+
+      :returns: inputs
+      :rtype: list
+
+
+   .. py:method:: append_input(input_id)
+
+      Append input
+
+      :param input_id: input id
+      :type input_id: int
+
+
+
+   .. py:property:: config
+
+      Gets config
+
+      :returns: config
+      :rtype: dict
+
+
+   .. py:method:: set_config(config)
+
+      Set config
+
+      :param config: config
+      :type config: dict
+
+
+
+   .. py:method:: get_product(product_id=None, internal_name=None)
+
+      _summary_
+
+      :param product_id: product ID. Defaults to None.
+      :type product_id: int, optional
+      :param internal_name: internal name. Defaults to None.
+      :type internal_name: str, optional
+
+      :raises ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+
+
+
+   .. py:method:: summary(extra_info=None)
+
+      Summary of what will be executed
+
+
+
+   .. py:method:: run()
+
+      Starts processing
+
+      :returns: process info
+      :rtype: dict
+
+
+
+   .. py:method:: submit(data)
+
+      Submit process
+
+      :param data: process data
+      :type data: dict
+
+      :returns: process info
+      :rtype: dict
+
+
+
+   .. py:method:: check_status()
+
+      Checks process status
+
+      :returns: process status
+      :rtype: dict
+
+
+
+   .. py:method:: stop()
+
+      Stop process
+
+      :returns: process info
+      :rtype: dict
+
+
+
+.. py:class:: TSMProcess(name, api)
+
+   Bases: :py:obj:`Process`
+
+
+   Responsible for managing user interactions with TSM process.
+
+
+   .. py:attribute:: __api
+
+
+   .. py:attribute:: __release
+      :value: None
+
+
+
+   .. py:attribute:: __specz
+      :value: None
+
+
+
+   .. py:property:: release
+
+      Gets release info
+
+      :returns: release info
+      :rtype: dict
+
+
+   .. py:method:: set_release(release_id=None, name=None)
+
+      Set release
+
+      :param release_id: release ID. Defaults to None.
+      :type release_id: int, optional
+      :param name: release name. Defaults to None.
+      :type name: str, optional
+
+      :raises ValueError: when neither release_id nor name is informed, the raise is triggered
+
+
+
+   .. py:property:: specz
+
+      Gets specz info
+
+      :returns: specz info
+      :rtype: dict
+
+
+   .. py:method:: set_specz(specz_id=None, internal_name=None)
+
+      Set specz
+
+      :param specz_id: product ID. Defaults to None.
+      :type specz_id: int, optional
+      :param internal_name: internal name. Defaults to None.
+      :type internal_name: str, optional
+
+      :raises ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+
+
+
+   .. py:method:: summary(extra_info=None)
+
+      Summary of what will be executed
+
+
+
+   .. py:method:: run()
+
+      Starts TSM processing
+
+      :returns: process info
+      :rtype: dict
+
+
+
+.. py:class:: CSCProcess(name, api)
+
+   Bases: :py:obj:`Process`
+
+
+   Responsible for managing user interactions with CSC process.
+
+
+   .. py:attribute:: __catalogs
+      :value: []
+
+
+
+   .. py:property:: input_catalogs
+
+      Gets input catalogs
+
+      :returns: catalog list
+      :rtype: list
+
+
+   .. py:method:: append_catalog(specz_id=None, internal_name=None)
+
+      Append specz
+
+      :param specz_id: product ID. Defaults to None.
+      :type specz_id: int, optional
+      :param internal_name: internal name. Defaults to None.
+      :type internal_name: str, optional
+
+      :raises ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+
+
+
+   .. py:method:: summary(extra_info=None)
+
+      Summary of what will be executed
+
+
+
