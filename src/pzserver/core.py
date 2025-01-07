@@ -503,7 +503,6 @@ class PzServer:
         process.run()
 
         print("Process submitted successfully, waiting for completion...")
-        print(f"Status: {process.check_status()}")
 
         while process.check_status() in ("Running", "Pending") and retry:
             time.sleep(30)
