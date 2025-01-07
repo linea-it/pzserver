@@ -135,9 +135,9 @@ class PzServer:
         names (optimized for use in Jupyter Notebook).
         """
         results_dict = self.api.get_all("releases")
-        dataframe = pd.DataFrame(results_dict, columns=["display_name", "description"])
+        dataframe = pd.DataFrame(results_dict, columns=["name", "display_name", "description"])
         dataframe.rename(
-            columns={"display_name": "Release", "description": "Description"},
+            columns={"name": "Name", "display_name": "Release", "description": "Description"},
             inplace=True,
         )
         display(dataframe.style.hide(axis="index"))
@@ -475,7 +475,7 @@ class PzServer:
         """
         return CSCProcess(name, self.api)
 
-    def make_training_set(self, name):
+    def training_set_maker(self, name):
         """
         Make training set
 
@@ -487,7 +487,7 @@ class PzServer:
         """
         return TSMProcess(name, self.api)
 
-    def wait_processing(self, process):
+    def run_and_wait(self, process):
         """
         Wait for processing to finish (30 minute tolerance time)
 
@@ -499,11 +499,29 @@ class PzServer:
             dict: process status
         """
 
-        retry = 30
+        retry = 60
         process.run()
 
+        print("Process submitted successfully, waiting for completion...")
+        print(f"Status: {process.check_status()}")
+
         while process.check_status() in ("Running", "Pending") and retry:
-            time.sleep(60)
+            time.sleep(30)
             retry = retry - 1
 
-        return process.check_status()
+        check_status = process.check_status()
+
+        if retry == 0:
+            msg = "This process is taking longer than 30 minutes, please "
+            msg += "continue monitoring it asynchronously with the "
+            msg += "check_status() method"
+            print(f"{FONTCOLORERR}{msg}{FONTCOLOREND}")
+
+        elif check_status == "Failed":
+            msg = f"Process failed with the following error: {process.output.get('error')}"
+            print(f"{FONTCOLORERR}{msg}{FONTCOLOREND}")
+
+        elif check_status == "Successful":
+            msg = f"Done! Results registered as ID={process.output.get('id')} "
+            msg += f"(internal_name: {process.output.get('internal_name')})"
+            print(msg)

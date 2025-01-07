@@ -110,6 +110,10 @@ class Process:
         """
         self.__inputs.append(input_id)
 
+    def empty_input(self):
+        """ Empty inputs list
+        """
+        self.__inputs = []
 
     @property
     def config(self):
@@ -265,12 +269,12 @@ class TSMProcess(Process):
         """
         return self.__release
 
-    def set_release(self, release_id=None, name=None):
+    def set_release(self, name=None, release_id=None):
         """Set release
 
         Args:
-            release_id (int, optional): release ID. Defaults to None.
             name (str, optional): release name. Defaults to None.
+            release_id (int, optional): release ID. Defaults to None.
 
         Raises:
             ValueError: when neither release_id nor name is informed, the raise is triggered
@@ -303,7 +307,9 @@ class TSMProcess(Process):
             ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
         """
 
+
         self.__specz = self.get_product(product_id=specz_id, internal_name=internal_name)
+        self.empty_input()
         self.append_input(self.specz.get("id"))
 
     def summary(self, extra_info=None):
@@ -387,15 +393,17 @@ class CSCProcess(Process):
         """
 
         specz = self.get_product(product_id=specz_id, internal_name=internal_name)
+        specz_id = specz.get("id")
 
-        dn_specz = {
-            "name": specz.get("display_name"),
-            "internal_name": specz.get("internal_name"),
-            "id": specz.get("id"),
-        }
+        if not specz_id in self.inputs:
+            dn_specz = {
+                "name": specz.get("display_name"),
+                "internal_name": specz.get("internal_name"),
+                "id": specz_id,
+            }
 
-        self.__catalogs.append(dn_specz)
-        self.append_input(specz.get("id"))
+            self.__catalogs.append(dn_specz)
+            self.append_input(specz_id)
 
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
