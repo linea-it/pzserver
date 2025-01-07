@@ -499,17 +499,29 @@ class PzServer:
             dict: process status
         """
 
-        retry = 30
+        retry = 60
         process.run()
 
+        print("Process submitted successfully, waiting for completion...")
+        print(f"Status: {process.check_status()}")
+
         while process.check_status() in ("Running", "Pending") and retry:
-            time.sleep(60)
+            time.sleep(30)
             retry = retry - 1
+
+        check_status = process.check_status()
 
         if retry == 0:
             msg = "This process is taking longer than 30 minutes, please "
             msg += "continue monitoring it asynchronously with the "
             msg += "check_status() method"
-            print(f"{FONTCOLORERR}msg{FONTCOLOREND}")
+            print(f"{FONTCOLORERR}{msg}{FONTCOLOREND}")
 
-        return process.check_status()
+        elif check_status == "Failed":
+            msg = f"Process failed with the following error: {process.output.get('error')}"
+            print(f"{FONTCOLORERR}{msg}{FONTCOLOREND}")
+
+        elif check_status == "Successful":
+            msg = f"Done! Results registered as ID={process.output.get('id')} "
+            msg += f"(internal_name: {process.output.get('internal_name')})"
+            print(msg)
