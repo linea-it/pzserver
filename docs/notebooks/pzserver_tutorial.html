@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo-z Server Tutorial Notebook &mdash; pzserver 0.1.dev1+gda915d5 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f12fc1bc"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoapi/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nbs.html">Notebooks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>Photo-z Server</strong>  Tutorial Notebook</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <p><img alt="21e60fbc59634533a0377df044ee845d" class="no-scaled-link" src="../_images/linea.png" style="width: 140px;" /> <img alt="fe17112d577b4e569560c36a8cfe0163" class="no-scaled-link" src="../_images/rubin.png" style="width: 180px;" /></p>
+<section id="Photo-z-Server--Tutorial-Notebook">
+<h1><strong>Photo-z Server</strong>  Tutorial Notebook<a class="headerlink" href="#Photo-z-Server--Tutorial-Notebook" title="Link to this heading"></a></h1>
+<p>Contact author: <a class="reference external" href="mailto:julia&#37;&#52;&#48;linea&#46;org&#46;br">Julia Gschwend</a> Last verified run: <strong>2025-Jan-07</strong></p>
+<section id="Notebook-contents">
+<h2>Notebook contents<a class="headerlink" href="#Notebook-contents" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#The-PZ-Server-website"><span class="std std-ref">The PZ Server website</span></a></p></li>
+<li><p><a class="reference internal" href="#The-pzserver-Python-library"><span class="std std-ref">The pzserver Python library</span></a></p></li>
+<li><p><a class="reference internal" href="#Data-Products"><span class="std std-ref">Data product types</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Spec-z-Catalog"><span class="std std-ref">Spec-z Catalog</span></a></p></li>
+<li><p>Training Set</p></li>
+<li><p><a class="reference internal" href="#Training-Results"><span class="std std-ref">Training Results</span></a></p></li>
+<li><p><a class="reference internal" href="#Validation-Results"><span class="std std-ref">Validation Results</span></a></p></li>
+<li><p>PZ Tables</p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#PZ-Server-Pipelines"><span class="std std-ref">PZ Server Pipelines</span></a></p>
+<ul>
+<li><p><a class="reference internal" href="#Combine-Spec-z-Catalogs"><span class="std std-ref">Combine Spec-z Catalogs</span></a></p></li>
+<li><p><a class="reference internal" href="#Training-Set-Maker"><span class="std std-ref">Training Set Maker</span></a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="The-PZ-Server-website">
+<h2>The PZ Server website<a class="headerlink" href="#The-PZ-Server-website" title="Link to this heading"></a></h2>
+<center><p><img alt="652d4d4923b84c51a3c8e7d1f5fcbba6" src="../_images/ScreenshotPZServerHome.png" /></p>
+</center><section id="About-the-PZ-Server">
+<h3>About the PZ Server<a class="headerlink" href="#About-the-PZ-Server" title="Link to this heading"></a></h3>
+<p>The Photo-z (PZ) Server is an online service for the LSST Community to host and share lightweight PZ-related data products. The upload and download of data and metadata can be done at the website <a class="reference external" href="https://pz-server.linea.org.br/">pz-server.linea.org.br</a><span class="math notranslate nohighlight">\(^{\dagger}\)</span>. There, you will find two pages containing a list of data products each: one for official data products distributed by Rubin Observatory’s Data Management department and the other for user-generated data products.</p>
+<p>The PZ Server is developed and delivered by LIneA as part of the in-kind contribution program BRA-LIN to the Rubin Observatory. The service is hosted in the Brazilian IDAC, with access authorized to the LSST Community through <a class="reference external" href="https://data.lsst.cloud/">Rubin Science Platform (RSP)</a> login credentials. For more information about other contributions from BRA-LIN, please visit the <a class="reference external" href="https://linea-it.github.io/pz-lsst-inkind-doc/">PZ Server’s documentation page</a>.</p>
+<p><span class="math notranslate nohighlight">\(^{\dagger}\)</span> During the development phase, a test environment is available at <a class="reference external" href="https://pz-server-dev.linea.org.br/">pz-server-dev.linea.org.br</a>.</p>
+</section>
+<section id="How-to-upload-a-data-product-on-the-PZ-Server-website">
+<h3>How to upload a data product on the PZ Server website<a class="headerlink" href="#How-to-upload-a-data-product-on-the-PZ-Server-website" title="Link to this heading"></a></h3>
+<p>To upload a data product, click the button <strong>NEW PRODUCT</strong> on the top left of the <a class="reference external" href="https://pz-server-dev.linea.org.br/user_products">User-generated Data Products page</a></p>
+<center><p><img alt="3cec85623b264eea896084869e1b7a2d" src="../_images/ScreenshotNewProductButton.png" /></p>
+</center><p>and fill in the Upload Form with relevant metadata.</p>
+<center><p><img alt="f2fbe7c859e24b68b6e74a5bbdf03e3b" src="../_images/ScreenshotUploadForm.png" /></p>
+</center></section>
+<section id="How-to-download-a-data-product-from-the-PZ-Server-website">
+<h3>How to download a data product from the PZ Server website<a class="headerlink" href="#How-to-download-a-data-product-from-the-PZ-Server-website" title="Link to this heading"></a></h3>
+<p>To download a data product available on the Photo-z Server, go to one of the two data products’ pages. The <strong>download</strong> button is on the right side of each data product. Also, there are buttons to <strong>share</strong>, <strong>remove</strong>, and <strong>edit</strong> data products.</p>
+<center><p><a href="#id1"><span class="problematic" id="id2">|ae394241f74649608d6f89554eef5238|</span></a></p>
+</center></section>
+</section>
+<section id="The-pzserver-Python-library">
+<h2>The pzserver Python library<a class="headerlink" href="#The-pzserver-Python-library" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> Python library is a convenient tool for accessing the PZ Server’s data products and metadata programmatically from anywhere, including the Notebook Aspect of RSP.</p>
+<section id="Installation">
+<h3>Installation<a class="headerlink" href="#Installation" title="Link to this heading"></a></h3>
+<p>The PZ Server Python library is avalialble on <strong>pip</strong> as <code class="docutils literal notranslate"><span class="pre">pzserver</span></code>.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ pip install pzserver
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pzserver</span><span class="o">==</span><span class="m">0</span>.2.7
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p>OBS: Depending on your Jupyter Notebook/Lab version, you might need to restart the kernel to incorporate the new library.</p>
+</section>
+<section id="Imports-and-Setup">
+<h3>Imports and Setup<a class="headerlink" href="#Imports-and-Setup" title="Link to this heading"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pzserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">PzServer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
+<p>A class <code class="docutils literal notranslate"><span class="pre">PzServer</span></code> object connects with the PZ Server back-end. To get authorization to define an instance of <code class="docutils literal notranslate"><span class="pre">PzServer</span></code>, users must provide an API Token generated in the menu at the top right corner of the <a class="reference external" href="https://pz-server.linea.org.br/">PZ Server website</a>.</p>
+<p><img alt="b4b8351c5c5c4312901a96d2fe8be045" class="no-scaled-link" src="../_images/ScreenShotTokenMenu.png" style="width: 150pt;" /> <img alt="7c396f3cf8164b16bbb08fc0e5d595da" class="no-scaled-link" src="../_images/ScreenShotTokenGenerator.png" style="width: 350pt;" /></p>
+<p>Uncomment the next cell and paste the API Token, replacing the placeholder below:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#pz_server = PzServer(token=&quot;&lt;your token here&gt;&quot;, host=&quot;pz-dev&quot;)</span>
+</pre></div>
+</div>
+</div>
+<p>For convenience, the API token can be saved in a text file, e.g., <strong>token.txt</strong> (already listed in the .gitignore file in this repository).</p>
+<p>API tokens can be reused indefinitely. However, an old token automatically expires whenever you create a new one.</p>
+<p>DISCLAIMER: API tokens MUST NOT BE SHARED! Users are responsible for keeping their tokens private.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#with open(&#39;token.txt&#39;, &#39;r&#39;) as file:</span>
+<span class="c1">#    token = file.read()</span>
+<span class="c1">#pz_server = PzServer(token=token, host=&#39;pz-dev&#39;) # &#39;pz-dev&#39; is the temporary host during the test phase, then it will be just &#39;pz&#39;</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="How-to-get-general-info-from-PZ-Server">
+<h3>How to get general info from PZ Server<a class="headerlink" href="#How-to-get-general-info-from-PZ-Server" title="Link to this heading"></a></h3>
+<p>The object <code class="docutils literal notranslate"><span class="pre">pz_server</span></code> created above can provide access to data and metadata stored in the PZ Server. It also brings additional methods for users to navigate through the available content. The methods with the prefix <code class="docutils literal notranslate"><span class="pre">get_</span></code> return the result of a query on the PZ Server database as a Python dictionary and are most useful to be used programmatically (see details on the <a class="reference external" href="https://linea-it.github.io/pzserver/html/index.html">API documentation page</a>). Alternatively, those with the prefix
+<code class="docutils literal notranslate"><span class="pre">display_</span></code> show the results as a styled <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">Pandas DataFrames</a>, optimized for Jupyter Notebook (note: column names might change in the display version).</p>
+<p>For instance,</p>
+<p>display the list of product types supported with a short description,</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_product_types</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>display the list of data releases available at the time,</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_releases</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>and display all available data products.</p>
+<p>WARNING: This list can rapidly grow during the survey’s operation (cell output scrolling recommended)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_products_list</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>The information about product type, users, and releases shown above can be used to filter the data products of interest for your search. For that, the method <code class="docutils literal notranslate"><span class="pre">list_products</span></code> receives as an argument a dictionary mapping the product’s attributes to their values.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_products_list</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;DP0.2&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Training Set&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<p>It also works if we type a string pattern that is part of the value. For instance, just “DP0” instead of “DP0.2”:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_products_list</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;DP0&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<p>It also allows the search for multiple strings by adding the suffix <code class="docutils literal notranslate"><span class="pre">__or</span></code> (two underscores + “or”) to the search key. For instance, to get spec-z catalogs and training sets in the same search (notice that filtering is not case-sensitive):</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_products_list</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;product_type__or&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Spec-z Catalog&quot;</span><span class="p">,</span> <span class="s2">&quot;training set&quot;</span><span class="p">]})</span>
+</pre></div>
+</div>
+</div>
+<p>To fetch the results of a search and attribute to a variable, just change the prefix <code class="docutils literal notranslate"><span class="pre">display_</span></code> by <code class="docutils literal notranslate"><span class="pre">get_</span></code>, like this:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_results</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_products_list</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="s2">&quot;training results&quot;</span><span class="p">})</span>
+<span class="n">search_results</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="How-to-upload-a-data-product-to-via-Python-API-(alternative-method)">
+<h3>How to upload a data product to via Python API (alternative method)<a class="headerlink" href="#How-to-upload-a-data-product-to-via-Python-API-(alternative-method)" title="Link to this heading"></a></h3>
+<p>As shown above, the default method to upload a data product to the PZ Server is the upload form on the PZ Server website. Alternatively, the <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> Python library can send data products to the host service.</p>
+<p>First, prepare a dictionary with the relevant information about your data product:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_to_upload</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;example upload via lib&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="s2">&quot;specz_catalog&quot;</span><span class="p">,</span>  <span class="c1"># Product type</span>
+    <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="c1"># LSST release, use None if not LSST data</span>
+    <span class="s2">&quot;main_file&quot;</span><span class="p">:</span> <span class="s2">&quot;upload_example.csv&quot;</span><span class="p">,</span> <span class="c1"># full path</span>
+    <span class="s2">&quot;auxiliary_files&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;upload_example.html&quot;</span><span class="p">,</span> <span class="s2">&quot;upload_example.ipynb&quot;</span><span class="p">]</span> <span class="c1"># full path</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">upload</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="o">**</span><span class="n">data_to_upload</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">product_id</span> <span class="o">=</span> <span class="n">upload</span><span class="o">.</span><span class="n">product_id</span>
+<span class="n">product_id</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="How-to-display-the-metadata-of-a-data-product">
+<h3>How to display the metadata of a data product<a class="headerlink" href="#How-to-display-the-metadata-of-a-data-product" title="Link to this heading"></a></h3>
+<p>The metadata of a given data product is the information the user provides on the upload form. This information is attached to the data product contents and is available for consulting on the PZ Server page or using this Python API (<code class="docutils literal notranslate"><span class="pre">pzserver</span></code>).</p>
+<p>All data products stored on PZ Server are identified by a unique <strong>id</strong> number or a unique name, a <em>string</em> called <strong>internal_name</strong>, which is created automatically at the moment of the upload by concatenating the product <strong>id</strong> to the name given by its owner (replacing blank spaces by “_”, lowering cases, and removing special characters).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">PzServer</span></code>’s method <code class="docutils literal notranslate"><span class="pre">get_product_metadata()</span></code> returns a dictionary with the attibutes stored in the PZ Server about a given data product identified by its <strong>id</strong> or <strong>internal_name</strong>. For use in a Jupyter notebook, the equivalent <code class="docutils literal notranslate"><span class="pre">display_product_metadata()</span></code> shows the results in a formated table.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_product_metadata</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="How-to-download-data-products-as-.zip-files">
+<h3>How to download data products as .zip files<a class="headerlink" href="#How-to-download-data-products-as-.zip-files" title="Link to this heading"></a></h3>
+<p>To download any data product stored in the PZ Server, use the <code class="docutils literal notranslate"><span class="pre">PzServer</span></code>’s method <code class="docutils literal notranslate"><span class="pre">download_product</span></code> informing the product’s <strong>internal_name</strong> and the path to where it will be saved (the default is the current folder). This method downloads a compressed .zip file, which contains all the files uploaded by the user, including data, ancillary files, and description files. Let’s try it with a small data product.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">download_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="How-to-share-data-products-with-other-RSP-users">
+<h3>How to share data products with other RSP users<a class="headerlink" href="#How-to-share-data-products-with-other-RSP-users" title="Link to this heading"></a></h3>
+<p>All data products uploaded to the PZ Server are immediately available and visible to all PZ Server users (people with RSP credentials) through the PZ Server website or Python library. One way to share a data product is by providing the product’s URL, which leads to the product’s download page. The URL is composed by the PZ Server website address + <strong>/products/</strong> + <strong>internal_name</strong>:</p>
+<p><a class="reference external" href="https://pz-server.linea.org.br/product/">https://pz-server.linea.org.br/product/</a> + <strong>id</strong></p>
+<p>or</p>
+<p><a class="reference external" href="https://pz-server.linea.org.br/product/">https://pz-server.linea.org.br/product/</a> + <strong>internal_name</strong></p>
+<p>WARNING: if still in the development phase, the URL works only with the <strong>complete internal name</strong>:</p>
+<p><a class="reference external" href="https://pz-server-dev.linea.org.br/product/">https://pz-server-dev.linea.org.br/product/</a> + <strong>internal_name</strong></p>
+<p>For example, for the data just uploaded above:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">internal_name</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product_metadata</span><span class="p">(</span><span class="n">product_id</span><span class="p">)[</span><span class="s1">&#39;internal_name&#39;</span><span class="p">]</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;https://pz-server-dev.linea.org.br/product/</span><span class="si">{</span><span class="n">internal_name</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="n">url</span>
+</pre></div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="How-to-retrieve-contents-of-data-products-(work-on-memory)">
+<h3>How to retrieve contents of data products (work on memory)<a class="headerlink" href="#How-to-retrieve-contents-of-data-products-(work-on-memory)" title="Link to this heading"></a></h3>
+<p>Instead of downloading the files, the <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> library also allows users to retrieve the contents of a given data product to work on memory using the method <code class="docutils literal notranslate"><span class="pre">get_product()</span></code>. This feature is available only for tabular data (product types: <strong>Spec-z Catalog</strong>, <strong>Training Set</strong>, and <strong>Photo-z Table</strong>).</p>
+<p>By default, the method <code class="docutils literal notranslate"><span class="pre">get_product</span></code> returns an object from a particular class, depending on the product’s type. The classes <code class="docutils literal notranslate"><span class="pre">SpeczCatalog</span></code> and <code class="docutils literal notranslate"><span class="pre">TrainingSet</span></code> are simple extensions of <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> (via class composition) with a couple of additional attributes and methods, such as the attribute <code class="docutils literal notranslate"><span class="pre">metadata</span></code>, and the method <code class="docutils literal notranslate"><span class="pre">display_metadata()</span></code>. Let’s see an example:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">)</span>
+<span class="n">catalog</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>The tabular data is allocated in the attribute <code class="docutils literal notranslate"><span class="pre">data</span></code>, a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">catalog</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<p>It preserves the useful methods from <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>, such as:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>For those who prefer working with <code class="docutils literal notranslate"><span class="pre">astropy.Table</span></code> or pure <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>, the method <code class="docutils literal notranslate"><span class="pre">get_product()</span></code> gives the flexibility to choose the output format (<code class="docutils literal notranslate"><span class="pre">fmt=&quot;pandas&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">fmt=&quot;astropy&quot;</span></code>).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dataframe</span><span class="p">))</span>
+<span class="n">dataframe</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">product_id</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;astropy&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">table</span><span class="p">))</span>
+<span class="n">table</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<p>Next, let’s explore specific features for each product type…</p>
+</section>
+</section>
+<section id="Data-Products">
+<h2>Data Products<a class="headerlink" href="#Data-Products" title="Link to this heading"></a></h2>
+<section id="Spec-z-Catalog">
+<h3>Spec-z Catalog<a class="headerlink" href="#Spec-z-Catalog" title="Link to this heading"></a></h3>
+<p>In the context of the PZ Server, Spec-z Catalogs are defined as any catalog containing spherical equatorial coordinates and spectroscopic redshift measurements (or, analogously, true redshifts from simulations). A Spec-z Catalog can include data from a single spectroscopic survey or a combination of data from several sources. To be considered a single Spec-z Catalog, the data should be provided as a single file to PZ Server’s upload tool. Adding the survey name or identification as an extra
+column is recommended for multi-survey catalogs.</p>
+<p>Mandatory columns:</p>
+<ul class="simple">
+<li><p>Right ascension [degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Declination [degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Spectroscopic or true redshift - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+</ul>
+<p>Recommended columns:</p>
+<ul class="simple">
+<li><p>Spectroscopic redshift error - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Quality flag - <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code></p></li>
+<li><p>Survey name (recommended for compilations of data from different surveys)</p></li>
+</ul>
+<p>Let’s see an example of Spec-z Catalog:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gama</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gama</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Display basic statistics</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gama</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>The attribute <code class="docutils literal notranslate"><span class="pre">data</span></code>, which is a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> preserves the <code class="docutils literal notranslate"><span class="pre">plot</span></code> method from Pandas.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gama</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;RA&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;DEC&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;R.A. (degrees)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dec. (degrees)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gama</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;Z&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;spec-z&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Training-Sets">
+<h3>Training Sets<a class="headerlink" href="#Training-Sets" title="Link to this heading"></a></h3>
+<p>In the context of the PZ Server, Training Sets are defined as the product of the spatial cross-matching between a given Spec-z Catalog (single survey or compilation) and the photometric data, in this case, the LSST Objects Catalog. The PZ Server’s <em>Training Set Maker</em> pipeline allows users to build customized Training Sets based on the available Spec-z Catalogs (details below).</p>
+<p><em>Note 1: Training sets are commonly split into two or more subsets for photo-z validation purposes. If the Training Set owner has previously defined which objects should belong to each subset (training and validation/test sets), this information must be available as an extra column in the table or as clear instructions for reproducing the subset separation in the data product description.</em></p>
+<p><em>Note 2: The PZ Server only supports catalog-level Training Sets. Image-based Training Sets, e.g., for deep-learning algorithms, are not supported.</em></p>
+<p>Mandatory column:</p>
+<ul class="simple">
+<li><p>Spectroscopic (or true) redshift - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+</ul>
+<p>Other expected columns</p>
+<ul class="simple">
+<li><p>Object ID from LSST Objects Catalog - <code class="docutils literal notranslate"><span class="pre">integer</span></code></p></li>
+<li><p>Observables: magnitudes (and/or colors, or fluxes) from LSST Objects Catalog - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Observable errors: magnitude errors (and/or color errors, or flux errors) from LSST Objects Catalog - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Right ascension [degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Declination [degrees] - <code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p>Quality Flag - <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code></p></li>
+<li><p>Subset Flag - <code class="docutils literal notranslate"><span class="pre">integer</span></code>, <code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code></p></li>
+</ul>
+<p>For example, the training set created in <a class="reference external" href="https://github.com/LSSTDESC/rail/blob/main/examples/goldenspike_examples/goldenspike.ipynb">RAIL’s Goldenspike example notebook</a>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Display basic statistics</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;redshift&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_goldenspike</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;mag_i_lsst&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Training-Results">
+<h3>Training Results<a class="headerlink" href="#Training-Results" title="Link to this heading"></a></h3>
+<p>The training results of machine learning-based PZ algorithms can also be hosted in the PZ Server to be shared and reused. This product type allows files in free format. When the training results are generated with RAIL, they are stored as <em>pickle</em> files and can be downloaded to the local work directory.</p>
+<p>OBS: The method <code class="docutils literal notranslate"><span class="pre">download_product</span></code> always brings the data as a compressed (.zip) file, regardless of the number of auxiliary files attached to the data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">download_product</span><span class="p">(</span><span class="s1">&#39;197_goldenspike_flexzboost&#39;</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Validation-Results">
+<h3>Validation Results<a class="headerlink" href="#Validation-Results" title="Link to this heading"></a></h3>
+<p>The PZ Server is also a good place to safely store the results of a photo-z validation procedure. Users can upload a list of files in free format, such as tabular files with photo-z estimates (single estimates and/or PDFs) of a validation set, auxiliary files with photo-z validation metrics, validation plots, etc.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">download_product</span><span class="p">(</span><span class="s2">&quot;11_goldenspike_flexzboost&quot;</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Photo-z-Tables">
+<h3>Photo-z Tables<a class="headerlink" href="#Photo-z-Tables" title="Link to this heading"></a></h3>
+<p>Photo-z tables are the results of a photo-z estimation procedure. If the data is larger than the file upload limit of 200MB (for instance, the PZ tables for the LSST Object catalogs delivered as part of annual data releases), the product entry stores only the metadata (and instructions on accessing the data should be provided in the description field).</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="PZ-Server-Pipelines">
+<h2>PZ Server Pipelines<a class="headerlink" href="#PZ-Server-Pipelines" title="Link to this heading"></a></h2>
+<p>In addition to PZ-related data hosting and curation services, PZ Server also provides tools to help users prepare training data for PZ algorithms. The pipeline <em>Training Set Maker</em> uses the data partitioning method <a class="reference external" href="https://hats.readthedocs.io/en/stable/">HATS</a> and the Python framework <a class="reference external" href="https://docs.lsdb.io/en/stable/">LSDB</a> (both developed by <a class="reference external" href="https://lsstdiscoveryalliance.org/programs/lincc/">LINCC</a>) as cross-matching back-end engine, coupled with a user interface on the PZ Server
+website plugged to the IDAC-Brazil’s high-performance computing infrastructure. With <em>Training Set Maker</em>, users can create training sets by matching objects from one given spec-z catalog available in the server with objects from an LSST Object catalog. In a previous step, the spec-z catalog might have been prepared as a combination of spectroscopic redshift measurements from different sources grouped into a single catalog with the pipeline <em>Combine Spec-z Catalogs</em>.</p>
+<p><img alt="ce5e63a38b9f49749b40d3b8ee49c1b0" src="../_images/TSMcycle.png" /></p>
+<p>Both pipelines are executed as asynchronous processes triggered from the PZ Server website or directly from Python scripts using the <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> library, and the outputs are automatically registered as new data products. See below for an example of how to use them.</p>
+<section id="Combine-Spec-z-Catalogs">
+<h3>Combine Spec-z Catalogs<a class="headerlink" href="#Combine-Spec-z-Catalogs" title="Link to this heading"></a></h3>
+<p>The pipeline Combine Spec-z Catalogs (CSC) simply concatenates multiple Spec-z catalogs into a single table and registers it as a new data product on the PZ Server. It was designed to help aggregate multiple samples from individual surveys into a single catalog before they are associated with LSST data through spatial cross-matching.</p>
+<p>On the PZ Server website, go to <strong>PZ Server Pipelines</strong> &gt; <strong>Combine Spec-z Catalogs</strong>, fill in the submission form with relevant metadata, such as the name for the new spec-z catalog to be created and a short description, select the catalogs to include by marking at least two checkboxes, and press the <strong>Run</strong> button.</p>
+<p><img alt="3d9a8ece457f4150a8362e4b5c87d2ef" class="no-scaled-link" src="../_images/ScreenshotCSC.png" style="width: 600px;" /></p>
+<p>Alternatively, the pipeline can be submitted using the method <code class="docutils literal notranslate"><span class="pre">pz_server.combine_specz_catalogs</span></code> from the <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> library.</p>
+<p>Start creating a “csc” process object instance by providing a name (string) for the new spec-z catalog to the method.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#csc = pz_server.combine_specz_catalogs(&lt;new product&#39;s name&gt;)</span>
+<span class="n">csc</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">combine_specz_catalogs</span><span class="p">(</span><span class="s2">&quot;csc example&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">csc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Check status of the <code class="docutils literal notranslate"><span class="pre">csc</span></code> process</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">check_status</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Then, add at least two individual spec-z catalogs to be included in the sample using the <code class="docutils literal notranslate"><span class="pre">append_catalog</span></code> method. These catalogs must already exist in the PZ Server, and their internal names identify them. Let’s browse the spec-z catalogs available and choose from the list:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_products_list</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Spec-z Catalog&quot;</span><span class="p">,</span> <span class="s1">&#39;uploaded_by&#39;</span><span class="p">:</span><span class="s1">&#39;gschwend&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s add those six small samples extracted from DP0.2 central tracts arbitrarily selected.</p>
+<p><img alt="0b66ba1784294abe8cfdf92e64d4b199" src="../_images/dpdd_dc2_zoom.png" /></p>
+<p>Figure from: <a class="reference external" href="https://dp0-2.lsst.io/data-products-dp0-2/index.html">https://dp0-2.lsst.io/data-products-dp0-2/index.html</a></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># csc = append_catalog(specz_id=None, internal_name=None)</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">213</span><span class="p">)</span> <span class="c1"># tract 4029</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span> <span class="c1"># tract 3831</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">210</span><span class="p">)</span> <span class="c1"># tract 4031</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">209</span><span class="p">)</span> <span class="c1"># tract 3448</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">208</span><span class="p">)</span> <span class="c1"># tract 3450</span>
+<span class="n">csc</span><span class="o">.</span><span class="n">append_catalog</span><span class="p">(</span><span class="mi">207</span><span class="p">)</span> <span class="c1"># tract 3833</span>
+</pre></div>
+</div>
+</div>
+<p>When data observed with the LSST Camera become available, compilations of real data will be useful, for instance:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># csc.append_catalog(&#39;13_vvds_specz_subsample&#39;)</span>
+<span class="c1"># csc.append_catalog(&#39;41_deimos_10k_public_specz&#39;)</span>
+<span class="c1"># csc.append_catalog(&#39;42_3dhst_public_specz&#39;)</span>
+<span class="c1"># csc.append_catalog(&#39;45_gama_public_specz&#39;)</span>
+<span class="c1"># csc.append_catalog(&#39;51_zcosmos_public_specz&#39;)</span>
+<span class="c1"># csc.append_catalog(&#39;52_2dflens_public_specz&#39;)</span>
+</pre></div>
+</div>
+</div>
+<p>But for now, let’s stick with the mock data from DP0.2.</p>
+<p>Let’s check the summary of <code class="docutils literal notranslate"><span class="pre">csc</span></code> attributes, now updated with the input catalogs added above:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now, use the method <code class="docutils literal notranslate"><span class="pre">run</span></code> to submitt the process as an asychronous job to the PZ Server’s back-end.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Still during the process, we can check the <code class="docutils literal notranslate"><span class="pre">id</span></code> and the <code class="docutils literal notranslate"><span class="pre">internal_name</span></code> of the output data product with the <code class="docutils literal notranslate"><span class="pre">summary</span></code> method.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Or get it from the object <code class="docutils literal notranslate"><span class="pre">csc</span></code></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog_id</span> <span class="o">=</span> <span class="n">csc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<span class="n">catalog_id</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">catalog_name</span> <span class="o">=</span> <span class="n">csc</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;internal_name&#39;</span><span class="p">)</span>
+<span class="n">catalog_name</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s check if the process is done, if the status is ‘Successful’, we can move on to the next cell.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csc</span><span class="o">.</span><span class="n">check_status</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now, the new spec-z catalog named as “csc example” is available to be downloaded or retrieved to memory:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_specz_catalog</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_specz_catalog</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_specz_catalog</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_specz_catalog</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;R.A. (degrees)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dec. (degrees)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tigh_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Training-Set-Maker">
+<h3>Training Set Maker<a class="headerlink" href="#Training-Set-Maker" title="Link to this heading"></a></h3>
+<p>Let’s add photometric data to our spectroscopic catalog to make a training set. On the PZ Server website, go to PZ Server Pipelines &gt; Training Set Maker, fill in the submission form with relevant metadata, such as the name for the new training set to be created and a short description, select the input data and configuration parameters, and press the Run button.</p>
+<p>The configuration parameters are inherited from LSDB. For more information, please check the <a class="reference external" href="https://docs.lsdb.io/en/stable/">LSDB documentation website</a>.</p>
+<p>For this pipeline, the number of inputs is fixed to two: one spec-z catalog and one LSST Object catalog (identified by the LSST data release tag).</p>
+<p><img alt="e96038c2b6634b6fae15c59734bcf6f8" class="no-scaled-link" src="../_images/ScreenshotTSM.png" style="width: 600px;" /></p>
+<p>Alternatively, the pipeline can be submitted using the <code class="docutils literal notranslate"><span class="pre">pz_server.make_training_set</span></code> method from the <code class="docutils literal notranslate"><span class="pre">pzserver</span></code> library.</p>
+<p>While waiting for the first LSST Object catalog with observed data becoming available, let’s see how the <em>Training Set Maker</em> works with simulated data from DP0.2. Again, let’s instantiate an object for the process, a “tsm” object, giving a name (string) for the new training set to be created.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">training_set_maker</span><span class="p">(</span><span class="s2">&quot;tsm example 2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s set our spec-z catalog created above as input data:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># tsm.set_specz(specz_id=None, internal_name=None)</span>
+<span class="n">tsm</span><span class="o">.</span><span class="n">set_specz</span><span class="p">(</span><span class="n">catalog_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">display_releases</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>And the data release for the object catalog.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">set_release</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;dp02&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Set the configuration parameters <code class="docutils literal notranslate"><span class="pre">dict</span></code>:</p>
+<ul class="simple">
+<li><p>The dictionary “cross-matching” refers to the LSDB configuration parameters <code class="docutils literal notranslate"><span class="pre">{'n_neighbors':</span> <span class="pre">1,</span> <span class="pre">'radius_arcsec':</span> <span class="pre">1.0,</span> <span class="pre">'suffixes':</span> <span class="pre">['','']}</span></code>;</p></li>
+<li><p>In addition, there is an extra parameter to define what to do when there are multiple matches for the same spectroscopic object: keep all matches or keep only the closest one (default). to be used by LSDB.</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span>
+<span class="p">{</span><span class="s1">&#39;crossmatch&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;n_neighbors&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;radius_arcsec&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;suffixes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;_specz&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">]},</span> <span class="s1">&#39;duplicate_criteria&#39;</span><span class="p">:</span> <span class="s1">&#39;closest&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#tsm.set_config({&#39;crossmatch&#39;: {&#39;n_neighbors&#39;: 1, &#39;radius_arcsec&#39;: 1.0, &#39;suffixes&#39;: [&#39;_specz&#39;,&#39;&#39;]}, &#39;duplicate_criteria&#39;: &#39;closest&#39;})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>This pipeline might take longer than the previous one, so letting the notebook cell run until the process is finished is convenient instead of checking the status once in a while. For that, use the method <code class="docutils literal notranslate"><span class="pre">run_and_wait()</span></code>.</p>
+<p>OBS: the method <code class="docutils literal notranslate"><span class="pre">run_and_wait()</span></code> works if the process is shorter than 30 minutes. If it takes longer, the notebook cell is released and the process switches to the asynchronous mode.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pz_server</span><span class="o">.</span><span class="n">run_and_wait</span><span class="p">(</span><span class="n">tsm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tsm</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_set_id</span> <span class="o">=</span> <span class="n">tsm</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span>
+<span class="n">training_set_id</span>
+</pre></div>
+</div>
+</div>
+<p>Now, the new training set named as “tsm example” is available to be downloaded or retrieved to memory:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span> <span class="o">=</span> <span class="n">pz_server</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">training_set_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span><span class="o">.</span><span class="n">display_metadata</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;coord_ra&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;coord_dec&quot;</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;R.A. (degrees)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Dec. (degrees)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;z_specz&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;spec-z&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_new_training_set</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s1">&#39;mag_i&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;i-band magnitude&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;counts&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="User-feedback">
+<h2>User feedback<a class="headerlink" href="#User-feedback" title="Link to this heading"></a></h2>
+<p>Is something important missing? Send your feedback to us or <a class="reference external" href="https://github.com/linea-it/pzserver/issues/new">open an issue in the PZ Server library repository on GitHub</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
