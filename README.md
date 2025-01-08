@@ -12,3 +12,6 @@ available on the GitHub repository [linea-it/pzserver_app](https://github.com/li
  
 An overview of this and other contributions is available [here](https://linea-it.github.io/pz-lsst-inkind-doc/).  
 The API documentation is available [here](https://linea-it.github.io/pzserver). 
+
+This repo uses the [LINCC's Python Project Template](https://github.com/lincc-frameworks/python-project-template), described in this article: ["A Python Project Template for Healthy Scientific Software"](https://iopscience.iop.org/article/10.3847/2515-5172/ad4da1).
+ 
