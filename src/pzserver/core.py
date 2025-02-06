@@ -279,7 +279,12 @@ class PzServer:
                 if key == "display_name":
                     key = "product_name"
                 if key == "main_file":
+                    transposed_list.append({
+                        "key": "n_rows",
+                        "value": value["n_rows"]
+                    })
                     value = value["name"]
+
                 transposed_list.append({"key": key, "value": value})
         dataframe = pd.DataFrame(transposed_list)
         if show:
