@@ -122,10 +122,12 @@ class PzUpload:
             dict: dictionary with success flag and message
         """
 
-        required_columns = ["Dec", "RA", "z"]
-
-        if self.upload.product_type != "specz_catalog":
-            return {"success": True, "message": "No required columns"}
+        if self.upload.product_type == "specz_catalog":
+            required_columns = ["Dec", "RA", "z"]
+        elif self.upload.product_type == "training_set":
+            required_columns = ["z"]
+        else:
+            required_columns = []
 
         for column in self.__columns_association:
             attr = column.get("alias")
