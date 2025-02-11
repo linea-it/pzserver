@@ -35,18 +35,16 @@ Step-by-step procedure to test a new feature or bug fix from a particular branch
     ```
     conda create -n pzserver-dev
     conda activate pzserver-dev
-    pip install -r requirements.txt
+    conda install pip
+    pip install -e '.'
     ```
-4.  Add directory to python path
-   ```
 
-   ```
-5. Open Python prompt or notebook and import the library:
+4. Open Python prompt or notebook and import the library:
    ```
    from pzserver import PzServer
    token = "****"  # your toker 
    host = "pz-dev" # or "localhost" if testing pipeline back-end locally
-   pz = PzServer(token, host)                                     
+   pz = PzServer(token, host)                                   
    ```  
 
 --- 
