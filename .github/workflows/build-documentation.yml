@@ -30,7 +30,7 @@ jobs:
         sudo apt-get install pandoc
     - name: Build docs
       run: |
-        sphinx-build -T -E -b html -d docs/build/doctrees ./docs docs/build/html -D exclude_patterns="notebooks/*/*.ipynb"
+        sphinx-build -T -E -b html -d docs/build/doctrees ./docs docs/build/html -D exclude_patterns="notebooks/**.ipynb"
     - name: Run ghp-import
       run: | 
         ghp-import -n -p -f -x docs/ docs/build/html
