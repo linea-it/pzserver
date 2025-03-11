@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.communicate &mdash; pzserver 0.1.dev1+gc89c6ea documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=9c3de0bb"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pzserver.communicate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pzserver.communicate</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Classes to communicate with the Pz Server app</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+
+<div class="viewcode-block" id="PzRequests">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PzRequests</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Responsible for managing all requests to the Pz Server app.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PzRequests._token">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._token">[docs]</a>
+    <span class="n">_token</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PzRequests._base_api_url">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._base_api_url">[docs]</a>
+    <span class="n">_base_api_url</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PzRequests._filter_options">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._filter_options">[docs]</a>
+    <span class="n">_filter_options</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="PzRequests._mapping_filters">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._mapping_filters">[docs]</a>
+    <span class="n">_mapping_filters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="s2">&quot;product_type_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;product_type__or&quot;</span><span class="p">:</span> <span class="s2">&quot;product_type_name__or&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="s2">&quot;release_name&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;release__or&quot;</span><span class="p">:</span> <span class="s2">&quot;release_name__or&quot;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+<div class="viewcode-block" id="PzRequests._enviroments">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._enviroments">[docs]</a>
+    <span class="n">_enviroments</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;localhost&quot;</span><span class="p">:</span> <span class="s2">&quot;http://localhost/api/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pz-dev&quot;</span><span class="p">:</span> <span class="s2">&quot;https://pz-server-dev.linea.org.br/api/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pz&quot;</span><span class="p">:</span> <span class="s2">&quot;https://pz-server.linea.org.br/api/&quot;</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;pz&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes communication with the Pz Server app.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            token (str): token to access the API.</span>
+<span class="sd">            host (str, optional): host key. Defaults to &quot;pz&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enviroments</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enviroments</span><span class="p">[</span><span class="n">host</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span> <span class="o">=</span> <span class="n">host</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_token</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_token</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PzRequests.safe_list_get">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.safe_list_get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">safe_list_get</span><span class="p">(</span><span class="n">_list</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a value from a list if it exists. Otherwise returns the default.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _list (list): list to get the value from.</span>
+<span class="sd">            idx (int): index of the value to get.</span>
+<span class="sd">            default: default value to return if the value doesn&#39;t exist.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            value of the list by index.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_list</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">default</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._check_filters">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._check_filters">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">filters</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the filters are valid for an entity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+<span class="sd">            filters (list): selected filters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">filter_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filter_opt</span><span class="p">:</span>
+            <span class="n">filter_opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_filter_options</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_opt</span>
+
+        <span class="n">api_params</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># adds the filter_classes as acceptable attributes on the endpoint</span>
+        <span class="c1"># for filtering entries.</span>
+        <span class="k">for</span> <span class="n">filter_class</span> <span class="ow">in</span> <span class="n">filter_opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filter_classes&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">api_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_class</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+        <span class="c1"># adds the filterset_fields as acceptable attributes on the endpoint</span>
+        <span class="c1"># for filtering entries.</span>
+        <span class="k">for</span> <span class="n">filter_name</span> <span class="ow">in</span> <span class="n">filter_opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;filterset&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">api_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filter_name</span><span class="p">)</span>
+
+        <span class="c1"># add search with acceptable parameters if configured.</span>
+        <span class="k">if</span> <span class="s2">&quot;search&quot;</span> <span class="ow">in</span> <span class="n">filter_opt</span><span class="p">:</span>
+            <span class="n">api_params</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;search&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">uitem</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_filters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uitem</span><span class="p">,</span> <span class="n">uitem</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">api_params</span><span class="p">:</span>
+                <span class="n">lib_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reverse_filters</span><span class="p">(</span><span class="n">api_params</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid filter key was detected.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Valid filter keys are:</span><span class="se">\n</span><span class="s2">  - </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  - &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lib_params</span><span class="p">))</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._reverse_filters">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._reverse_filters">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reverse_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reverts filter mapping</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            api_params (list): available filters</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: filters matching</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">check_filter</span><span class="p">(</span><span class="n">filter_name</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Check filter name</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                filter_name (str): filter name</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                list: filter names</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">filter_name</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">key</span>
+            <span class="k">return</span> <span class="n">filter_name</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">check_filter</span><span class="p">,</span> <span class="n">api_params</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._check_response">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._check_response">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks for possible HTTP errors in the response.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            api_response (request.Response): Response object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: response content.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">status_code</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">status_code</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;status_code&quot;</span><span class="p">:</span> <span class="n">status_code</span><span class="p">,</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(),</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(),</span>
+            <span class="s2">&quot;response_object&quot;</span><span class="p">:</span> <span class="n">api_response</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Request completed&quot;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">status_code</span> <span class="o">!=</span> <span class="mi">204</span> <span class="ow">and</span> <span class="n">content_type</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+                <span class="s2">&quot;application/json&quot;</span>
+            <span class="p">):</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">api_response</span><span class="o">.</span><span class="n">json</span><span class="p">()})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">api_response</span><span class="o">.</span><span class="n">text</span>
+            <span class="c1"># msg = txt.get(&quot;detail&quot;, txt)</span>
+            <span class="c1"># msg = txt.get(&quot;error&quot;, msg)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._send_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._send_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_send_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prerequest</span><span class="p">,</span>
+        <span class="n">stream</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">cert</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">proxies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends PreparedRequest object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prerequest (requests.PreparedRequest): PreparedRequest object</span>
+<span class="sd">            stream (optional): Whether to stream the request content.</span>
+<span class="sd">            timeout (float or tuple) (optional): How long to wait for the</span>
+<span class="sd">                server to send data before giving up, as a float, or a</span>
+<span class="sd">                (connect timeout, read timeout) tuple.</span>
+<span class="sd">            verify (optional): Either a boolean, in which case it controls</span>
+<span class="sd">                whether we verify the servers TLS certificate, or a string,</span>
+<span class="sd">                in which case it must be a path to a CA bundle to use</span>
+<span class="sd">            cert (optional): Any user-provided SSL certificate to be trusted.</span>
+<span class="sd">            proxies (optional): The proxies dictionary to apply to the request.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: response content</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Response example:</span>
+        <span class="c1"># {</span>
+        <span class="c1">#     &quot;status_code&quot;: int,</span>
+        <span class="c1">#     &quot;message&quot;: str,</span>
+        <span class="c1">#     &quot;data&quot;: str,</span>
+        <span class="c1">#     &quot;success&quot;: bool,</span>
+        <span class="c1">#     &quot;response_object&quot;: request.Response</span>
+        <span class="c1"># }</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;response_object&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">api_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+            <span class="n">api_response</span> <span class="o">=</span> <span class="n">api_session</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+                <span class="n">prerequest</span><span class="p">,</span>
+                <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="n">verify</span><span class="o">=</span><span class="n">verify</span><span class="p">,</span>
+                <span class="n">cert</span><span class="o">=</span><span class="n">cert</span><span class="p">,</span>
+                <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_check_response</span><span class="p">(</span><span class="n">api_response</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">errh</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Http Error: </span><span class="si">{</span><span class="n">errh</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">ConnectionError</span> <span class="k">as</span> <span class="n">errc</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Connection Error: </span><span class="si">{</span><span class="n">errc</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Timeout</span> <span class="k">as</span> <span class="n">errt</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Timeout Error: </span><span class="si">{</span><span class="n">errt</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Request Error: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._get_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._get_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a record from the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to get</span>
+<span class="sd">            params (dict, optional): params to get. Defaults to None.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: data of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._options_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._options_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_options_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the options and settings for a given endpoint.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to get</span>
+<span class="sd">            params (dict, optional): params to get. Defaults to None.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: data of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;OPTIONS&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._check_token">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._check_token">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the token is valid, otherwise stops class</span>
+<span class="sd">        initialization.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">cntxt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">stcode</span> <span class="o">=</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status_code&quot;</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">cntxt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="s2">&quot;Unforeseen error&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Status code </span><span class="si">{</span><span class="n">stcode</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._download_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._download_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_download_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Download a record from the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to get</span>
+<span class="sd">            save_in (str): location where the file will be saved</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">(),</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">resp_obj</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response_object&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">resp_obj</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;filename=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">save_in</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">filedown</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">resp_obj</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">=</span><span class="mi">128</span><span class="p">):</span>
+                    <span class="n">filedown</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+
+            <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">filename</span><span class="p">})</span>
+            <span class="k">return</span> <span class="n">data</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._patch_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._patch_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_patch_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Patchs a record to the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to patch.</span>
+<span class="sd">            data (str): data to patch.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: data of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;PATCH&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="c1"># data=json.dumps(data),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="c1"># &quot;Accept&quot;: &quot;application/json&quot;,</span>
+                    <span class="c1"># &quot;Content-Type&quot;: &quot;application/json&quot;,</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._upload_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._upload_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_upload_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">,</span> <span class="n">upload_files</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Posts a record to the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to post.</span>
+<span class="sd">            payload (str): payload to post.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: data of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">upload_files</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">upload_files</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">files</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=consider-using-with</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+            <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._post_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._post_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_post_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Posts a record to the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to post.</span>
+<span class="sd">            payload (str): payload to post.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: data of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">),</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests._delete_request">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests._delete_request">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_delete_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a record from the API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url (str): url to delete with the record id.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: status and message of the request.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">req</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span>
+            <span class="s2">&quot;DELETE&quot;</span><span class="p">,</span>
+            <span class="n">url</span><span class="p">,</span>
+            <span class="n">headers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Token </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_token</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;status_code&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">400</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;The server failed to perform the operation.&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;status_code&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resp</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_entities">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_entities">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_entities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets all entities from the API.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: entities list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_all">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_all">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">ordering</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list with all records of the entity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+<span class="sd">            ordering (None or str): column name to be ordered</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list of records</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">uri</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}{</span><span class="n">entity</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+        <span class="k">if</span> <span class="n">ordering</span><span class="p">:</span>
+            <span class="n">uri</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;?ordering=</span><span class="si">{</span><span class="n">ordering</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a record from the entity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+<span class="sd">            _id (int): record id</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}{</span><span class="n">entity</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_by_name">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_by_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a record from the entity by name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+<span class="sd">            _id (int): record id</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_by_attribute</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">nobj</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nobj</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The return should be unique [return = </span><span class="si">{</span><span class="n">nobj</span><span class="si">}</span><span class="s2"> objects]&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">result</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_by_attribute">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_by_attribute">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_by_attribute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a record from the entity by some attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+<span class="sd">            attribute (str): entity field</span>
+<span class="sd">            value (str): entity field value</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record metadata</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}{</span><span class="n">entity</span><span class="si">}</span><span class="s2">/?</span><span class="si">{</span><span class="n">attribute</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.options">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.options">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets options (filters, search and ordering) from the entity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            entity (str): entity name  e.g. &quot;releases&quot;, &quot;products&quot;, &quot;product-types&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: options metadata (filters, search and ordering).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">opt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_options_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}{</span><span class="n">entity</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">opt</span> <span class="ow">and</span> <span class="n">opt</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">opt</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">opt</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.download_main_file">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.download_main_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_main_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the contents uploaded by the user for a given record.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _id (int): record id</span>
+<span class="sd">            save_in (str): location where the file will be saved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/</span><span class="si">{</span><span class="n">_id</span><span class="si">}</span><span class="s2">/download_main_file/&quot;</span><span class="p">,</span> <span class="n">save_in</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_main_file_info">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_main_file_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_main_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">column_association</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns information about the main product file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _id (int): record id</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/</span><span class="si">{</span><span class="n">_id</span><span class="si">}</span><span class="s2">/main_file_info/&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;main_file&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">column_association</span><span class="p">:</span>
+            <span class="n">assoc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">product-contents/?product=</span><span class="si">{</span><span class="n">_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">assoc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="s2">&quot;columns_association&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">assoc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.download_product">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.download_product">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_id</span><span class="p">,</span> <span class="n">save_in</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Downloads the product to local</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _id (int): record id</span>
+<span class="sd">            save_in (str): location where the file will be saved</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/</span><span class="si">{</span><span class="n">_id</span><span class="si">}</span><span class="s2">/download/&quot;</span><span class="p">,</span> <span class="n">save_in</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.start_process">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.start_process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start process in Pz Server</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (dict): data process</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">process</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">processes/&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">process</span> <span class="ow">and</span> <span class="n">process</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">process</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">process</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.stop_process">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.stop_process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stop process in Pz Server</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            process_id (int): process ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">processes/</span><span class="si">{</span><span class="n">process_id</span><span class="si">}</span><span class="s2">/stop/&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.upload_basic_info">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.upload_basic_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_basic_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">product_type</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pz_code</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload product with basic informations</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str):</span>
+<span class="sd">            product_type (int):</span>
+<span class="sd">            release (int):</span>
+<span class="sd">            pz_code (str):</span>
+<span class="sd">            description (str):</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: record data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">product_type</span><span class="p">:</span>
+            <span class="n">prodtype_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s2">&quot;product-types&quot;</span><span class="p">,</span> <span class="n">product_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prodtype_obj</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Product type not found: </span><span class="si">{</span><span class="n">product_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">product_type</span> <span class="o">=</span> <span class="n">prodtype_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">release</span><span class="p">:</span>
+            <span class="n">release_obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_by_name</span><span class="p">(</span><span class="s2">&quot;releases&quot;</span><span class="p">,</span> <span class="n">release</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">release_obj</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Release not found: </span><span class="si">{</span><span class="n">release</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">release</span> <span class="o">=</span> <span class="n">release_obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+        <span class="n">upload_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;display_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+            <span class="s2">&quot;product_type&quot;</span><span class="p">:</span> <span class="n">product_type</span><span class="p">,</span>
+            <span class="s2">&quot;release&quot;</span><span class="p">:</span> <span class="n">release</span><span class="p">,</span>
+            <span class="s2">&quot;official_product&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;pz_code&quot;</span><span class="p">:</span> <span class="n">pz_code</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+            <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># status 0 is registering</span>
+        <span class="p">}</span>
+
+        <span class="n">upload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/&quot;</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="n">upload_data</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">upload</span> <span class="ow">and</span> <span class="n">upload</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">upload</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">upload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.upload_file">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.upload_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Upload file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            product_id (int): product id</span>
+<span class="sd">            filepath (str): filepath</span>
+<span class="sd">            role (str): file role</span>
+<span class="sd">            mimetype (str, optional): file mimetype. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">file_roles</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;main&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;auxiliary&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">upload_file_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product_id</span><span class="p">,</span>
+            <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="n">file_roles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">role</span><span class="p">),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">mimetype</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">filepath</span><span class="p">}</span>
+
+        <span class="n">upload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upload_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">product-files/&quot;</span><span class="p">,</span>
+            <span class="n">payload</span><span class="o">=</span><span class="n">upload_file_data</span><span class="p">,</span>
+            <span class="n">upload_files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">upload</span> <span class="ow">and</span> <span class="n">upload</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">upload</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">upload</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.registry_upload">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.registry_upload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">registry_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registry upload</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (int): product id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">/registry/&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.update_upload_column">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.update_upload_column">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_upload_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">id_attr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update upload column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id_attr (int): attribute id</span>
+<span class="sd">            data (dict): attribute that will be updated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_patch_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">product-contents/</span><span class="si">{</span><span class="n">id_attr</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">update</span> <span class="ow">and</span> <span class="n">update</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">update</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">update</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.finish_upload">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.finish_upload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">finish_upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finish upload</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            product_id (int): product id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+        <span class="n">update</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_patch_request</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">products/</span><span class="si">{</span><span class="n">product_id</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">update</span> <span class="ow">and</span> <span class="n">update</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">update</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">update</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PzRequests.get_products">
+<a class="viewcode-back" href="../../autoapi/pzserver/communicate/index.html#pzserver.communicate.PzRequests.get_products">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_products</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns list of products according to a filter</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filters (dict): products filter   ex: {&#39;release&#39;: &#39;LSST&#39;}</span>
+<span class="sd">            status (int): products status (1 is viewing only completed products)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list of records</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_base_api_url</span><span class="si">}</span><span class="s2">/products/?&quot;</span>
+
+        <span class="k">if</span> <span class="n">status</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;status=</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_check_filters</span><span class="p">(</span><span class="s2">&quot;products&quot;</span><span class="p">,</span> <span class="n">filters</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span>
+                <span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mapping_filters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+                <span class="n">url</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&amp;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;success&quot;</span> <span class="ow">in</span> <span class="n">resp</span> <span class="ow">and</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.core &mdash; pzserver 0.1.dev1+gc89c6ea documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=9c3de0bb"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pzserver.pipeline" href="../pipeline/index.html" />
+    <link rel="prev" title="pzserver.communicate" href="../communicate/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">pzserver</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../catalog/index.html">pzserver.catalog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../communicate/index.html">pzserver.communicate</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pzserver.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html">pzserver.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/index.html">pzserver.process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../upload/index.html">pzserver.upload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">pzserver</a></li>
+      <li class="breadcrumb-item active">pzserver.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pzserver.core">
+<span id="pzserver-core"></span><h1>pzserver.core<a class="headerlink" href="#module-pzserver.core" title="Link to this heading"></a></h1>
+<p>Classes responsible for managing user interaction</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.core.FONTCOLORERR" title="pzserver.core.FONTCOLORERR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FONTCOLORERR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pzserver.core.FONTCOLOREND" title="pzserver.core.FONTCOLOREND"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FONTCOLOREND</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.core.PzServer" title="pzserver.core.PzServer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PzServer</span></code></a></p></td>
+<td><p>Responsible for managing user interactions with the Pz Server app.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="pzserver.core.FONTCOLORERR">
+<span class="sig-name descname"><span class="pre">FONTCOLORERR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[38;2;255;0;0m'</span></em><a class="reference internal" href="../../../_modules/pzserver/core.html#FONTCOLORERR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.FONTCOLORERR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pzserver.core.FONTCOLOREND">
+<span class="sig-name descname"><span class="pre">FONTCOLOREND</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\x1b[0m'</span></em><a class="reference internal" href="../../../_modules/pzserver/core.html#FONTCOLOREND"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.FONTCOLOREND" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pzserver.core.PzServer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PzServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer" title="Link to this definition"></a></dt>
+<dd><p>Responsible for managing user interactions with the Pz Server app.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.api">
+<span class="sig-name descname"><span class="pre">api</span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.api"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.api" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_product_types">
+<span class="sig-name descname"><span class="pre">get_product_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_product_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_product_types" title="Link to this definition"></a></dt>
+<dd><p>Fetches the list of valid product types.</p>
+<p>Connects to the Photo-z Server’s administrative
+database and fetches the list of valid product
+types and their respective short description.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>product types list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.display_product_types">
+<span class="sig-name descname"><span class="pre">display_product_types</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.display_product_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.display_product_types" title="Link to this definition"></a></dt>
+<dd><p>Displays the list of product types as dataframe</p>
+<p>Displays a pandas.io.formats.style.Styler object
+mapping the product type names to the corresponding
+descriptions (optimized for use in Jupyter Notebook).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_users">
+<span class="sig-name descname"><span class="pre">get_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_users" title="Link to this definition"></a></dt>
+<dd><p>Fetches the list of registered users.</p>
+<p>Connects to the Photo-z Server’s administrative
+database and fetches the list of registered
+users (first/last name and GitHub username).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>users list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.display_users">
+<span class="sig-name descname"><span class="pre">display_users</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.display_users"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.display_users" title="Link to this definition"></a></dt>
+<dd><p>Displays the list of users as dataframe</p>
+<p>Displays a pandas.io.formats.style.Styler object
+mapping the users to corresponding GitHub usernames
+(optimized for use in Jupyter Notebook).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_releases">
+<span class="sig-name descname"><span class="pre">get_releases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_releases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_releases" title="Link to this definition"></a></dt>
+<dd><p>Fetches the list of valid data releases.</p>
+<p>Connects to the Photo-z Server’s administrative
+database and fetches the list of valid LSST
+data releases corresponding to the data products
+available. The resulting list is expected to
+increase over the years of survey operations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>releases list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.display_releases">
+<span class="sig-name descname"><span class="pre">display_releases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.display_releases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.display_releases" title="Link to this definition"></a></dt>
+<dd><p>Displays the list of data releases as dataframe</p>
+<p>Displays a pandas.io.formats.style.Styler object
+mapping the the data release tags to their full
+names (optimized for use in Jupyter Notebook).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_products_list">
+<span class="sig-name descname"><span class="pre">get_products_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_products_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_products_list" title="Link to this definition"></a></dt>
+<dd><p>Fetches the list of data products available.</p>
+<p>Connects to the Photo-z Server’s database and
+fetches the filtered list of data products
+available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filters</strong> (<em>dict</em>) – dictionary with a string
+(or a list of strings) patterns to
+filter the results.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data products list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.display_products_list">
+<span class="sig-name descname"><span class="pre">display_products_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.display_products_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.display_products_list" title="Link to this definition"></a></dt>
+<dd><p>Displays the list of data products as dataframe</p>
+<p>Displays a pandas.io.formats.style.Styler object
+with the list of all products available with the
+metadata informed by the owners (optimized for use
+in Jupyter Notebook).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filters</strong> (<em>dict</em>) – dictionary with strings
+(or a list of strings) patterns to
+filter the results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_product_metadata">
+<span class="sig-name descname"><span class="pre">get_product_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mainfile_info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_product_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_product_metadata" title="Link to this definition"></a></dt>
+<dd><p>Fetches the product metadata.</p>
+<p>Connects to the Photo-z Server’s database and
+fetches the metadata informed by the product
+owner for a particular data product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>str</em><em> or </em><em>int</em>) – data product
+unique identifier (product id
+number or internal_name)</p></li>
+<li><p><strong>mainfile_info</strong> (<em>bool</em><em>, </em><em>optional</em>) – additional
+information from the main file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of product metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.display_product_metadata">
+<span class="sig-name descname"><span class="pre">display_product_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.display_product_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.display_product_metadata" title="Link to this definition"></a></dt>
+<dd><p>Displays the metadata informed by the product owner.</p>
+<p>Displays a pandas.io.formats.style.Styler object
+with the metadata informed by the product owner
+(optimized for use in Jupyter Notebook).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product</strong> (<em>str</em><em> or </em><em>int</em>) – data product
+unique identifier (product id
+number or internal_name)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.download_product">
+<span class="sig-name descname"><span class="pre">download_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.download_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.download_product" title="Link to this definition"></a></dt>
+<dd><p>Download the data to local.</p>
+<p>Connects to the Photo-z Server’s database and
+download a compressed zip file containing all
+the data and metadata of a given data product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>str</em><em> or </em><em>int</em>) – data product
+unique identifier (product id
+number or internal_name)</p></li>
+<li><p><strong>save_in</strong> (<em>str</em>) – location where the file will
+be saved</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.get_product">
+<span class="sig-name descname"><span class="pre">get_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.get_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.get_product" title="Link to this definition"></a></dt>
+<dd><p>Fetches the data product contents to local.</p>
+<p>Connects to the Photo-z Server’s database and
+fetches the tabular data stored as registered
+data product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>str</em><em> or </em><em>int</em>) – data product
+unique identifier (product id
+number or internal name)</p></li>
+<li><p><strong>fmt</strong> (<em>str</em>) – output table format
+‘pandas’ -&gt; pandas.DataFrame
+‘astropy’ -&gt; astropy.Table
+None (default) -&gt; object class from catalog.py</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>SpeczCatalog or TrainingSet (pandas.DataFrame extensions)
+object, or pure pandas.DataFrame, or astropy.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pz_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auxiliary_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.upload" title="Link to this definition"></a></dt>
+<dd><p>Make upload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – name</p></li>
+<li><p><strong>product_type</strong> (<em>str</em>) – product type name</p></li>
+<li><p><strong>main_file</strong> (<em>str</em>) – main file path</p></li>
+<li><p><strong>release</strong> (<em>str</em><em>, </em><em>optional</em>) – release name. Defaults to None.</p></li>
+<li><p><strong>auxiliary_files</strong> (<em>list</em><em>, </em><em>optional</em>) – auxiliary files path list. Defaults to None.</p></li>
+<li><p><strong>pz_code</strong> (<em>str</em><em>, </em><em>optional</em>) – pz code. Defaults to None.</p></li>
+<li><p><strong>description</strong> (<em>str</em><em>, </em><em>optional</em>) – description. Defaults to None.</p></li>
+<li><p><strong>upload</strong> (<a class="reference internal" href="../upload/index.html#pzserver.upload.PzUpload" title="pzserver.upload.PzUpload"><em>PzUpload</em></a>) – Upload object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.__transform_df">
+<span class="sig-name descname"><span class="pre">__transform_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.__transform_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.__transform_df" title="Link to this definition"></a></dt>
+<dd><p>Transforms the dataframe into an object corresponding to
+its product type (currently we have two: Spec-z Catalog or
+Training Set) or returns the dataframe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – dataframe</p></li>
+<li><p><strong>metadata</strong> (<em>dict</em>) – product metadata</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.combine_specz_catalogs">
+<span class="sig-name descname"><span class="pre">combine_specz_catalogs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.combine_specz_catalogs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.combine_specz_catalogs" title="Link to this definition"></a></dt>
+<dd><p>Make combine specz</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – combine specz name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>CSCProcess object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../process/index.html#pzserver.process.CSCProcess" title="pzserver.process.CSCProcess">CSCProcess</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.training_set_maker">
+<span class="sig-name descname"><span class="pre">training_set_maker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.training_set_maker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.training_set_maker" title="Link to this definition"></a></dt>
+<dd><p>Make training set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – training set name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>TSMProcess object</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../process/index.html#pzserver.process.TSMProcess" title="pzserver.process.TSMProcess">TSMProcess</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.core.PzServer.run_and_wait">
+<span class="sig-name descname"><span class="pre">run_and_wait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/core.html#PzServer.run_and_wait"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.core.PzServer.run_and_wait" title="Link to this definition"></a></dt>
+<dd><p>Wait for processing to finish (30 minute tolerance time)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>process</strong> (<a class="reference internal" href="../process/index.html#pzserver.process.TSMProcess" title="pzserver.process.TSMProcess"><em>TSMProcess</em></a><em> or </em><em>CombSpeczProcess</em>) – process object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>process status</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../communicate/index.html" class="btn btn-neutral float-left" title="pzserver.communicate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../pipeline/index.html" class="btn btn-neutral float-right" title="pzserver.pipeline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
