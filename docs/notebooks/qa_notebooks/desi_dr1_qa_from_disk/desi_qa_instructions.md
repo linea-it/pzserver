@@ -12,17 +12,12 @@ Obs.: replace `/path/to/desi_qa_env.yaml` with the actual path to your YAML file
 conda activate $HOME/.conda/envs/desi_qa_env
 ```
 
-## Step 3: Install Jupyter kernel support (if not already installed)
-```bash
-conda install -c anaconda ipykernel
-```
-
-## Step 4: Register the environment as a Jupyter kernel
+## Step 3: Register the environment as a Jupyter kernel
 ```bash
 python -m ipykernel install --user --name=desi_qa_env
 ```
 
-## Step 5: Select and run the kernel in a notebook
+## Step 4: Select and run the kernel in a notebook
 Open a notebook, go to the top-right corner menu Kernel → Change kernel, and select desi_qa_env.
 
 ⚠️ Important: This notebook was designed to run on the LIneA JupyterHub K8S platform using the "large" resource profile (16GB RAM, 8 threads).
