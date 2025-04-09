@@ -1,0 +1,19 @@
+channels:
+  - anaconda
+  - conda-forge
+  - defaults
+  - pyviz
+dependencies:
+  - astropy
+  - dask
+  - distributed
+  - fitsio
+  - numpy
+  - pandas
+  - pyyaml
+  - tqdm
+  - bokeh
+  - datashader
+  - geoviews
+  - holoviews
+  - hvplot
