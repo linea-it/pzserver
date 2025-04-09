@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.upload &mdash; pzserver 0.1.dev1+gd53842d documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=232c9a54"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="prev" title="pzserver.process" href="../process/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">pzserver</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../catalog/index.html">pzserver.catalog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../communicate/index.html">pzserver.communicate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/index.html">pzserver.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html">pzserver.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/index.html">pzserver.process</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pzserver.upload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">pzserver</a></li>
+      <li class="breadcrumb-item active">pzserver.upload</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pzserver.upload">
+<span id="pzserver-upload"></span><h1>pzserver.upload<a class="headerlink" href="#module-pzserver.upload" title="Link to this heading"></a></h1>
+<p>Classes responsible for managing user interaction</p>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.upload.RequiredColumnsException" title="pzserver.upload.RequiredColumnsException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RequiredColumnsException</span></code></a></p></td>
+<td><p>Required columns exception</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.upload.UploadData" title="pzserver.upload.UploadData"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UploadData</span></code></a></p></td>
+<td><p>Upload data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pzserver.upload.PzUpload" title="pzserver.upload.PzUpload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PzUpload</span></code></a></p></td>
+<td><p>Responsible for managing user interactions with upload.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="pzserver.upload.RequiredColumnsException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequiredColumnsException</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#RequiredColumnsException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.RequiredColumnsException" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Required columns exception</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UploadData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**data:</span> <span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">pydantic.BaseModel</span></code></p>
+<p>Upload data</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.product_type">
+<span class="sig-name descname"><span class="pre">product_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.product_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.product_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.main_file">
+<span class="sig-name descname"><span class="pre">main_file</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.main_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.main_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.release">
+<span class="sig-name descname"><span class="pre">release</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.release" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.pz_code">
+<span class="sig-name descname"><span class="pre">pz_code</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.pz_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.pz_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.auxiliary_files">
+<span class="sig-name descname"><span class="pre">auxiliary_files</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.auxiliary_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.auxiliary_files" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.description">
+<span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.description" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.system_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">system_columns</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.system_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.system_columns" title="Link to this definition"></a></dt>
+<dd><p>Returns system columns</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.validate_main_file">
+<span class="sig-name descname"><span class="pre">validate_main_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.validate_main_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.validate_main_file" title="Link to this definition"></a></dt>
+<dd><p>Validate main_file field</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.validate_auxiliary_files">
+<span class="sig-name descname"><span class="pre">validate_auxiliary_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.validate_auxiliary_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.validate_auxiliary_files" title="Link to this definition"></a></dt>
+<dd><p>Validate auxiliary_files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.UploadData.__file_exist">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__file_exist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#UploadData.__file_exist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.UploadData.__file_exist" title="Link to this definition"></a></dt>
+<dd><p>Verify if path exist</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PzUpload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upload</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pzserver.upload.UploadData" title="pzserver.upload.UploadData"><span class="pre">UploadData</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">api</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload" title="Link to this definition"></a></dt>
+<dd><p>Responsible for managing user interactions with upload.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.api">
+<span class="sig-name descname"><span class="pre">api</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.api"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.api" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.upload">
+<span class="sig-name descname"><span class="pre">upload</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.upload" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.product_id">
+<span class="sig-name descname"><span class="pre">product_id</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.product_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.product_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.files_id">
+<span class="sig-name descname"><span class="pre">files_id</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.files_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.files_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__columns">
+<span class="sig-name descname"><span class="pre">__columns</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__columns" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__columns_association">
+<span class="sig-name descname"><span class="pre">__columns_association</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__columns_association"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__columns_association" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">columns</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.columns" title="Link to this definition"></a></dt>
+<dd><p>Get columns</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.system_columns">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">system_columns</span></span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.system_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.system_columns" title="Link to this definition"></a></dt>
+<dd><p>Get system columns</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.make_columns_association">
+<span class="sig-name descname"><span class="pre">make_columns_association</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.make_columns_association"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.make_columns_association" title="Link to this definition"></a></dt>
+<dd><p>Associates upload columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – dictionary with associations</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.reset_columns_association">
+<span class="sig-name descname"><span class="pre">reset_columns_association</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.reset_columns_association"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.reset_columns_association" title="Link to this definition"></a></dt>
+<dd><p>Reset upload columns association</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.check_required_columns">
+<span class="sig-name descname"><span class="pre">check_required_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.check_required_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.check_required_columns" title="Link to this definition"></a></dt>
+<dd><p>Checks required columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dict</strong> – dictionary with success flag and message</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__save_basic_info">
+<span class="sig-name descname"><span class="pre">__save_basic_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__save_basic_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__save_basic_info" title="Link to this definition"></a></dt>
+<dd><p>Saves the basic upload information in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> (<em>int</em>) – product id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__save_upload_files">
+<span class="sig-name descname"><span class="pre">__save_upload_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__save_upload_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__save_upload_files" title="Link to this definition"></a></dt>
+<dd><p>Saves the upload files in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>file ids list</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>file_ids (list)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.get_product_columns">
+<span class="sig-name descname"><span class="pre">get_product_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.get_product_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.get_product_columns" title="Link to this definition"></a></dt>
+<dd><p>Gets product columns in database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict with product columns</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>columns (dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__dict_columns">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__dict_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__dict_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__dict_columns" title="Link to this definition"></a></dt>
+<dd><p>Returns the product columns in dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>list</em>) – product columns</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>product columns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__upload_file">
+<span class="sig-name descname"><span class="pre">__upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__upload_file" title="Link to this definition"></a></dt>
+<dd><p>Upload file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em>) – filepath</p></li>
+<li><p><strong>role</strong> (<em>str</em>) – file role</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>product id</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>product_id (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__check_mimetype">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__check_mimetype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__check_mimetype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__check_mimetype" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.save" title="Link to this definition"></a></dt>
+<dd><p>Finishs the upload by modifying the status in the database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.upload.PzUpload.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/upload.html#PzUpload.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.upload.PzUpload.__str__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../process/index.html" class="btn btn-neutral float-left" title="pzserver.process" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
