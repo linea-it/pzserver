@@ -22,7 +22,7 @@ class UploadData(BaseModel):
     main_file: str
     release: Optional[str] = None
     pz_code: Optional[str] = None
-    auxiliary_files: Optional[list] = None
+    auxiliary_files: Optional[list] = []
     description: Optional[str] = None
 
     @property
@@ -75,7 +75,8 @@ class PzUpload:
         self.api = api
         self.upload = upload
         self.product_id = self.__save_basic_info()
-        self.files_id = self.__save_upload_files()
+        self.files_id = []
+        self.__save_upload_files()
         self.api.registry_upload(self.product_id)
         self.__columns = self.get_product_columns()
         self.__columns_association = []
@@ -142,6 +143,18 @@ class PzUpload:
 
         return {"success": True, "message": "All required columns filled"}
 
+    def add_auxiliary_file(self, filepath, update=True):
+        """Add auxiliary file to upload
+        Args:
+            filepath (str): file path
+        """
+
+        fid = self.__upload_file(filepath, "auxiliary")
+        self.files_id.append(fid)
+
+        if update:
+            self.upload.auxiliary_files.append(filepath)
+
     def __save_basic_info(self):
         """Saves the basic upload information in the database.
 
@@ -166,19 +179,11 @@ class PzUpload:
             file_ids (list): file ids list
         """
 
-        files = [self.__upload_file(self.upload.main_file, "main")]
+        main_id = self.__upload_file(self.upload.main_file, "main")
+        self.files_id.append(main_id)
 
-        if self.upload.auxiliary_files:
-            for auxfile in self.upload.auxiliary_files:
-                try:
-                    fid = self.__upload_file(auxfile, "auxiliary")
-                except Exception as _:  # pylint: disable=broad-except
-                    fid = None
-
-                if fid:
-                    files.append(fid)
-
-        return files
+        for auxfile in self.upload.auxiliary_files:
+            self.add_auxiliary_file(auxfile, update=False)
 
     def get_product_columns(self):
         """Gets product columns in database
