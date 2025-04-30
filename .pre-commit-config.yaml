@@ -19,7 +19,7 @@ repos:
         description: Clear output from Jupyter notebooks.
         files: \.ipynb$
         exclude: ^docs/notebooks/intro_notebook.ipynb$
-        stages: [commit]
+        stages: [pre-commit]
         language: system
         entry: jupyter nbconvert --clear-output
 

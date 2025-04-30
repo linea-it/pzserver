@@ -216,10 +216,6 @@ Display the list of users who uploaded data products to the server;
       </thead>
       <tbody>
         <tr>
-          <td id="T_043b7_row0_col0" class="data row0 col0" >admin</td>
-          <td id="T_043b7_row0_col1" class="data row0 col1" ></td>
-        </tr>
-        <tr>
           <td id="T_043b7_row1_col0" class="data row1 col0" >andreiadourado</td>
           <td id="T_043b7_row1_col1" class="data row1 col1" >andreiadourado</td>
         </tr>
@@ -232,18 +228,6 @@ Display the list of users who uploaded data products to the server;
           <td id="T_043b7_row3_col1" class="data row3 col1" >Moraes</td>
         </tr>
         <tr>
-          <td id="T_043b7_row4_col0" class="data row4 col0" >carlosadean</td>
-          <td id="T_043b7_row4_col1" class="data row4 col1" >carlosadean</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row5_col0" class="data row5 col0" >crisingulani</td>
-          <td id="T_043b7_row5_col1" class="data row5 col1" >crisingulani</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row6_col0" class="data row6 col0" >deborajanini</td>
-          <td id="T_043b7_row6_col1" class="data row6 col1" >Janini</td>
-        </tr>
-        <tr>
           <td id="T_043b7_row7_col0" class="data row7 col0" >drewoldag</td>
           <td id="T_043b7_row7_col1" class="data row7 col1" >Drew Oldag</td>
         </tr>
@@ -252,20 +236,12 @@ Display the list of users who uploaded data products to the server;
           <td id="T_043b7_row8_col1" class="data row8 col1" >Cardoso</td>
         </tr>
         <tr>
-          <td id="T_043b7_row9_col0" class="data row9 col0" >glaubervila</td>
-          <td id="T_043b7_row9_col1" class="data row9 col1" >glaubervila</td>
-        </tr>
-        <tr>
           <td id="T_043b7_row10_col0" class="data row10 col0" >GloriaFA</td>
           <td id="T_043b7_row10_col1" class="data row10 col1" >Gloria Fonseca Alvarez</td>
         </tr>
         <tr>
           <td id="T_043b7_row11_col0" class="data row11 col0" >gschwend</td>
-          <td id="T_043b7_row11_col1" class="data row11 col1" >gschwend</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row12_col0" class="data row12 col0" >gverde</td>
-          <td id="T_043b7_row12_col1" class="data row12 col1" ></td>
+          <td id="T_043b7_row11_col1" class="data row11 col1" >Julia Gschwend</td>
         </tr>
         <tr>
           <td id="T_043b7_row13_col0" class="data row13 col0" >hdante</td>
@@ -276,40 +252,12 @@ Display the list of users who uploaded data products to the server;
           <td id="T_043b7_row14_col1" class="data row14 col1" >HeloisaMengisztki</td>
         </tr>
         <tr>
-          <td id="T_043b7_row15_col0" class="data row15 col0" >http://cilogon.org/serverE/users/189487</td>
-          <td id="T_043b7_row15_col1" class="data row15 col1" >CARDOSO</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row16_col0" class="data row16 col0" >http://cilogon.org/serverE/users/190300</td>
-          <td id="T_043b7_row16_col1" class="data row16 col1" >Singulani</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row17_col0" class="data row17 col0" >http://cilogon.org/serverE/users/198333</td>
-          <td id="T_043b7_row17_col1" class="data row17 col1" >Singulani</td>
-        </tr>
-        <tr>
           <td id="T_043b7_row18_col0" class="data row18 col0" >iagolops</td>
           <td id="T_043b7_row18_col1" class="data row18 col1" >iagolops</td>
         </tr>
         <tr>
-          <td id="T_043b7_row19_col0" class="data row19 col0" >jandsonrj</td>
-          <td id="T_043b7_row19_col1" class="data row19 col1" >jandsonrj</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row20_col0" class="data row20 col0" >leandrops19</td>
-          <td id="T_043b7_row20_col1" class="data row20 col1" ></td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row21_col0" class="data row21 col0" >luigilcsilva</td>
-          <td id="T_043b7_row21_col1" class="data row21 col1" >luigilcsilva</td>
-        </tr>
-        <tr>
           <td id="T_043b7_row22_col0" class="data row22 col0" >luigisilva</td>
           <td id="T_043b7_row22_col1" class="data row22 col1" >luigisilva</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row23_col0" class="data row23 col0" >luiz-nicolaci</td>
-          <td id="T_043b7_row23_col1" class="data row23 col1" ></td>
         </tr>
         <tr>
           <td id="T_043b7_row24_col0" class="data row24 col0" >MelissaGraham</td>
@@ -318,10 +266,6 @@ Display the list of users who uploaded data products to the server;
         <tr>
           <td id="T_043b7_row25_col0" class="data row25 col0" >saraviz</td>
           <td id="T_043b7_row25_col1" class="data row25 col1" >Aviz</td>
-        </tr>
-        <tr>
-          <td id="T_043b7_row26_col0" class="data row26 col0" >singulani</td>
-          <td id="T_043b7_row26_col1" class="data row26 col1" ></td>
         </tr>
       </tbody>
     </table>
@@ -392,102 +336,6 @@ during the survey’s operation).
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td id="T_6e17c_row0_col0" class="data row0 col0" >189</td>
-          <td id="T_6e17c_row0_col1" class="data row0 col1" >189_example_upload_via_lib</td>
-          <td id="T_6e17c_row0_col2" class="data row0 col2" >example upload via lib</td>
-          <td id="T_6e17c_row0_col3" class="data row0 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row0_col4" class="data row0 col4" >None</td>
-          <td id="T_6e17c_row0_col5" class="data row0 col5" >gschwend</td>
-          <td id="T_6e17c_row0_col6" class="data row0 col6" >False</td>
-          <td id="T_6e17c_row0_col7" class="data row0 col7" >None</td>
-          <td id="T_6e17c_row0_col8" class="data row0 col8" >None</td>
-          <td id="T_6e17c_row0_col9" class="data row0 col9" >2024-12-11T15:17:18.272001Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row1_col0" class="data row1 col0" >188</td>
-          <td id="T_6e17c_row1_col1" class="data row1 col1" >188_example_upload_via_lib</td>
-          <td id="T_6e17c_row1_col2" class="data row1 col2" >example upload via lib</td>
-          <td id="T_6e17c_row1_col3" class="data row1 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row1_col4" class="data row1 col4" >None</td>
-          <td id="T_6e17c_row1_col5" class="data row1 col5" >gschwend</td>
-          <td id="T_6e17c_row1_col6" class="data row1 col6" >False</td>
-          <td id="T_6e17c_row1_col7" class="data row1 col7" >None</td>
-          <td id="T_6e17c_row1_col8" class="data row1 col8" >None</td>
-          <td id="T_6e17c_row1_col9" class="data row1 col9" >2024-12-11T14:36:24.417710Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row2_col0" class="data row2 col0" >182</td>
-          <td id="T_6e17c_row2_col1" class="data row2 col1" >182_example_tpz_training_results</td>
-          <td id="T_6e17c_row2_col2" class="data row2 col2" >Example TPZ Training Results</td>
-          <td id="T_6e17c_row2_col3" class="data row2 col3" >Training Results</td>
-          <td id="T_6e17c_row2_col4" class="data row2 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row2_col5" class="data row2 col5" >gschwend</td>
-          <td id="T_6e17c_row2_col6" class="data row2 col6" >False</td>
-          <td id="T_6e17c_row2_col7" class="data row2 col7" ></td>
-          <td id="T_6e17c_row2_col8" class="data row2 col8" >Example of RAIL inform (training) results using TPZ.</td>
-          <td id="T_6e17c_row2_col9" class="data row2 col9" >2024-12-10T17:08:20.025367Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row3_col0" class="data row3 col0" >181</td>
-          <td id="T_6e17c_row3_col1" class="data row3 col1" >181_example_upload_via_lib</td>
-          <td id="T_6e17c_row3_col2" class="data row3 col2" >example upload via lib</td>
-          <td id="T_6e17c_row3_col3" class="data row3 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row3_col4" class="data row3 col4" >None</td>
-          <td id="T_6e17c_row3_col5" class="data row3 col5" >gschwend</td>
-          <td id="T_6e17c_row3_col6" class="data row3 col6" >False</td>
-          <td id="T_6e17c_row3_col7" class="data row3 col7" >None</td>
-          <td id="T_6e17c_row3_col8" class="data row3 col8" >None</td>
-          <td id="T_6e17c_row3_col9" class="data row3 col9" >2024-12-10T03:01:05.190194Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row4_col0" class="data row4 col0" >180</td>
-          <td id="T_6e17c_row4_col1" class="data row4 col1" >180_example_upload_via_lib</td>
-          <td id="T_6e17c_row4_col2" class="data row4 col2" >example upload via lib</td>
-          <td id="T_6e17c_row4_col3" class="data row4 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row4_col4" class="data row4 col4" >None</td>
-          <td id="T_6e17c_row4_col5" class="data row4 col5" >gschwend</td>
-          <td id="T_6e17c_row4_col6" class="data row4 col6" >False</td>
-          <td id="T_6e17c_row4_col7" class="data row4 col7" >None</td>
-          <td id="T_6e17c_row4_col8" class="data row4 col8" >None</td>
-          <td id="T_6e17c_row4_col9" class="data row4 col9" >2024-12-03T17:20:32.975994Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row5_col0" class="data row5 col0" >179</td>
-          <td id="T_6e17c_row5_col1" class="data row5 col1" >179_singulani_test0015</td>
-          <td id="T_6e17c_row5_col2" class="data row5 col2" >singulani_test0015</td>
-          <td id="T_6e17c_row5_col3" class="data row5 col3" >Training Set</td>
-          <td id="T_6e17c_row5_col4" class="data row5 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row5_col5" class="data row5 col5" >crisingulani</td>
-          <td id="T_6e17c_row5_col6" class="data row5 col6" >False</td>
-          <td id="T_6e17c_row5_col7" class="data row5 col7" >None</td>
-          <td id="T_6e17c_row5_col8" class="data row5 col8" >None</td>
-          <td id="T_6e17c_row5_col9" class="data row5 col9" >2024-11-28T16:47:00.649595Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row6_col0" class="data row6 col0" >178</td>
-          <td id="T_6e17c_row6_col1" class="data row6 col1" >178_singulani_test013</td>
-          <td id="T_6e17c_row6_col2" class="data row6 col2" >singulani_test013</td>
-          <td id="T_6e17c_row6_col3" class="data row6 col3" >Training Set</td>
-          <td id="T_6e17c_row6_col4" class="data row6 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row6_col5" class="data row6 col5" >crisingulani</td>
-          <td id="T_6e17c_row6_col6" class="data row6 col6" >False</td>
-          <td id="T_6e17c_row6_col7" class="data row6 col7" >None</td>
-          <td id="T_6e17c_row6_col8" class="data row6 col8" >None</td>
-          <td id="T_6e17c_row6_col9" class="data row6 col9" >2024-11-22T18:18:41.216437Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row7_col0" class="data row7 col0" >174</td>
-          <td id="T_6e17c_row7_col1" class="data row7 col1" >174_singulani_test011</td>
-          <td id="T_6e17c_row7_col2" class="data row7 col2" >singulani_test011</td>
-          <td id="T_6e17c_row7_col3" class="data row7 col3" >Training Set</td>
-          <td id="T_6e17c_row7_col4" class="data row7 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row7_col5" class="data row7 col5" >crisingulani</td>
-          <td id="T_6e17c_row7_col6" class="data row7 col6" >False</td>
-          <td id="T_6e17c_row7_col7" class="data row7 col7" >None</td>
-          <td id="T_6e17c_row7_col8" class="data row7 col8" >None</td>
-          <td id="T_6e17c_row7_col9" class="data row7 col9" >2024-11-18T16:43:39.346911Z</td>
-        </tr>
         <tr>
           <td id="T_6e17c_row8_col0" class="data row8 col0" >155</td>
           <td id="T_6e17c_row8_col1" class="data row8 col1" >155_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
@@ -572,162 +420,6 @@ during the survey’s operation).
           <td id="T_6e17c_row14_col7" class="data row14 col7" >None</td>
           <td id="T_6e17c_row14_col8" class="data row14 col8" >None</td>
           <td id="T_6e17c_row14_col9" class="data row14 col9" >2024-07-22T18:44:36.505561Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row15_col0" class="data row15 col0" >87</td>
-          <td id="T_6e17c_row15_col1" class="data row15 col1" >87_None</td>
-          <td id="T_6e17c_row15_col2" class="data row15 col2" >truth random</td>
-          <td id="T_6e17c_row15_col3" class="data row15 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row15_col4" class="data row15 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row15_col5" class="data row15 col5" >gschwend</td>
-          <td id="T_6e17c_row15_col6" class="data row15 col6" >False</td>
-          <td id="T_6e17c_row15_col7" class="data row15 col7" >null</td>
-          <td id="T_6e17c_row15_col8" class="data row15 col8" >random selection of objects from the DP0.1 truth catalog</td>
-          <td id="T_6e17c_row15_col9" class="data row15 col9" >2024-07-22T15:32:29.933332Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row16_col0" class="data row16 col0" >86</td>
-          <td id="T_6e17c_row16_col1" class="data row16 col1" >86_None</td>
-          <td id="T_6e17c_row16_col2" class="data row16 col2" >mock speczs</td>
-          <td id="T_6e17c_row16_col3" class="data row16 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row16_col4" class="data row16 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row16_col5" class="data row16 col5" >gschwend</td>
-          <td id="T_6e17c_row16_col6" class="data row16 col6" >False</td>
-          <td id="T_6e17c_row16_col7" class="data row16 col7" ></td>
-          <td id="T_6e17c_row16_col8" class="data row16 col8" >Spec-zs randomly selected (0.2 percent) from the dp01 truth catalog filtered by truth_type (only galaxies).</td>
-          <td id="T_6e17c_row16_col9" class="data row16 col9" >2024-07-22T15:23:52.709801Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row17_col0" class="data row17 col0" >85</td>
-          <td id="T_6e17c_row17_col1" class="data row17 col1" >85_example</td>
-          <td id="T_6e17c_row17_col2" class="data row17 col2" >example</td>
-          <td id="T_6e17c_row17_col3" class="data row17 col3" >Training Set</td>
-          <td id="T_6e17c_row17_col4" class="data row17 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row17_col5" class="data row17 col5" >gschwend</td>
-          <td id="T_6e17c_row17_col6" class="data row17 col6" >False</td>
-          <td id="T_6e17c_row17_col7" class="data row17 col7" ></td>
-          <td id="T_6e17c_row17_col8" class="data row17 col8" >example</td>
-          <td id="T_6e17c_row17_col9" class="data row17 col9" >2024-07-22T02:21:58.128939Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row18_col0" class="data row18 col0" >83</td>
-          <td id="T_6e17c_row18_col1" class="data row18 col1" >83_example_upload_via_lib</td>
-          <td id="T_6e17c_row18_col2" class="data row18 col2" >example upload via lib</td>
-          <td id="T_6e17c_row18_col3" class="data row18 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row18_col4" class="data row18 col4" >None</td>
-          <td id="T_6e17c_row18_col5" class="data row18 col5" >luigilcsilva</td>
-          <td id="T_6e17c_row18_col6" class="data row18 col6" >False</td>
-          <td id="T_6e17c_row18_col7" class="data row18 col7" >None</td>
-          <td id="T_6e17c_row18_col8" class="data row18 col8" >None</td>
-          <td id="T_6e17c_row18_col9" class="data row18 col9" >2024-07-12T18:57:01.015290Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row19_col0" class="data row19 col0" >78</td>
-          <td id="T_6e17c_row19_col1" class="data row19 col1" >78_example_upload_via_lib</td>
-          <td id="T_6e17c_row19_col2" class="data row19 col2" >example upload via lib</td>
-          <td id="T_6e17c_row19_col3" class="data row19 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row19_col4" class="data row19 col4" >None</td>
-          <td id="T_6e17c_row19_col5" class="data row19 col5" >gschwend</td>
-          <td id="T_6e17c_row19_col6" class="data row19 col6" >False</td>
-          <td id="T_6e17c_row19_col7" class="data row19 col7" >None</td>
-          <td id="T_6e17c_row19_col8" class="data row19 col8" >None</td>
-          <td id="T_6e17c_row19_col9" class="data row19 col9" >2024-07-04T15:40:29.732156Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row20_col0" class="data row20 col0" >75</td>
-          <td id="T_6e17c_row20_col1" class="data row20 col1" >75_upload_example_1</td>
-          <td id="T_6e17c_row20_col2" class="data row20 col2" >upload example 1</td>
-          <td id="T_6e17c_row20_col3" class="data row20 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row20_col4" class="data row20 col4" >None</td>
-          <td id="T_6e17c_row20_col5" class="data row20 col5" >gschwend</td>
-          <td id="T_6e17c_row20_col6" class="data row20 col6" >False</td>
-          <td id="T_6e17c_row20_col7" class="data row20 col7" >None</td>
-          <td id="T_6e17c_row20_col8" class="data row20 col8" >None</td>
-          <td id="T_6e17c_row20_col9" class="data row20 col9" >2024-06-17T19:36:50.416031Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row21_col0" class="data row21 col0" >73</td>
-          <td id="T_6e17c_row21_col1" class="data row21 col1" >73_tpz_results</td>
-          <td id="T_6e17c_row21_col2" class="data row21 col2" >TPZ Results</td>
-          <td id="T_6e17c_row21_col3" class="data row21 col3" >Validation Results</td>
-          <td id="T_6e17c_row21_col4" class="data row21 col4" >None</td>
-          <td id="T_6e17c_row21_col5" class="data row21 col5" >andreiadourado</td>
-          <td id="T_6e17c_row21_col6" class="data row21 col6" >False</td>
-          <td id="T_6e17c_row21_col7" class="data row21 col7" ></td>
-          <td id="T_6e17c_row21_col8" class="data row21 col8" >Results of photoz validation using TPZ lite on simulated training set from DC2 TruthSummary table. Files: 03_run_tpz. html -> jupyter notebook (HTML version) with algorithm train; 04_metrics.html -> jupyter notebook (HTML version) with results analysis; model.pkl -> model generated in the "inform method"; output.hdf5  -> "estimate stage" results (PDFs).</td>
-          <td id="T_6e17c_row21_col9" class="data row21 col9" >2024-06-06T23:20:04.439030Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row22_col0" class="data row22 col0" >72</td>
-          <td id="T_6e17c_row22_col1" class="data row22 col1" >72_pzcompute_results_for_qa_validation</td>
-          <td id="T_6e17c_row22_col2" class="data row22 col2" >PZ-Compute Results for QA Validation</td>
-          <td id="T_6e17c_row22_col3" class="data row22 col3" >Validation Results</td>
-          <td id="T_6e17c_row22_col4" class="data row22 col4" >LSST DP0.2</td>
-          <td id="T_6e17c_row22_col5" class="data row22 col5" >HeloisaMengisztki</td>
-          <td id="T_6e17c_row22_col6" class="data row22 col6" >False</td>
-          <td id="T_6e17c_row22_col7" class="data row22 col7" ></td>
-          <td id="T_6e17c_row22_col8" class="data row22 col8" >This zip contains two files: validation_set.hdf5 with the data input to run estimate, contains the redshift values so that it can be used as the truth file. And the validation_set_output.hdf5 is the output after running estimate, with the computed photoz for fzboost algorithm.</td>
-          <td id="T_6e17c_row22_col9" class="data row22 col9" >2024-06-05T18:57:27.428106Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row23_col0" class="data row23 col0" >64</td>
-          <td id="T_6e17c_row23_col1" class="data row23 col1" >64_training_set_lsst_dp02</td>
-          <td id="T_6e17c_row23_col2" class="data row23 col2" >Training set LSST DP0.2</td>
-          <td id="T_6e17c_row23_col3" class="data row23 col3" >Training Set</td>
-          <td id="T_6e17c_row23_col4" class="data row23 col4" >None</td>
-          <td id="T_6e17c_row23_col5" class="data row23 col5" >andreiadourado</td>
-          <td id="T_6e17c_row23_col6" class="data row23 col6" >False</td>
-          <td id="T_6e17c_row23_col7" class="data row23 col7" ></td>
-          <td id="T_6e17c_row23_col8" class="data row23 col8" >Simulated training set from DC2 TruthSummary table. Random data (random_data.hdf5): table with the true magnitudes used to create the simulated set.</td>
-          <td id="T_6e17c_row23_col9" class="data row23 col9" >2024-05-21T14:42:47.340619Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row24_col0" class="data row24 col0" >63</td>
-          <td id="T_6e17c_row24_col1" class="data row24 col1" >63_specz_sample</td>
-          <td id="T_6e17c_row24_col2" class="data row24 col2" >Spec-z sample LSST DP0.2</td>
-          <td id="T_6e17c_row24_col3" class="data row24 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row24_col4" class="data row24 col4" >None</td>
-          <td id="T_6e17c_row24_col5" class="data row24 col5" >andreiadourado</td>
-          <td id="T_6e17c_row24_col6" class="data row24 col6" >False</td>
-          <td id="T_6e17c_row24_col7" class="data row24 col7" ></td>
-          <td id="T_6e17c_row24_col8" class="data row24 col8" >Spec-z sample created from a random fraction of object Ids from Object Table.</td>
-          <td id="T_6e17c_row24_col9" class="data row24 col9" >2024-05-21T13:36:19.884481Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row25_col0" class="data row25 col0" >52</td>
-          <td id="T_6e17c_row25_col1" class="data row25 col1" >52_2dflens_public_specz</td>
-          <td id="T_6e17c_row25_col2" class="data row25 col2" >2dFLenS Public spec-z</td>
-          <td id="T_6e17c_row25_col3" class="data row25 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row25_col4" class="data row25 col4" >None</td>
-          <td id="T_6e17c_row25_col5" class="data row25 col5" >saraviz</td>
-          <td id="T_6e17c_row25_col6" class="data row25 col6" >False</td>
-          <td id="T_6e17c_row25_col7" class="data row25 col7" ></td>
-          <td id="T_6e17c_row25_col8" class="data row25 col8" >Sample containing the 2dFLenS spec-z data contained in the original file Public spec-z compilation</td>
-          <td id="T_6e17c_row25_col9" class="data row25 col9" >2024-04-08T14:21:46.577298Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row26_col0" class="data row26 col0" >51</td>
-          <td id="T_6e17c_row26_col1" class="data row26 col1" >51_zcosmos_public_specz</td>
-          <td id="T_6e17c_row26_col2" class="data row26 col2" >zCOSMOS Public spec-z</td>
-          <td id="T_6e17c_row26_col3" class="data row26 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row26_col4" class="data row26 col4" >None</td>
-          <td id="T_6e17c_row26_col5" class="data row26 col5" >saraviz</td>
-          <td id="T_6e17c_row26_col6" class="data row26 col6" >False</td>
-          <td id="T_6e17c_row26_col7" class="data row26 col7" ></td>
-          <td id="T_6e17c_row26_col8" class="data row26 col8" >Sample containing the zCOSMOS spec-z data contained in the original file Public spec-z compilation</td>
-          <td id="T_6e17c_row26_col9" class="data row26 col9" >2024-04-07T23:06:40.185605Z</td>
-        </tr>
-        <tr>
-          <td id="T_6e17c_row27_col0" class="data row27 col0" >50</td>
-          <td id="T_6e17c_row27_col1" class="data row27 col1" >50_vipers_public_specz</td>
-          <td id="T_6e17c_row27_col2" class="data row27 col2" >VIPERS Public spec-z</td>
-          <td id="T_6e17c_row27_col3" class="data row27 col3" >Spec-z Catalog</td>
-          <td id="T_6e17c_row27_col4" class="data row27 col4" >None</td>
-          <td id="T_6e17c_row27_col5" class="data row27 col5" >saraviz</td>
-          <td id="T_6e17c_row27_col6" class="data row27 col6" >False</td>
-          <td id="T_6e17c_row27_col7" class="data row27 col7" ></td>
-          <td id="T_6e17c_row27_col8" class="data row27 col8" >Sample containing the VIPERS spec-z data contained in the original file Public spec-z compilation</td>
-          <td id="T_6e17c_row27_col9" class="data row27 col9" >2024-04-07T23:05:10.825559Z</td>
         </tr>
         <tr>
           <td id="T_6e17c_row28_col0" class="data row28 col0" >49</td>
@@ -1021,42 +713,6 @@ mapping the product’s attributes to their values.
       </thead>
       <tbody>
         <tr>
-          <td id="T_f0cda_row0_col0" class="data row0 col0" >179</td>
-          <td id="T_f0cda_row0_col1" class="data row0 col1" >179_singulani_test0015</td>
-          <td id="T_f0cda_row0_col2" class="data row0 col2" >singulani_test0015</td>
-          <td id="T_f0cda_row0_col3" class="data row0 col3" >Training Set</td>
-          <td id="T_f0cda_row0_col4" class="data row0 col4" >LSST DP0.2</td>
-          <td id="T_f0cda_row0_col5" class="data row0 col5" >crisingulani</td>
-          <td id="T_f0cda_row0_col6" class="data row0 col6" >False</td>
-          <td id="T_f0cda_row0_col7" class="data row0 col7" >None</td>
-          <td id="T_f0cda_row0_col8" class="data row0 col8" >None</td>
-          <td id="T_f0cda_row0_col9" class="data row0 col9" >2024-11-28T16:47:00.649595Z</td>
-        </tr>
-        <tr>
-          <td id="T_f0cda_row1_col0" class="data row1 col0" >178</td>
-          <td id="T_f0cda_row1_col1" class="data row1 col1" >178_singulani_test013</td>
-          <td id="T_f0cda_row1_col2" class="data row1 col2" >singulani_test013</td>
-          <td id="T_f0cda_row1_col3" class="data row1 col3" >Training Set</td>
-          <td id="T_f0cda_row1_col4" class="data row1 col4" >LSST DP0.2</td>
-          <td id="T_f0cda_row1_col5" class="data row1 col5" >crisingulani</td>
-          <td id="T_f0cda_row1_col6" class="data row1 col6" >False</td>
-          <td id="T_f0cda_row1_col7" class="data row1 col7" >None</td>
-          <td id="T_f0cda_row1_col8" class="data row1 col8" >None</td>
-          <td id="T_f0cda_row1_col9" class="data row1 col9" >2024-11-22T18:18:41.216437Z</td>
-        </tr>
-        <tr>
-          <td id="T_f0cda_row2_col0" class="data row2 col0" >174</td>
-          <td id="T_f0cda_row2_col1" class="data row2 col1" >174_singulani_test011</td>
-          <td id="T_f0cda_row2_col2" class="data row2 col2" >singulani_test011</td>
-          <td id="T_f0cda_row2_col3" class="data row2 col3" >Training Set</td>
-          <td id="T_f0cda_row2_col4" class="data row2 col4" >LSST DP0.2</td>
-          <td id="T_f0cda_row2_col5" class="data row2 col5" >crisingulani</td>
-          <td id="T_f0cda_row2_col6" class="data row2 col6" >False</td>
-          <td id="T_f0cda_row2_col7" class="data row2 col7" >None</td>
-          <td id="T_f0cda_row2_col8" class="data row2 col8" >None</td>
-          <td id="T_f0cda_row2_col9" class="data row2 col9" >2024-11-18T16:43:39.346911Z</td>
-        </tr>
-        <tr>
           <td id="T_f0cda_row3_col0" class="data row3 col0" >155</td>
           <td id="T_f0cda_row3_col1" class="data row3 col1" >155_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
           <td id="T_f0cda_row3_col2" class="data row3 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
@@ -1103,18 +759,6 @@ mapping the product’s attributes to their values.
           <td id="T_f0cda_row6_col7" class="data row6 col7" >null</td>
           <td id="T_f0cda_row6_col8" class="data row6 col8" >Training set created with the Training Set Maker pipeline. Science validation yet to be done!</td>
           <td id="T_f0cda_row6_col9" class="data row6 col9" >2024-10-16T00:14:33.426501Z</td>
-        </tr>
-        <tr>
-          <td id="T_f0cda_row7_col0" class="data row7 col0" >85</td>
-          <td id="T_f0cda_row7_col1" class="data row7 col1" >85_example</td>
-          <td id="T_f0cda_row7_col2" class="data row7 col2" >example</td>
-          <td id="T_f0cda_row7_col3" class="data row7 col3" >Training Set</td>
-          <td id="T_f0cda_row7_col4" class="data row7 col4" >LSST DP0.2</td>
-          <td id="T_f0cda_row7_col5" class="data row7 col5" >gschwend</td>
-          <td id="T_f0cda_row7_col6" class="data row7 col6" >False</td>
-          <td id="T_f0cda_row7_col7" class="data row7 col7" ></td>
-          <td id="T_f0cda_row7_col8" class="data row7 col8" >example</td>
-          <td id="T_f0cda_row7_col9" class="data row7 col9" >2024-07-22T02:21:58.128939Z</td>
         </tr>
         <tr>
           <td id="T_f0cda_row8_col0" class="data row8 col0" >33</td>
@@ -1175,78 +819,6 @@ instance, just “DP0” instead of “LSST DP0.2”:
       </thead>
       <tbody>
         <tr>
-          <td id="T_14c98_row0_col0" class="data row0 col0" >182</td>
-          <td id="T_14c98_row0_col1" class="data row0 col1" >182_example_tpz_training_results</td>
-          <td id="T_14c98_row0_col2" class="data row0 col2" >Example TPZ Training Results</td>
-          <td id="T_14c98_row0_col3" class="data row0 col3" >Training Results</td>
-          <td id="T_14c98_row0_col4" class="data row0 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row0_col5" class="data row0 col5" >gschwend</td>
-          <td id="T_14c98_row0_col6" class="data row0 col6" >False</td>
-          <td id="T_14c98_row0_col7" class="data row0 col7" ></td>
-          <td id="T_14c98_row0_col8" class="data row0 col8" >Example of RAIL inform (training) results using TPZ.</td>
-          <td id="T_14c98_row0_col9" class="data row0 col9" >2024-12-10T17:08:20.025367Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row1_col0" class="data row1 col0" >179</td>
-          <td id="T_14c98_row1_col1" class="data row1 col1" >179_singulani_test0015</td>
-          <td id="T_14c98_row1_col2" class="data row1 col2" >singulani_test0015</td>
-          <td id="T_14c98_row1_col3" class="data row1 col3" >Training Set</td>
-          <td id="T_14c98_row1_col4" class="data row1 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row1_col5" class="data row1 col5" >crisingulani</td>
-          <td id="T_14c98_row1_col6" class="data row1 col6" >False</td>
-          <td id="T_14c98_row1_col7" class="data row1 col7" >None</td>
-          <td id="T_14c98_row1_col8" class="data row1 col8" >None</td>
-          <td id="T_14c98_row1_col9" class="data row1 col9" >2024-11-28T16:47:00.649595Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row2_col0" class="data row2 col0" >178</td>
-          <td id="T_14c98_row2_col1" class="data row2 col1" >178_singulani_test013</td>
-          <td id="T_14c98_row2_col2" class="data row2 col2" >singulani_test013</td>
-          <td id="T_14c98_row2_col3" class="data row2 col3" >Training Set</td>
-          <td id="T_14c98_row2_col4" class="data row2 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row2_col5" class="data row2 col5" >crisingulani</td>
-          <td id="T_14c98_row2_col6" class="data row2 col6" >False</td>
-          <td id="T_14c98_row2_col7" class="data row2 col7" >None</td>
-          <td id="T_14c98_row2_col8" class="data row2 col8" >None</td>
-          <td id="T_14c98_row2_col9" class="data row2 col9" >2024-11-22T18:18:41.216437Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row3_col0" class="data row3 col0" >174</td>
-          <td id="T_14c98_row3_col1" class="data row3 col1" >174_singulani_test011</td>
-          <td id="T_14c98_row3_col2" class="data row3 col2" >singulani_test011</td>
-          <td id="T_14c98_row3_col3" class="data row3 col3" >Training Set</td>
-          <td id="T_14c98_row3_col4" class="data row3 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row3_col5" class="data row3 col5" >crisingulani</td>
-          <td id="T_14c98_row3_col6" class="data row3 col6" >False</td>
-          <td id="T_14c98_row3_col7" class="data row3 col7" >None</td>
-          <td id="T_14c98_row3_col8" class="data row3 col8" >None</td>
-          <td id="T_14c98_row3_col9" class="data row3 col9" >2024-11-18T16:43:39.346911Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row4_col0" class="data row4 col0" >155</td>
-          <td id="T_14c98_row4_col1" class="data row4 col1" >155_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
-          <td id="T_14c98_row4_col2" class="data row4 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
-          <td id="T_14c98_row4_col3" class="data row4 col3" >Training Set</td>
-          <td id="T_14c98_row4_col4" class="data row4 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row4_col5" class="data row4 col5" >luigilcsilva</td>
-          <td id="T_14c98_row4_col6" class="data row4 col6" >False</td>
-          <td id="T_14c98_row4_col7" class="data row4 col7" >None</td>
-          <td id="T_14c98_row4_col8" class="data row4 col8" >None</td>
-          <td id="T_14c98_row4_col9" class="data row4 col9" >2024-10-17T13:57:29.579577Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row5_col0" class="data row5 col0" >154</td>
-          <td id="T_14c98_row5_col1" class="data row5 col1" >154_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
-          <td id="T_14c98_row5_col2" class="data row5 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
-          <td id="T_14c98_row5_col3" class="data row5 col3" >Training Set</td>
-          <td id="T_14c98_row5_col4" class="data row5 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row5_col5" class="data row5 col5" >luigilcsilva</td>
-          <td id="T_14c98_row5_col6" class="data row5 col6" >False</td>
-          <td id="T_14c98_row5_col7" class="data row5 col7" >None</td>
-          <td id="T_14c98_row5_col8" class="data row5 col8" >None</td>
-          <td id="T_14c98_row5_col9" class="data row5 col9" >2024-10-17T13:48:17.833884Z</td>
-        </tr>
-        <tr>
           <td id="T_14c98_row6_col0" class="data row6 col0" >153</td>
           <td id="T_14c98_row6_col1" class="data row6 col1" >153_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
           <td id="T_14c98_row6_col2" class="data row6 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
@@ -1271,18 +843,6 @@ instance, just “DP0” instead of “LSST DP0.2”:
           <td id="T_14c98_row7_col9" class="data row7 col9" >2024-10-16T00:14:33.426501Z</td>
         </tr>
         <tr>
-          <td id="T_14c98_row8_col0" class="data row8 col0" >87</td>
-          <td id="T_14c98_row8_col1" class="data row8 col1" >87_None</td>
-          <td id="T_14c98_row8_col2" class="data row8 col2" >truth random</td>
-          <td id="T_14c98_row8_col3" class="data row8 col3" >Spec-z Catalog</td>
-          <td id="T_14c98_row8_col4" class="data row8 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row8_col5" class="data row8 col5" >gschwend</td>
-          <td id="T_14c98_row8_col6" class="data row8 col6" >False</td>
-          <td id="T_14c98_row8_col7" class="data row8 col7" >null</td>
-          <td id="T_14c98_row8_col8" class="data row8 col8" >random selection of objects from the DP0.1 truth catalog</td>
-          <td id="T_14c98_row8_col9" class="data row8 col9" >2024-07-22T15:32:29.933332Z</td>
-        </tr>
-        <tr>
           <td id="T_14c98_row9_col0" class="data row9 col0" >86</td>
           <td id="T_14c98_row9_col1" class="data row9 col1" >86_None</td>
           <td id="T_14c98_row9_col2" class="data row9 col2" >mock speczs</td>
@@ -1293,18 +853,6 @@ instance, just “DP0” instead of “LSST DP0.2”:
           <td id="T_14c98_row9_col7" class="data row9 col7" ></td>
           <td id="T_14c98_row9_col8" class="data row9 col8" >Spec-zs randomly selected (0.2 percent) from the dp01 truth catalog filtered by truth_type (only galaxies).</td>
           <td id="T_14c98_row9_col9" class="data row9 col9" >2024-07-22T15:23:52.709801Z</td>
-        </tr>
-        <tr>
-          <td id="T_14c98_row10_col0" class="data row10 col0" >85</td>
-          <td id="T_14c98_row10_col1" class="data row10 col1" >85_example</td>
-          <td id="T_14c98_row10_col2" class="data row10 col2" >example</td>
-          <td id="T_14c98_row10_col3" class="data row10 col3" >Training Set</td>
-          <td id="T_14c98_row10_col4" class="data row10 col4" >LSST DP0.2</td>
-          <td id="T_14c98_row10_col5" class="data row10 col5" >gschwend</td>
-          <td id="T_14c98_row10_col6" class="data row10 col6" >False</td>
-          <td id="T_14c98_row10_col7" class="data row10 col7" ></td>
-          <td id="T_14c98_row10_col8" class="data row10 col8" >example</td>
-          <td id="T_14c98_row10_col9" class="data row10 col9" >2024-07-22T02:21:58.128939Z</td>
         </tr>
         <tr>
           <td id="T_14c98_row11_col0" class="data row11 col0" >72</td>
@@ -1403,126 +951,6 @@ filtering is not case-sensitive):
       </thead>
       <tbody>
         <tr>
-          <td id="T_0da7a_row0_col0" class="data row0 col0" >189</td>
-          <td id="T_0da7a_row0_col1" class="data row0 col1" >189_example_upload_via_lib</td>
-          <td id="T_0da7a_row0_col2" class="data row0 col2" >example upload via lib</td>
-          <td id="T_0da7a_row0_col3" class="data row0 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row0_col4" class="data row0 col4" >None</td>
-          <td id="T_0da7a_row0_col5" class="data row0 col5" >gschwend</td>
-          <td id="T_0da7a_row0_col6" class="data row0 col6" >False</td>
-          <td id="T_0da7a_row0_col7" class="data row0 col7" >None</td>
-          <td id="T_0da7a_row0_col8" class="data row0 col8" >None</td>
-          <td id="T_0da7a_row0_col9" class="data row0 col9" >2024-12-11T15:17:18.272001Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row1_col0" class="data row1 col0" >188</td>
-          <td id="T_0da7a_row1_col1" class="data row1 col1" >188_example_upload_via_lib</td>
-          <td id="T_0da7a_row1_col2" class="data row1 col2" >example upload via lib</td>
-          <td id="T_0da7a_row1_col3" class="data row1 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row1_col4" class="data row1 col4" >None</td>
-          <td id="T_0da7a_row1_col5" class="data row1 col5" >gschwend</td>
-          <td id="T_0da7a_row1_col6" class="data row1 col6" >False</td>
-          <td id="T_0da7a_row1_col7" class="data row1 col7" >None</td>
-          <td id="T_0da7a_row1_col8" class="data row1 col8" >None</td>
-          <td id="T_0da7a_row1_col9" class="data row1 col9" >2024-12-11T14:36:24.417710Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row2_col0" class="data row2 col0" >181</td>
-          <td id="T_0da7a_row2_col1" class="data row2 col1" >181_example_upload_via_lib</td>
-          <td id="T_0da7a_row2_col2" class="data row2 col2" >example upload via lib</td>
-          <td id="T_0da7a_row2_col3" class="data row2 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row2_col4" class="data row2 col4" >None</td>
-          <td id="T_0da7a_row2_col5" class="data row2 col5" >gschwend</td>
-          <td id="T_0da7a_row2_col6" class="data row2 col6" >False</td>
-          <td id="T_0da7a_row2_col7" class="data row2 col7" >None</td>
-          <td id="T_0da7a_row2_col8" class="data row2 col8" >None</td>
-          <td id="T_0da7a_row2_col9" class="data row2 col9" >2024-12-10T03:01:05.190194Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row3_col0" class="data row3 col0" >180</td>
-          <td id="T_0da7a_row3_col1" class="data row3 col1" >180_example_upload_via_lib</td>
-          <td id="T_0da7a_row3_col2" class="data row3 col2" >example upload via lib</td>
-          <td id="T_0da7a_row3_col3" class="data row3 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row3_col4" class="data row3 col4" >None</td>
-          <td id="T_0da7a_row3_col5" class="data row3 col5" >gschwend</td>
-          <td id="T_0da7a_row3_col6" class="data row3 col6" >False</td>
-          <td id="T_0da7a_row3_col7" class="data row3 col7" >None</td>
-          <td id="T_0da7a_row3_col8" class="data row3 col8" >None</td>
-          <td id="T_0da7a_row3_col9" class="data row3 col9" >2024-12-03T17:20:32.975994Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row4_col0" class="data row4 col0" >179</td>
-          <td id="T_0da7a_row4_col1" class="data row4 col1" >179_singulani_test0015</td>
-          <td id="T_0da7a_row4_col2" class="data row4 col2" >singulani_test0015</td>
-          <td id="T_0da7a_row4_col3" class="data row4 col3" >Training Set</td>
-          <td id="T_0da7a_row4_col4" class="data row4 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row4_col5" class="data row4 col5" >crisingulani</td>
-          <td id="T_0da7a_row4_col6" class="data row4 col6" >False</td>
-          <td id="T_0da7a_row4_col7" class="data row4 col7" >None</td>
-          <td id="T_0da7a_row4_col8" class="data row4 col8" >None</td>
-          <td id="T_0da7a_row4_col9" class="data row4 col9" >2024-11-28T16:47:00.649595Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row5_col0" class="data row5 col0" >178</td>
-          <td id="T_0da7a_row5_col1" class="data row5 col1" >178_singulani_test013</td>
-          <td id="T_0da7a_row5_col2" class="data row5 col2" >singulani_test013</td>
-          <td id="T_0da7a_row5_col3" class="data row5 col3" >Training Set</td>
-          <td id="T_0da7a_row5_col4" class="data row5 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row5_col5" class="data row5 col5" >crisingulani</td>
-          <td id="T_0da7a_row5_col6" class="data row5 col6" >False</td>
-          <td id="T_0da7a_row5_col7" class="data row5 col7" >None</td>
-          <td id="T_0da7a_row5_col8" class="data row5 col8" >None</td>
-          <td id="T_0da7a_row5_col9" class="data row5 col9" >2024-11-22T18:18:41.216437Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row6_col0" class="data row6 col0" >174</td>
-          <td id="T_0da7a_row6_col1" class="data row6 col1" >174_singulani_test011</td>
-          <td id="T_0da7a_row6_col2" class="data row6 col2" >singulani_test011</td>
-          <td id="T_0da7a_row6_col3" class="data row6 col3" >Training Set</td>
-          <td id="T_0da7a_row6_col4" class="data row6 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row6_col5" class="data row6 col5" >crisingulani</td>
-          <td id="T_0da7a_row6_col6" class="data row6 col6" >False</td>
-          <td id="T_0da7a_row6_col7" class="data row6 col7" >None</td>
-          <td id="T_0da7a_row6_col8" class="data row6 col8" >None</td>
-          <td id="T_0da7a_row6_col9" class="data row6 col9" >2024-11-18T16:43:39.346911Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row7_col0" class="data row7 col0" >155</td>
-          <td id="T_0da7a_row7_col1" class="data row7 col1" >155_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
-          <td id="T_0da7a_row7_col2" class="data row7 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
-          <td id="T_0da7a_row7_col3" class="data row7 col3" >Training Set</td>
-          <td id="T_0da7a_row7_col4" class="data row7 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row7_col5" class="data row7 col5" >luigilcsilva</td>
-          <td id="T_0da7a_row7_col6" class="data row7 col6" >False</td>
-          <td id="T_0da7a_row7_col7" class="data row7 col7" >None</td>
-          <td id="T_0da7a_row7_col8" class="data row7 col8" >None</td>
-          <td id="T_0da7a_row7_col9" class="data row7 col9" >2024-10-17T13:57:29.579577Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row8_col0" class="data row8 col0" >154</td>
-          <td id="T_0da7a_row8_col1" class="data row8 col1" >154_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
-          <td id="T_0da7a_row8_col2" class="data row8 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
-          <td id="T_0da7a_row8_col3" class="data row8 col3" >Training Set</td>
-          <td id="T_0da7a_row8_col4" class="data row8 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row8_col5" class="data row8 col5" >luigilcsilva</td>
-          <td id="T_0da7a_row8_col6" class="data row8 col6" >False</td>
-          <td id="T_0da7a_row8_col7" class="data row8 col7" >None</td>
-          <td id="T_0da7a_row8_col8" class="data row8 col8" >None</td>
-          <td id="T_0da7a_row8_col9" class="data row8 col9" >2024-10-17T13:48:17.833884Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row9_col0" class="data row9 col0" >153</td>
-          <td id="T_0da7a_row9_col1" class="data row9 col1" >153_tsm_test_dp02_object_vs_dp01_truth_random_sample</td>
-          <td id="T_0da7a_row9_col2" class="data row9 col2" >TSM_Test_DP02_object_vs_DP01_truth_random_sample</td>
-          <td id="T_0da7a_row9_col3" class="data row9 col3" >Training Set</td>
-          <td id="T_0da7a_row9_col4" class="data row9 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row9_col5" class="data row9 col5" >luigilcsilva</td>
-          <td id="T_0da7a_row9_col6" class="data row9 col6" >False</td>
-          <td id="T_0da7a_row9_col7" class="data row9 col7" >None</td>
-          <td id="T_0da7a_row9_col8" class="data row9 col8" >None</td>
-          <td id="T_0da7a_row9_col9" class="data row9 col9" >2024-10-17T13:39:00.003188Z</td>
-        </tr>
-        <tr>
           <td id="T_0da7a_row10_col0" class="data row10 col0" >152</td>
           <td id="T_0da7a_row10_col1" class="data row10 col1" >152_random_training_set</td>
           <td id="T_0da7a_row10_col2" class="data row10 col2" >random_training_set</td>
@@ -1558,90 +986,6 @@ filtering is not case-sensitive):
           <td id="T_0da7a_row12_col7" class="data row12 col7" ></td>
           <td id="T_0da7a_row12_col8" class="data row12 col8" >random selection of objects from the DP0.1 truth catalog</td>
           <td id="T_0da7a_row12_col9" class="data row12 col9" >2024-09-12T22:05:55.720144Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row13_col0" class="data row13 col0" >91</td>
-          <td id="T_0da7a_row13_col1" class="data row13 col1" >91_example_upload_via_lib</td>
-          <td id="T_0da7a_row13_col2" class="data row13 col2" >example upload via lib</td>
-          <td id="T_0da7a_row13_col3" class="data row13 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row13_col4" class="data row13 col4" >None</td>
-          <td id="T_0da7a_row13_col5" class="data row13 col5" >gschwend</td>
-          <td id="T_0da7a_row13_col6" class="data row13 col6" >False</td>
-          <td id="T_0da7a_row13_col7" class="data row13 col7" >None</td>
-          <td id="T_0da7a_row13_col8" class="data row13 col8" >None</td>
-          <td id="T_0da7a_row13_col9" class="data row13 col9" >2024-07-22T18:44:36.505561Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row14_col0" class="data row14 col0" >87</td>
-          <td id="T_0da7a_row14_col1" class="data row14 col1" >87_None</td>
-          <td id="T_0da7a_row14_col2" class="data row14 col2" >truth random</td>
-          <td id="T_0da7a_row14_col3" class="data row14 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row14_col4" class="data row14 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row14_col5" class="data row14 col5" >gschwend</td>
-          <td id="T_0da7a_row14_col6" class="data row14 col6" >False</td>
-          <td id="T_0da7a_row14_col7" class="data row14 col7" >null</td>
-          <td id="T_0da7a_row14_col8" class="data row14 col8" >random selection of objects from the DP0.1 truth catalog</td>
-          <td id="T_0da7a_row14_col9" class="data row14 col9" >2024-07-22T15:32:29.933332Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row15_col0" class="data row15 col0" >86</td>
-          <td id="T_0da7a_row15_col1" class="data row15 col1" >86_None</td>
-          <td id="T_0da7a_row15_col2" class="data row15 col2" >mock speczs</td>
-          <td id="T_0da7a_row15_col3" class="data row15 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row15_col4" class="data row15 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row15_col5" class="data row15 col5" >gschwend</td>
-          <td id="T_0da7a_row15_col6" class="data row15 col6" >False</td>
-          <td id="T_0da7a_row15_col7" class="data row15 col7" ></td>
-          <td id="T_0da7a_row15_col8" class="data row15 col8" >Spec-zs randomly selected (0.2 percent) from the dp01 truth catalog filtered by truth_type (only galaxies).</td>
-          <td id="T_0da7a_row15_col9" class="data row15 col9" >2024-07-22T15:23:52.709801Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row16_col0" class="data row16 col0" >85</td>
-          <td id="T_0da7a_row16_col1" class="data row16 col1" >85_example</td>
-          <td id="T_0da7a_row16_col2" class="data row16 col2" >example</td>
-          <td id="T_0da7a_row16_col3" class="data row16 col3" >Training Set</td>
-          <td id="T_0da7a_row16_col4" class="data row16 col4" >LSST DP0.2</td>
-          <td id="T_0da7a_row16_col5" class="data row16 col5" >gschwend</td>
-          <td id="T_0da7a_row16_col6" class="data row16 col6" >False</td>
-          <td id="T_0da7a_row16_col7" class="data row16 col7" ></td>
-          <td id="T_0da7a_row16_col8" class="data row16 col8" >example</td>
-          <td id="T_0da7a_row16_col9" class="data row16 col9" >2024-07-22T02:21:58.128939Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row17_col0" class="data row17 col0" >83</td>
-          <td id="T_0da7a_row17_col1" class="data row17 col1" >83_example_upload_via_lib</td>
-          <td id="T_0da7a_row17_col2" class="data row17 col2" >example upload via lib</td>
-          <td id="T_0da7a_row17_col3" class="data row17 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row17_col4" class="data row17 col4" >None</td>
-          <td id="T_0da7a_row17_col5" class="data row17 col5" >luigilcsilva</td>
-          <td id="T_0da7a_row17_col6" class="data row17 col6" >False</td>
-          <td id="T_0da7a_row17_col7" class="data row17 col7" >None</td>
-          <td id="T_0da7a_row17_col8" class="data row17 col8" >None</td>
-          <td id="T_0da7a_row17_col9" class="data row17 col9" >2024-07-12T18:57:01.015290Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row18_col0" class="data row18 col0" >78</td>
-          <td id="T_0da7a_row18_col1" class="data row18 col1" >78_example_upload_via_lib</td>
-          <td id="T_0da7a_row18_col2" class="data row18 col2" >example upload via lib</td>
-          <td id="T_0da7a_row18_col3" class="data row18 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row18_col4" class="data row18 col4" >None</td>
-          <td id="T_0da7a_row18_col5" class="data row18 col5" >gschwend</td>
-          <td id="T_0da7a_row18_col6" class="data row18 col6" >False</td>
-          <td id="T_0da7a_row18_col7" class="data row18 col7" >None</td>
-          <td id="T_0da7a_row18_col8" class="data row18 col8" >None</td>
-          <td id="T_0da7a_row18_col9" class="data row18 col9" >2024-07-04T15:40:29.732156Z</td>
-        </tr>
-        <tr>
-          <td id="T_0da7a_row19_col0" class="data row19 col0" >75</td>
-          <td id="T_0da7a_row19_col1" class="data row19 col1" >75_upload_example_1</td>
-          <td id="T_0da7a_row19_col2" class="data row19 col2" >upload example 1</td>
-          <td id="T_0da7a_row19_col3" class="data row19 col3" >Spec-z Catalog</td>
-          <td id="T_0da7a_row19_col4" class="data row19 col4" >None</td>
-          <td id="T_0da7a_row19_col5" class="data row19 col5" >gschwend</td>
-          <td id="T_0da7a_row19_col6" class="data row19 col6" >False</td>
-          <td id="T_0da7a_row19_col7" class="data row19 col7" >None</td>
-          <td id="T_0da7a_row19_col8" class="data row19 col8" >None</td>
-          <td id="T_0da7a_row19_col9" class="data row19 col9" >2024-06-17T19:36:50.416031Z</td>
         </tr>
         <tr>
           <td id="T_0da7a_row20_col0" class="data row20 col0" >64</td>
@@ -2061,12 +1405,24 @@ data product:
         "product_type": "specz_catalog",  # Product type 
         "release": None, # LSST release, use None if not LSST data 
         "main_file": "example.csv", # full path 
-        "auxiliary_files": ["example.html", "example.ipynb"] # full path
+        "auxiliary_files": ["example.html"] # full path
     }
 
 .. code:: ipython3
 
     upload = pz_server.upload(**data_to_upload)  
+
+.. code:: ipython3
+    
+    upload.make_columns_association({"RA": "RA", "DEC": "Dec", "Z": "z"})
+
+.. code:: ipython3
+
+    upload.save()
+
+.. code:: ipython3
+
+   upload.add_auxiliary_file('example.ipynb')
 
 .. code:: ipython3
 
