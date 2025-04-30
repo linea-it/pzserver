@@ -13,6 +13,7 @@ from IPython.display import display
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
 from .process import CSCProcess, TSMProcess
+from .product import PzProduct
 from .upload import PzUpload, UploadData
 
 pd.options.display.max_colwidth = None
@@ -292,6 +293,24 @@ class PzServer:
             return None
 
         return dataframe
+
+    def attach_auxiliary_files_by_product(self, product_id, filepath):
+        """
+        Attach auxiliary files to a product
+        Args:
+            product_id (str or int): data product
+                unique identifier (product id
+                number or internal_name)
+            filepath (str): file path
+        """
+
+        product = self.get_product_metadata(product_id, mainfile_info=False)
+
+        if not product:
+            raise ValueError(f"'{product_id}' product not found")
+
+        pzproduct = PzProduct(product["id"], self.api)
+        pzproduct.attach_auxiliary_file(filepath)
 
     def download_product(self, product_id=None, save_in="."):
         """

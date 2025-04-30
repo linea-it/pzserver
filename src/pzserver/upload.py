@@ -153,6 +153,9 @@ class PzUpload:
         self.files_id.append(fid)
 
         if update:
+            if not self.upload.auxiliary_files:
+                self.upload.auxiliary_files = []
+
             self.upload.auxiliary_files.append(filepath)
 
     def __save_basic_info(self):
@@ -182,8 +185,9 @@ class PzUpload:
         main_id = self.__upload_file(self.upload.main_file, "main")
         self.files_id.append(main_id)
 
-        for auxfile in self.upload.auxiliary_files:
-            self.add_auxiliary_file(auxfile, update=False)
+        if self.upload.auxiliary_files:
+            for auxfile in self.upload.auxiliary_files:
+                self.add_auxiliary_file(auxfile, update=False)
 
     def get_product_columns(self):
         """Gets product columns in database
