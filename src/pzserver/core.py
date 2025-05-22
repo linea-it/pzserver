@@ -204,7 +204,7 @@ class PzServer:
         display(dataframe.style.hide(axis="index"))
 
     # ---- methods to get data or metadata of one particular product ----#
-    def get_product_metadata(self, product_id=None, mainfile_info=True) -> dict:
+    def get_product_metadata(self, product_id, mainfile_info=True) -> dict:
         """
         Fetches the product metadata.
 
@@ -222,7 +222,6 @@ class PzServer:
         Returns:
             dict of product metadata
         """
-        product_id = str(product_id)
         try:
             if isinstance(product_id, int) or product_id.isdigit():
                 metaprod = dict(self.api.get("products", product_id))
@@ -309,8 +308,26 @@ class PzServer:
         if not product:
             raise ValueError(f"'{product_id}' product not found")
 
-        pzproduct = PzProduct(product["id"], self.api)
+        pzproduct = self.get_product_object(product["id"])
         pzproduct.attach_auxiliary_file(filepath)
+
+    def get_product_object(self, product_id):
+        """
+        Fetches the product object.
+
+        Connects to the Photo-z Server's database and
+        fetches the metadata informed by the product
+        owner for a particular data product.
+
+        Args:
+            product_id (str or int): data product
+                unique identifier (product id
+                number or internal_name)
+
+        Returns:
+            PzProduct object
+        """
+        return PzProduct(product_id, self.api)
 
     def download_product(self, product_id=None, save_in="."):
         """

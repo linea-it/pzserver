@@ -7,6 +7,7 @@ import json
 import requests
 
 
+# pylint: disable=R0904
 class PzRequests:
     """
     Responsible for managing all requests to the Pz Server app.
@@ -97,13 +98,13 @@ class PzRequests:
         for uitem in filters:
             item = self._mapping_filters.get(uitem, uitem)
             if not item in api_params:
-                lib_params = self._reverse_filters(api_params)
+                lib_params = self.__reverse_filters(api_params)
                 raise ValueError(
                     "Invalid filter key was detected.\n"
                     "Valid filter keys are:\n  - {}".format("\n  - ".join(lib_params))
                 )
 
-    def _reverse_filters(self, api_params) -> list:
+    def __reverse_filters(self, api_params) -> list:
         """
         Reverts filter mapping
 
@@ -462,9 +463,6 @@ class PzRequests:
         )
         resp = self._send_request(req.prepare())
 
-        if resp.get("success", False):
-            return True
-
         if resp.get("status_code") == 400:
             return dict(
                 {
@@ -610,6 +608,41 @@ class PzRequests:
             f"{self._base_api_url}products/{_id}/download_main_file/", save_in
         )
 
+    def get_product_files(self, product_id) -> list:
+        """
+        Gets all files from a product.
+
+        Args:
+            product_id (int): product id
+
+        Returns:
+            list: list of files
+        """
+
+        data = self._get_request(
+            f"{self._base_api_url}product-files/?product_id={product_id}"
+        )
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data").get("results")
+
+    def delete_product_file(self, file_id) -> None:
+        """
+        Deletes a file from a product.
+
+        Args:
+            file_id (int): file id
+        """
+
+        data = self._delete_request(f"{self._base_api_url}product-files/{file_id}/")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
     def get_main_file_info(self, _id, column_association=True) -> dict:
         """
         Returns information about the main product file.
@@ -748,6 +781,7 @@ class PzRequests:
 
         file_roles = {
             "main": 0,
+            "description": 1,
             "auxiliary": 2,
         }
 
@@ -807,6 +841,25 @@ class PzRequests:
             product_id (int): product id
         """
         data = {"status": 1}
+
+        update = self._patch_request(
+            f"{self._base_api_url}products/{product_id}/", data=data
+        )
+
+        if "success" in update and update["success"] is False:
+            raise requests.exceptions.RequestException(update["message"])
+
+        return update.get("data")
+
+    def update_product_description(self, product_id, description):
+        """Update product description
+
+        Args:
+            product_id (int): product id
+            description (str): description
+        """
+
+        data = {"description": description}
 
         update = self._patch_request(
             f"{self._base_api_url}products/{product_id}/", data=data
