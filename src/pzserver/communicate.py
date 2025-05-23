@@ -643,6 +643,21 @@ class PzRequests:
 
         return data.get("data")
 
+    def delete_product(self, product_id) -> None:
+        """
+        Deletes a product.
+
+        Args:
+            product_id (int): product id
+        """
+
+        data = self._delete_request(f"{self._base_api_url}products/{product_id}/")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
     def get_main_file_info(self, _id, column_association=True) -> dict:
         """
         Returns information about the main product file.

@@ -93,8 +93,8 @@ class PzProduct:
 
         return self.__get_files_by_type("Description")
 
-    def delete_file(self, file_id):
-        """Delete file
+    def remove_file(self, file_id):
+        """Remove file
         Args:
             file_id (int): file id
         """
@@ -103,7 +103,7 @@ class PzProduct:
             raise ValueError("You are not the owner of this product")
 
         if file_id == self.main_file.get("id", None):
-            raise ValueError("Cannot delete main file")
+            raise ValueError("Cannot remove main file")
 
         for file in self.__files:
             if file.get("id") == file_id and file.get("can_delete", False)\

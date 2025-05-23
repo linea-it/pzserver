@@ -293,24 +293,6 @@ class PzServer:
 
         return dataframe
 
-    def attach_auxiliary_files_by_product(self, product_id, filepath):
-        """
-        Attach auxiliary files to a product
-        Args:
-            product_id (str or int): data product
-                unique identifier (product id
-                number or internal_name)
-            filepath (str): file path
-        """
-
-        product = self.get_product_metadata(product_id, mainfile_info=False)
-
-        if not product:
-            raise ValueError(f"'{product_id}' product not found")
-
-        pzproduct = self.get_product_object(product["id"])
-        pzproduct.attach_auxiliary_file(filepath)
-
     def get_product_object(self, product_id):
         """
         Fetches the product object.
@@ -481,6 +463,24 @@ class PzServer:
 
         prod = UploadData(**data)
         return PzUpload(prod, self.api)
+
+    def delete_product(self, product_id):
+        """Delete product
+
+        Args:
+            product_id (str or int): data product
+                unique identifier (product id
+                number or internal_name)
+        Raises:
+            ValueError: if the user is not the owner of the product
+        """
+
+        product = self.get_product_metadata(product_id)
+
+        if product.get("is_owner", False) is False:
+            raise ValueError("You are not the owner of this product")
+
+        self.api.delete_product(product.get('id'))
 
     def __transform_df(self, dataframe, metadata):
         """
