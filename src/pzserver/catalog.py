@@ -18,8 +18,8 @@ class Catalog:
 
         self.data = data
         self.metadata = metadata
-        self.columns = metadata.get("main_file").get("columns_association")
         self.metadata_df = metadata_df
+        self.columns = metadata.get("main_file").get("columns_association")
 
     def display_metadata(self):
         """
