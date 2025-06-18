@@ -1,0 +1,327 @@
+pzserver.core
+=============
+
+.. py:module:: pzserver.core
+
+.. autoapi-nested-parse::
+
+   Classes responsible for managing user interaction
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   pzserver.core.FONTCOLORERR
+   pzserver.core.FONTCOLOREND
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.core.PzServer
+
+
+Module Contents
+---------------
+
+.. py:data:: FONTCOLORERR
+   :value: '\x1b[38;2;255;0;0m'
+
+
+.. py:data:: FONTCOLOREND
+   :value: '\x1b[0m'
+
+
+.. py:class:: PzServer(token=None, host='pz')
+
+   Responsible for managing user interactions with the Pz Server app.
+
+
+   .. py:attribute:: api
+
+
+   .. py:method:: get_product_types() -> list
+
+      Fetches the list of valid product types.
+
+      Connects to the Photo-z Server's administrative
+      database and fetches the list of valid product
+      types and their respective short description.
+
+      :returns: product types list
+
+
+
+   .. py:method:: display_product_types()
+
+      Displays the list of product types as dataframe
+
+      Displays a pandas.io.formats.style.Styler object
+      mapping the product type names to the corresponding
+      descriptions (optimized for use in Jupyter Notebook).
+
+
+
+   .. py:method:: get_users() -> list
+
+      Fetches the list of registered users.
+
+      Connects to the Photo-z Server's administrative
+      database and fetches the list of registered
+      users (first/last name and GitHub username).
+
+      :returns: users list
+
+
+
+   .. py:method:: display_users()
+
+      Displays the list of users as dataframe
+
+      Displays a pandas.io.formats.style.Styler object
+      mapping the users to corresponding GitHub usernames
+      (optimized for use in Jupyter Notebook).
+
+
+
+   .. py:method:: get_releases() -> list
+
+      Fetches the list of valid data releases.
+
+      Connects to the Photo-z Server's administrative
+      database and fetches the list of valid LSST
+      data releases corresponding to the data products
+      available. The resulting list is expected to
+      increase over the years of survey operations.
+
+      :returns: releases list
+
+
+
+   .. py:method:: display_releases()
+
+      Displays the list of data releases as dataframe
+
+      Displays a pandas.io.formats.style.Styler object
+      mapping the the data release tags to their full
+      names (optimized for use in Jupyter Notebook).
+
+
+
+   .. py:method:: get_products_list(filters=None) -> list
+
+      Fetches the list of data products available.
+
+      Connects to the Photo-z Server's database and
+      fetches the filtered list of data products
+      available.
+
+      :param filters: dictionary with a string
+                      (or a list of strings) patterns to
+                      filter the results.
+      :type filters: dict
+
+      :returns: data products list
+
+
+
+   .. py:method:: display_products_list(filters=None)
+
+      Displays the list of data products as dataframe
+
+      Displays a pandas.io.formats.style.Styler object
+      with the list of all products available with the
+      metadata informed by the owners (optimized for use
+      in Jupyter Notebook).
+
+      :param filters: dictionary with strings
+                      (or a list of strings) patterns to
+                      filter the results.
+      :type filters: dict
+
+
+
+   .. py:method:: get_product_metadata(product_id, mainfile_info=True) -> dict
+
+      Fetches the product metadata.
+
+      Connects to the Photo-z Server's database and
+      fetches the metadata informed by the product
+      owner for a particular data product.
+
+      :param product_id: data product
+                         unique identifier (product id
+                         number or internal_name)
+      :type product_id: str or int
+      :param mainfile_info: additional
+                            information from the main file.
+      :type mainfile_info: bool, optional
+
+      :returns: dict of product metadata
+
+
+
+   .. py:method:: display_product_metadata(product_id=None, show=True)
+
+      Displays the metadata informed by the product owner.
+
+      Displays a pandas.io.formats.style.Styler object
+      with the metadata informed by the product owner
+      (optimized for use in Jupyter Notebook).
+
+      :param product: data product
+                      unique identifier (product id
+                      number or internal_name)
+      :type product: str or int
+
+
+
+   .. py:method:: get_product_object(product_id)
+
+      Fetches the product object.
+
+      Connects to the Photo-z Server's database and
+      fetches the metadata informed by the product
+      owner for a particular data product.
+
+      :param product_id: data product
+                         unique identifier (product id
+                         number or internal_name)
+      :type product_id: str or int
+
+      :returns: PzProduct object
+
+
+
+   .. py:method:: download_product(product_id=None, save_in='.')
+
+      Download the data to local.
+
+      Connects to the Photo-z Server's database and
+      download a compressed zip file containing all
+      the data and metadata of a given data product.
+
+      :param product_id: data product
+                         unique identifier (product id
+                         number or internal_name)
+      :type product_id: str or int
+      :param save_in: location where the file will
+                      be saved
+      :type save_in: str
+
+
+
+   .. py:method:: get_product(product_id=None, fmt=None)
+
+      Fetches the data product contents to local.
+
+      Connects to the Photo-z Server's database and
+      fetches the tabular data stored as registered
+      data product.
+
+      :param product_id: data product
+                         unique identifier (product id
+                         number or internal name)
+      :type product_id: str or int
+      :param fmt: output table format
+                  'pandas' -> pandas.DataFrame
+                  'astropy' -> astropy.Table
+                  None (default) -> object class from catalog.py
+      :type fmt: str
+
+      :returns: SpeczCatalog or TrainingSet (pandas.DataFrame extensions)
+                object, or pure pandas.DataFrame, or astropy.Table
+
+
+
+   .. py:method:: upload(name: str, product_type: str, main_file: str, release: str = None, pz_code: str = None, auxiliary_files: list = None, description: str = None)
+
+      Make upload
+
+      :param name: name
+      :type name: str
+      :param product_type: product type name
+      :type product_type: str
+      :param main_file: main file path
+      :type main_file: str
+      :param release: release name. Defaults to None.
+      :type release: str, optional
+      :param auxiliary_files: auxiliary files path list. Defaults to None.
+      :type auxiliary_files: list, optional
+      :param pz_code: pz code. Defaults to None.
+      :type pz_code: str, optional
+      :param description: description. Defaults to None.
+      :type description: str, optional
+
+      :param upload: Upload object
+      :type upload: PzUpload
+
+
+
+   .. py:method:: delete_product(product_id)
+
+      Delete product
+
+      :param product_id: data product
+                         unique identifier (product id
+                         number or internal_name)
+      :type product_id: str or int
+
+      :raises ValueError: if the user is not the owner of the product
+
+
+
+   .. py:method:: __transform_df(dataframe, metadata)
+
+      Transforms the dataframe into an object corresponding to
+      its product type (currently we have two: Spec-z Catalog or
+      Training Set) or returns the dataframe.
+
+      :param dataframe: dataframe
+      :type dataframe: pandas.DataFrame
+      :param metadata: product metadata
+      :type metadata: dict
+
+
+
+   .. py:method:: combine_specz_catalogs(name)
+
+      Make combine specz
+
+      :param name: combine specz name
+      :type name: str
+
+      :returns: CSCProcess object
+      :rtype: CSCProcess
+
+
+
+   .. py:method:: training_set_maker(name)
+
+      Make training set
+
+      :param name: training set name
+      :type name: str
+
+      :returns: TSMProcess object
+      :rtype: TSMProcess
+
+
+
+   .. py:method:: run_and_wait(process)
+
+      Wait for processing to finish (30 minute tolerance time)
+
+      :param process: process object
+      :type process: TSMProcess or CombSpeczProcess
+
+      :returns: process status
+      :rtype: dict
+
+
+
