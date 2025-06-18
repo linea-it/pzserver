@@ -24,8 +24,8 @@ class PzRequests:
     }
     _enviroments = {
         "localhost": "http://localhost/api/",
-        "pz-dev": "https://pz-server-dev.linea.org.br/api/",
-        "pz": "https://pz-server.linea.org.br/api/",
+        "pz-dev": "https://pzserver-dev.linea.org.br/api/",
+        "pz": "https://pzserver.linea.org.br/api/",
     }
 
     def __init__(self, token, host="pz"):
