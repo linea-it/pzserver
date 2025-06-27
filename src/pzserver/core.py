@@ -1,5 +1,5 @@
-""" 
-Classes responsible for managing user interaction 
+"""
+Classes responsible for managing user interaction
 """
 
 import tempfile
@@ -136,9 +136,15 @@ class PzServer:
         names (optimized for use in Jupyter Notebook).
         """
         results_dict = self.api.get_all("releases")
-        dataframe = pd.DataFrame(results_dict, columns=["name", "display_name", "description"])
+        dataframe = pd.DataFrame(
+            results_dict, columns=["name", "display_name", "description"]
+        )
         dataframe.rename(
-            columns={"name": "Name", "display_name": "Release", "description": "Description"},
+            columns={
+                "name": "Name",
+                "display_name": "Release",
+                "description": "Description",
+            },
             inplace=True,
         )
         display(dataframe.style.hide(axis="index"))
@@ -279,10 +285,7 @@ class PzServer:
                 if key == "display_name":
                     key = "product_name"
                 if key == "main_file":
-                    transposed_list.append({
-                        "key": "n_rows",
-                        "value": value["n_rows"]
-                    })
+                    transposed_list.append({"key": "n_rows", "value": value["n_rows"]})
                     value = value["name"]
 
                 transposed_list.append({"key": key, "value": value})
@@ -480,7 +483,7 @@ class PzServer:
         if product.get("is_owner", False) is False:
             raise ValueError("You are not the owner of this product")
 
-        self.api.delete_product(product.get('id'))
+        self.api.delete_product(product.get("id"))
 
     def __transform_df(self, dataframe, metadata):
         """
@@ -504,12 +507,12 @@ class PzServer:
 
         return results
 
-    def combine_specz_catalogs(self, name):
+    def combine_redshift_catalogs(self, name):
         """
-        Make combine specz
+        Make combine redshift
 
         Args:
-            name (str): combine specz name
+            name (str): combine redshift name
 
         Return:
             CSCProcess: CSCProcess object
