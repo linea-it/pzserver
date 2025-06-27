@@ -43,7 +43,7 @@ class SpeczCatalog(Catalog):
 
     def plot(self, savefig=False):
         """
-        Very basic plots to characterize a Spec-z catalog.
+        Very basic plots to characterize a Redshift catalog.
 
         Args:
             savefig: option to save PNG figure (boolean)

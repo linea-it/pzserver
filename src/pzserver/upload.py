@@ -11,6 +11,7 @@ from pydantic import BaseModel, validator
 
 class RequiredColumnsException(Exception):
     """Required columns exception"""
+
     pass
 
 
@@ -108,8 +109,7 @@ class PzUpload:
             self.__columns_association.append(_data)
 
     def reset_columns_association(self):
-        """Reset upload columns association
-        """
+        """Reset upload columns association"""
 
         for column in self.__columns_association.copy():
             id_attr = column.get("id")
@@ -123,7 +123,7 @@ class PzUpload:
             dict: dictionary with success flag and message
         """
 
-        if self.upload.product_type == "specz_catalog":
+        if self.upload.product_type == "redshift_catalog":
             required_columns = ["Dec", "RA", "z"]
         elif self.upload.product_type == "training_set":
             required_columns = ["z"]
@@ -138,7 +138,7 @@ class PzUpload:
         if required_columns:
             return {
                 "success": False,
-                "message": f"Required columns NOT filled: {required_columns}"
+                "message": f"Required columns NOT filled: {required_columns}",
             }
 
         return {"success": True, "message": "All required columns filled"}
@@ -235,8 +235,7 @@ class PzUpload:
         """
 
         data = self.api.upload_file(
-            self.product_id, filepath, role,
-            mimetype=self.__check_mimetype(filepath)
+            self.product_id, filepath, role, mimetype=self.__check_mimetype(filepath)
         )
 
         return data.get("id")
