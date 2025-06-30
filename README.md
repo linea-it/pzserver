@@ -1,11 +1,11 @@
-# Pz Server Library
+# PZ Server Library
 
 ![PyPI](https://img.shields.io/pypi/v/pzserver?label=PyPI)
 ![PyPI - Status](https://img.shields.io/pypi/status/pzserver)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/linea-it/pzserver/build-documentation.yml?label=docs)
 ![GitHub](https://img.shields.io/github/license/linea-it/pzserver)
 
-A Python library to access data from the LSST [Photo-z Server](https://pz-server-dev.linea.org.br/). 
+A Python library to access data and services from the LSST [Photo-z Server](https://pz-server-dev.linea.org.br/). 
 
 The Photo-z (PZ) Server is an online service based on software developed and delivered as part of the in-kind contribution program BRA-LIN, from LIneA to the Legacy Survey of Space and Time (LSST) caried out by the [Rubin Observatory](https://rubinobservatory.org/). The PZ Server is an open source project. The source code is available on the GitHub repository [linea-it/pzserver_app](https://github.com/linea-it/pzserver_app). 
  
@@ -24,22 +24,22 @@ This repo uses the [LINCC's Python Project Template](https://github.com/lincc-fr
 
 Step-by-step procedure to test a new feature or bug fix from a particular branch not using a previously installed version (not the only way, just a suggestion): 
 
-1. Clone the repository and checkout to the development branch.
-    ```
-    git clone git@github.com:linea-it/pzserver.git
-    cd pzserver 
+1. Clone the repository
+   ```
+       git clone git@github.com:linea-it/pzserver.git
+       # or git clone https://github.com/linea-it/pzserver.git
+   ```
+
+2. Enter the repository and checkout to the development branch.
+   ```
+    cd pzserver
     git checkout <development branch name>
-    ```
-    or just
+    git pull
    ```
-   cd pzserver 
-   git pull
-   git checkout <development branch name>
-   ```
-   if you already have it.
     
-3. Create a new Conda environment free from `pzserver`  old version installation
+3. Create a new Conda environment free from `pzserver`  old version installation. Delete any existing one with the same same, if necessary. 
     ```
+    conda remove --name pzserver-dev --all
     conda create -n pzserver-dev
     conda activate pzserver-dev
     conda install pip
