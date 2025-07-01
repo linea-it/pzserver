@@ -365,12 +365,12 @@ class PzServer:
         """
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id)
-        prod_type = metadata["product_type_name"]
+        prod_type = metadata["product_type_internal_name"]
 
-        if prod_type in ("Validation Results", "Photo-z Table"):
+        if prod_type in ("validation_results", "photoz_estimates"):
             msg = f"does not support non-tabular data\n{FONTCOLORERR}"
             msg += "The method get_product() only supports simple tabular "
-            msg += "data (product types: Spec-z Catalog, Training Set). "
+            msg += "data (product types: redshift_catalog, training_set). "
             msg += f"For {prod_type}, please use method download_product()."
             msg += FONTCOLOREND
             raise ValueError(msg)
@@ -488,8 +488,8 @@ class PzServer:
     def __transform_df(self, dataframe, metadata):
         """
         Transforms the dataframe into an object corresponding to
-        its product type (currently we have two: Spec-z Catalog or
-        Training Set) or returns the dataframe.
+        its product type (currently we have two: redshift_catalog or
+        training_set) or returns the dataframe.
 
         Args:
             dataframe (pandas.DataFrame): dataframe
@@ -498,9 +498,9 @@ class PzServer:
 
         metadata_df = self.display_product_metadata(metadata["id"], show=False)
 
-        if metadata["product_type_name"] == "Spec-z Catalog":
+        if metadata["product_type_internal_name"] == "redshift_catalog":
             results = SpeczCatalog(dataframe, metadata, metadata_df)
-        elif metadata["product_type_name"] == "Training Set":
+        elif metadata["product_type_internal_name"] == "training_set":
             results = TrainingSet(dataframe, metadata, metadata_df)
         else:
             results = dataframe
