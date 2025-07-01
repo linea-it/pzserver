@@ -9,7 +9,7 @@ FONTCOLOREND = "\033[0m"
 
 
 class Process:
-    """ Responsible for managing user interactions with process """
+    """Responsible for managing user interactions with process"""
 
     # pylint: disable=too-many-instance-attributes
     # Eight is reasonable in this case.
@@ -111,8 +111,7 @@ class Process:
         self.__inputs.append(input_id)
 
     def empty_input(self):
-        """ Empty inputs list
-        """
+        """Empty inputs list"""
         self.__inputs = []
 
     @property
@@ -140,32 +139,32 @@ class Process:
             internal_name (str, optional): internal name. Defaults to None.
 
         Raises:
-            ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+            ValueError: when neither id or internal_name is informed, the raise is triggered
         """
 
         if product_id:
-            specz = self.__api.get("products", product_id)
+            redshift = self.__api.get("products", product_id)
         elif internal_name:
-            specz = self.__api.get_by_attribute(
+            redshift = self.__api.get_by_attribute(
                 "products", "internal_name", internal_name
             )
-            specz = specz.get("results")[0]
+            redshift = redshift.get("results")[0]
         else:
-            raise ValueError(f"{FONTCOLORERR}No specz selected{FONTCOLOREND}")
+            raise ValueError(f"{FONTCOLORERR}No product selected{FONTCOLOREND}")
 
-        specz_pt = specz.get("product_type")
+        redshift_pt = redshift.get("product_type")
 
-        if not specz_pt in self.available_product_types_id():
+        if not redshift_pt in self.available_product_types_id():
             raise ValueError(
                 f"{FONTCOLORERR}Input is not of the expected type.{FONTCOLOREND}"
             )
 
-        return specz
+        return redshift
 
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
 
-        print('-'*30)
+        print("-" * 30)
         print(f"{self.pipeline.display_name}: {self.name}")
         print(f"Configuration: {self.config}")
 
@@ -177,7 +176,7 @@ class Process:
             print(f"Output: {self.output}")
 
         print(f"Status: {self.check_status()}")
-        print('-'*30)
+        print("-" * 30)
 
     def run(self):
         """Starts processing
@@ -198,7 +197,6 @@ class Process:
         }
         return self.submit(data_process)
 
-
     def submit(self, data):
         """Submit process
 
@@ -208,7 +206,6 @@ class Process:
         Returns:
             dict: process info
         """
-
 
         process = self.__api.start_process(data)
         data["id"] = process.get("id")
@@ -258,7 +255,7 @@ class TSMProcess(Process):
         super().__init__("training_set_maker", name, api)
         self.__api = api
         self.__release = None
-        self.__specz = None
+        self.__redshift = None
 
     @property
     def release(self):
@@ -288,29 +285,28 @@ class TSMProcess(Process):
         self.__release = release
 
     @property
-    def specz(self):
-        """Gets specz info
+    def redshift(self):
+        """Gets redshift info
 
         Returns:
-            dict: specz info
+            dict: redshift info
         """
-        return self.__specz
+        return self.__redshift
 
-    def set_specz(self, specz_id=None, internal_name=None):
-        """Set specz
+    def set_redshift(self, _id=None, internal_name=None):
+        """Set redshift
 
         Args:
-            specz_id (int, optional): product ID. Defaults to None.
+            _id (int, optional): product ID. Defaults to None.
             internal_name (str, optional): internal name. Defaults to None.
 
         Raises:
-            ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+            ValueError: when neither _id or internal_name is informed, the raise is triggered
         """
 
-
-        self.__specz = self.get_product(product_id=specz_id, internal_name=internal_name)
+        self.__redshift = self.get_product(product_id=_id, internal_name=internal_name)
         self.empty_input()
-        self.append_input(self.specz.get("id"))
+        self.append_input(self.redshift.get("id"))
 
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
@@ -318,20 +314,19 @@ class TSMProcess(Process):
         if not extra_info:
             extra_info = []
 
-        if self.specz:
-            dn_specz = {
-                "name": self.specz.get("display_name"),
-                "internal_name": self.specz.get("internal_name"),
-                "id": self.specz.get("id"),
+        if self.redshift:
+            dn_redshift = {
+                "name": self.redshift.get("display_name"),
+                "internal_name": self.redshift.get("internal_name"),
+                "id": self.redshift.get("id"),
             }
 
-            extra_info.append(f"Specz: {dn_specz}")
+            extra_info.append(f"Redshift: {dn_redshift}")
 
         if self.release:
             extra_info.append(f"Release: {self.release}")
 
         super().summary(extra_info=extra_info)
-
 
     def run(self):
         """Starts TSM processing
@@ -368,7 +363,7 @@ class CSCProcess(Process):
             api (PzRequests): PzRequests
         """
 
-        super().__init__("combine_specz", name, api)
+        super().__init__("combine_redshift", name, api)
         # self.__api = api
         self.__catalogs = []
 
@@ -381,29 +376,29 @@ class CSCProcess(Process):
         """
         return self.__catalogs
 
-    def append_catalog(self, specz_id=None, internal_name=None):
-        """Append specz
+    def append_catalog(self, _id=None, internal_name=None):
+        """Append redshift
 
         Args:
-            specz_id (int, optional): product ID. Defaults to None.
+            _id (int, optional): product ID. Defaults to None.
             internal_name (str, optional): internal name. Defaults to None.
 
         Raises:
-            ValueError: when neither specz_id nor internal_name is informed, the raise is triggered
+            ValueError: when neither _id or internal_name is informed, the raise is triggered
         """
 
-        specz = self.get_product(product_id=specz_id, internal_name=internal_name)
-        specz_id = specz.get("id")
+        redshift = self.get_product(product_id=_id, internal_name=internal_name)
+        redshift_id = redshift.get("id")
 
-        if not specz_id in self.inputs:
-            dn_specz = {
-                "name": specz.get("display_name"),
-                "internal_name": specz.get("internal_name"),
-                "id": specz_id,
+        if not redshift_id in self.inputs:
+            dn_redshift = {
+                "name": redshift.get("display_name"),
+                "internal_name": redshift.get("internal_name"),
+                "id": redshift_id,
             }
 
-            self.__catalogs.append(dn_specz)
-            self.append_input(specz_id)
+            self.__catalogs.append(dn_redshift)
+            self.append_input(redshift_id)
 
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
