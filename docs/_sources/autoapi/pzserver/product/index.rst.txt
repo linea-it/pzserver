@@ -1,0 +1,128 @@
+pzserver.product
+================
+
+.. py:module:: pzserver.product
+
+.. autoapi-nested-parse::
+
+   Classes responsible for managing user interaction with products
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.product.PzProduct
+
+
+Module Contents
+---------------
+
+.. py:class:: PzProduct(product_id, api)
+
+   Responsible for managing user interactions with product.
+
+
+   .. py:attribute:: __api
+
+
+   .. py:attribute:: __attributes
+
+
+   .. py:attribute:: __product_id
+
+
+   .. py:property:: product_id
+
+      Get product id
+
+
+   .. py:property:: attributes
+
+      Get product attributes
+
+
+   .. py:method:: __get_files()
+
+      Get files by product id
+      :returns: main file and list of files
+      :rtype: tuple
+
+
+
+   .. py:method:: attach_auxiliary_file(filepath)
+
+      Attach auxiliary file
+      :param filepath: file path
+      :type filepath: str
+
+
+
+   .. py:method:: attach_description_file(filepath)
+
+      Attach description file
+      :param filepath: file path
+      :type filepath: str
+
+
+
+   .. py:method:: get_auxiliary_files()
+
+      Get auxiliary files
+      :returns: list of auxiliary files
+      :rtype: list
+
+
+
+   .. py:method:: get_description_files()
+
+      Get description files
+      :returns: list of description files
+      :rtype: list
+
+
+
+   .. py:method:: remove_file(file_id)
+
+      Remove file
+      :param file_id: file id
+      :type file_id: int
+
+
+
+   .. py:method:: update_description(description)
+
+      Update description
+      :param description: description
+      :type description: str
+
+
+
+   .. py:method:: __attach_file(filepath, file_type)
+
+      Attach description file
+      :param filepath: file path
+      :type filepath: str
+      :param file_type: file type
+      :type file_type: str
+
+
+
+   .. py:method:: __get_files_by_type(file_type)
+
+      Get a files by type
+      :param file_type: file type
+      :type file_type: str
+
+      :returns: list of files
+      :rtype: list
+
+
+
+   .. py:method:: __check_mimetype(filepath)
+      :staticmethod:
+
+
+
