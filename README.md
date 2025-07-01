@@ -49,7 +49,7 @@ Step-by-step procedure to test a new feature or bug fix from a particular branch
     conda create -n pzserver-dev
     conda activate pzserver-dev
     conda install pip
-    pip install -e '.'
+    pip install -e '.[dev]'
     python -m ipykernel install --user --name pzserver-dev --display-name "Python (pzserver-dev)"
     ```
 </p>
