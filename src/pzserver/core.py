@@ -375,7 +375,6 @@ class PzServer:
 
         file_extension = metadata["main_file"]["extension"]
 
-        print('passei aqui')
         with tempfile.TemporaryDirectory() as tmpdirname:
             results_dict = self.api.download_main_file(metadata["id"], tmpdirname)
 
@@ -402,12 +401,10 @@ class PzServer:
                         delimiter=delimiter,
                     )
                 return Table.from_pandas(dataframe)
-            
-            print('passei aqui 2')
-            
-            dataframe = tables_io.read(file_path, tables_io.types.AP_TABLE)
+                        
+            table = tables_io.read(file_path, tables_io.types.AP_TABLE)
 
-            return dataframe
+            return table
                 
     def upload(
         self,
