@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.communicate &mdash; pzserver 0.1.dev1+g322363a documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=aef53e2d"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pzserver.core" href="../core/index.html" />
+    <link rel="prev" title="pzserver.catalog" href="../catalog/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">pzserver</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../catalog/index.html">pzserver.catalog</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pzserver.communicate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/index.html">pzserver.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html">pzserver.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/index.html">pzserver.process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../product/index.html">pzserver.product</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../upload/index.html">pzserver.upload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">pzserver</a></li>
+      <li class="breadcrumb-item active">pzserver.communicate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pzserver.communicate">
+<span id="pzserver-communicate"></span><h1>pzserver.communicate<a class="headerlink" href="#module-pzserver.communicate" title="Link to this heading"></a></h1>
+<p>Classes to communicate with the Pz Server app</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.communicate.PzRequests" title="pzserver.communicate.PzRequests"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PzRequests</span></code></a></p></td>
+<td><p>Responsible for managing all requests to the Pz Server app.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PzRequests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests" title="Link to this definition"></a></dt>
+<dd><p>Responsible for managing all requests to the Pz Server app.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._token">
+<span class="sig-name descname"><span class="pre">_token</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._base_api_url">
+<span class="sig-name descname"><span class="pre">_base_api_url</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._base_api_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._base_api_url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._filter_options">
+<span class="sig-name descname"><span class="pre">_filter_options</span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._filter_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._filter_options" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._mapping_filters">
+<span class="sig-name descname"><span class="pre">_mapping_filters</span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._mapping_filters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._mapping_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._enviroments">
+<span class="sig-name descname"><span class="pre">_enviroments</span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._enviroments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._enviroments" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.safe_list_get">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">safe_list_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.safe_list_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.safe_list_get" title="Link to this definition"></a></dt>
+<dd><p>Gets a value from a list if it exists. Otherwise returns the default.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_list</strong> (<em>list</em>) – list to get the value from.</p></li>
+<li><p><strong>idx</strong> (<em>int</em>) – index of the value to get.</p></li>
+<li><p><strong>default</strong> – default value to return if the value doesn’t exist.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>value of the list by index.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._check_filters">
+<span class="sig-name descname"><span class="pre">_check_filters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._check_filters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._check_filters" title="Link to this definition"></a></dt>
+<dd><p>Checks if the filters are valid for an entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p></li>
+<li><p><strong>filters</strong> (<em>list</em>) – selected filters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.__reverse_filters">
+<span class="sig-name descname"><span class="pre">__reverse_filters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.__reverse_filters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.__reverse_filters" title="Link to this definition"></a></dt>
+<dd><p>Reverts filter mapping</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>api_params</strong> (<em>list</em>) – available filters</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>filters matching</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._check_response">
+<span class="sig-name descname"><span class="pre">_check_response</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_response</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._check_response"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._check_response" title="Link to this definition"></a></dt>
+<dd><p>Checks for possible HTTP errors in the response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>api_response</strong> (<em>request.Response</em>) – Response object</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>response content.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._send_request">
+<span class="sig-name descname"><span class="pre">_send_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prerequest</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._send_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._send_request" title="Link to this definition"></a></dt>
+<dd><p>Sends PreparedRequest object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prerequest</strong> (<em>requests.PreparedRequest</em>) – PreparedRequest object</p></li>
+<li><p><strong>stream</strong> (<em>optional</em>) – Whether to stream the request content.</p></li>
+<li><p><strong>timeout</strong> (<em>float</em><em> or </em><em>tuple</em><em>) </em><em>(</em><em>optional</em>) – How long to wait for the
+server to send data before giving up, as a float, or a
+(connect timeout, read timeout) tuple.</p></li>
+<li><p><strong>verify</strong> (<em>optional</em>) – Either a boolean, in which case it controls
+whether we verify the servers TLS certificate, or a string,
+in which case it must be a path to a CA bundle to use</p></li>
+<li><p><strong>cert</strong> (<em>optional</em>) – Any user-provided SSL certificate to be trusted.</p></li>
+<li><p><strong>proxies</strong> (<em>optional</em>) – The proxies dictionary to apply to the request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>response content</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._get_request">
+<span class="sig-name descname"><span class="pre">_get_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._get_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._get_request" title="Link to this definition"></a></dt>
+<dd><p>Get a record from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to get</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – params to get. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._options_request">
+<span class="sig-name descname"><span class="pre">_options_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._options_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._options_request" title="Link to this definition"></a></dt>
+<dd><p>Returns the options and settings for a given endpoint.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to get</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – params to get. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._check_token">
+<span class="sig-name descname"><span class="pre">_check_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._check_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._check_token" title="Link to this definition"></a></dt>
+<dd><p>Checks if the token is valid, otherwise stops class
+initialization.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._download_request">
+<span class="sig-name descname"><span class="pre">_download_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._download_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._download_request" title="Link to this definition"></a></dt>
+<dd><p>Download a record from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to get</p></li>
+<li><p><strong>save_in</strong> (<em>str</em>) – location where the file will be saved</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._patch_request">
+<span class="sig-name descname"><span class="pre">_patch_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._patch_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._patch_request" title="Link to this definition"></a></dt>
+<dd><p>Patchs a record to the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to patch.</p></li>
+<li><p><strong>data</strong> (<em>str</em>) – data to patch.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._upload_request">
+<span class="sig-name descname"><span class="pre">_upload_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._upload_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._upload_request" title="Link to this definition"></a></dt>
+<dd><p>Posts a record to the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to post.</p></li>
+<li><p><strong>payload</strong> (<em>str</em>) – payload to post.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._post_request">
+<span class="sig-name descname"><span class="pre">_post_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._post_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._post_request" title="Link to this definition"></a></dt>
+<dd><p>Posts a record to the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – url to post.</p></li>
+<li><p><strong>payload</strong> (<em>str</em>) – payload to post.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests._delete_request">
+<span class="sig-name descname"><span class="pre">_delete_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests._delete_request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests._delete_request" title="Link to this definition"></a></dt>
+<dd><p>Remove a record from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – url to delete with the record id.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>status and message of the request.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_entities">
+<span class="sig-name descname"><span class="pre">get_entities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_entities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_entities" title="Link to this definition"></a></dt>
+<dd><p>Gets all entities from the API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>entities list</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_all">
+<span class="sig-name descname"><span class="pre">get_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordering</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_all" title="Link to this definition"></a></dt>
+<dd><p>Returns a list with all records of the entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p></li>
+<li><p><strong>ordering</strong> (<em>None</em><em> or </em><em>str</em>) – column name to be ordered</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of records</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get" title="Link to this definition"></a></dt>
+<dd><p>Gets a record from the entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p></li>
+<li><p><strong>_id</strong> (<em>int</em>) – record id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_by_name">
+<span class="sig-name descname"><span class="pre">get_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_by_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_by_name" title="Link to this definition"></a></dt>
+<dd><p>Gets a record from the entity by name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p></li>
+<li><p><strong>_id</strong> (<em>int</em>) – record id</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_by_attribute">
+<span class="sig-name descname"><span class="pre">get_by_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_by_attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_by_attribute" title="Link to this definition"></a></dt>
+<dd><p>Gets a record from the entity by some attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p></li>
+<li><p><strong>attribute</strong> (<em>str</em>) – entity field</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – entity field value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record metadata</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.options">
+<span class="sig-name descname"><span class="pre">options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.options" title="Link to this definition"></a></dt>
+<dd><p>Gets options (filters, search and ordering) from the entity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>entity</strong> (<em>str</em>) – entity name  e.g. “releases”, “products”, “product-types”</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>options metadata (filters, search and ordering).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.download_main_file">
+<span class="sig-name descname"><span class="pre">download_main_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.download_main_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.download_main_file" title="Link to this definition"></a></dt>
+<dd><p>Gets the contents uploaded by the user for a given record.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_id</strong> (<em>int</em>) – record id</p></li>
+<li><p><strong>save_in</strong> (<em>str</em>) – location where the file will be saved</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_product_files">
+<span class="sig-name descname"><span class="pre">get_product_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_product_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_product_files" title="Link to this definition"></a></dt>
+<dd><p>Gets all files from a product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> (<em>int</em>) – product id</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.delete_product_file">
+<span class="sig-name descname"><span class="pre">delete_product_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.delete_product_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.delete_product_file" title="Link to this definition"></a></dt>
+<dd><p>Deletes a file from a product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_id</strong> (<em>int</em>) – file id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.delete_product">
+<span class="sig-name descname"><span class="pre">delete_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.delete_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.delete_product" title="Link to this definition"></a></dt>
+<dd><p>Deletes a product.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> (<em>int</em>) – product id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_main_file_info">
+<span class="sig-name descname"><span class="pre">get_main_file_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_association</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_main_file_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_main_file_info" title="Link to this definition"></a></dt>
+<dd><p>Returns information about the main product file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>_id</strong> (<em>int</em>) – record id</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.download_product">
+<span class="sig-name descname"><span class="pre">download_product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.download_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.download_product" title="Link to this definition"></a></dt>
+<dd><p>Downloads the product to local</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>_id</strong> (<em>int</em>) – record id</p></li>
+<li><p><strong>save_in</strong> (<em>str</em>) – location where the file will be saved</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.start_process">
+<span class="sig-name descname"><span class="pre">start_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.start_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.start_process" title="Link to this definition"></a></dt>
+<dd><p>Start process in Pz Server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) – data process</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.stop_process">
+<span class="sig-name descname"><span class="pre">stop_process</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.stop_process"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.stop_process" title="Link to this definition"></a></dt>
+<dd><p>Stop process in Pz Server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>process_id</strong> (<em>int</em>) – process ID</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.upload_basic_info">
+<span class="sig-name descname"><span class="pre">upload_basic_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">product_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pz_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.upload_basic_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.upload_basic_info" title="Link to this definition"></a></dt>
+<dd><p>Upload product with basic informations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>product_type</strong> (<em>int</em>)</p></li>
+<li><p><strong>release</strong> (<em>int</em>)</p></li>
+<li><p><strong>pz_code</strong> (<em>str</em>)</p></li>
+<li><p><strong>description</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>record data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.upload_file">
+<span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mimetype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.upload_file" title="Link to this definition"></a></dt>
+<dd><p>Upload file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>int</em>) – product id</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – filepath</p></li>
+<li><p><strong>role</strong> (<em>str</em>) – file role</p></li>
+<li><p><strong>mimetype</strong> (<em>str</em><em>, </em><em>optional</em>) – file mimetype. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.registry_upload">
+<span class="sig-name descname"><span class="pre">registry_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.registry_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.registry_upload" title="Link to this definition"></a></dt>
+<dd><p>Registry upload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) – product id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.update_upload_column">
+<span class="sig-name descname"><span class="pre">update_upload_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_attr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.update_upload_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.update_upload_column" title="Link to this definition"></a></dt>
+<dd><p>Update upload column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_attr</strong> (<em>int</em>) – attribute id</p></li>
+<li><p><strong>data</strong> (<em>dict</em>) – attribute that will be updated</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.finish_upload">
+<span class="sig-name descname"><span class="pre">finish_upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.finish_upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.finish_upload" title="Link to this definition"></a></dt>
+<dd><p>Finish upload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>product_id</strong> (<em>int</em>) – product id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.update_product_description">
+<span class="sig-name descname"><span class="pre">update_product_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">product_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.update_product_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.update_product_description" title="Link to this definition"></a></dt>
+<dd><p>Update product description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>product_id</strong> (<em>int</em>) – product id</p></li>
+<li><p><strong>description</strong> (<em>str</em>) – description</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pzserver.communicate.PzRequests.get_products">
+<span class="sig-name descname"><span class="pre">get_products</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="../../../_modules/pzserver/communicate.html#PzRequests.get_products"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.communicate.PzRequests.get_products" title="Link to this definition"></a></dt>
+<dd><p>Returns list of products according to a filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filters</strong> (<em>dict</em>) – products filter   ex: {‘release’: ‘LSST’}</p></li>
+<li><p><strong>status</strong> (<em>int</em>) – products status (1 is viewing only completed products)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of records</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../catalog/index.html" class="btn btn-neutral float-left" title="pzserver.catalog" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../core/index.html" class="btn btn-neutral float-right" title="pzserver.core" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
