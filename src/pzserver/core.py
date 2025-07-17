@@ -341,7 +341,7 @@ class PzServer:
         else:
             print(f"{FONTCOLORERR}Error: {results_dict['message']}{FONTCOLORERR}")
 
-    def get_product(self, product_id=None, fmt=None):
+    def get_product(self, product_id=None):
         """
         Fetches the data product contents to local.
 
@@ -353,21 +353,16 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
-            fmt (str): output table format
-                'pandas' -> pandas.DataFrame
-                'astropy' -> astropy.Table
-                None (default) -> object class from catalog.py
-
+           
         Returns:
-            SpeczCatalog or TrainingSet (pandas.DataFrame extensions)
-            object, or pure pandas.DataFrame, or astropy.Table
+            astropy.Table
 
         """
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id)
         prod_type = metadata["product_type_internal_name"]
 
-        if prod_type in ("validation_results", "photoz_estimates"):
+        if prod_type in ("validation_results", "training_results"):
             msg = f"does not support non-tabular data\n{FONTCOLORERR}"
             msg += "The method get_product() only supports simple tabular "
             msg += "data (product types: redshift_catalog, training_set). "
@@ -405,30 +400,12 @@ class PzServer:
                         names=metadata["main_file"].get("columns"),
                         delimiter=delimiter,
                     )
-                if fmt == "astropy":
-                    return Table.from_pandas(dataframe)
-                if fmt == "pandas":
-                    return dataframe
-                results = self.__transform_df(dataframe, metadata)
-            else:
-                dataframe = tables_io.read(file_path, tables_io.types.AP_TABLE)
+                return Table.from_pandas(dataframe)
+                        
+            table = tables_io.read(file_path, tables_io.types.AP_TABLE)
 
-                if fmt == "astropy":
-                    return dataframe
-
-                try:
-                    dataframe = dataframe.to_pandas()
-                except ValueError as _:
-                    dataframe = tables_io.read(file_path, tables_io.types.PD_DATAFRAME)
-
-                if fmt == "pandas":
-                    return dataframe
-
-                results = self.__transform_df(dataframe, metadata)
-
-        print("Done!")
-        return results
-
+            return table
+                
     def upload(
         self,
         name: str,

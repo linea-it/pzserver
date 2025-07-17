@@ -143,4 +143,4 @@ tmp/
 *.zip 
 
 # User's token 
-token.txt 
+*token.txt 
