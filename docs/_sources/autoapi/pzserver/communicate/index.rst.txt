@@ -1,0 +1,483 @@
+pzserver.communicate
+====================
+
+.. py:module:: pzserver.communicate
+
+.. autoapi-nested-parse::
+
+   Classes to communicate with the Pz Server app
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   pzserver.communicate.PzRequests
+
+
+Module Contents
+---------------
+
+.. py:class:: PzRequests(token, host='pz')
+
+   Responsible for managing all requests to the Pz Server app.
+
+
+   .. py:attribute:: _token
+      :value: None
+
+
+
+   .. py:attribute:: _base_api_url
+      :value: None
+
+
+
+   .. py:attribute:: _filter_options
+
+
+   .. py:attribute:: _mapping_filters
+
+
+   .. py:attribute:: _enviroments
+
+
+   .. py:method:: safe_list_get(_list, idx, default) -> list
+      :staticmethod:
+
+
+      Gets a value from a list if it exists. Otherwise returns the default.
+
+      :param _list: list to get the value from.
+      :type _list: list
+      :param idx: index of the value to get.
+      :type idx: int
+      :param default: default value to return if the value doesn't exist.
+
+      :returns: value of the list by index.
+
+
+
+   .. py:method:: _check_filters(entity, filters)
+
+      Checks if the filters are valid for an entity.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+      :param filters: selected filters
+      :type filters: list
+
+
+
+   .. py:method:: __reverse_filters(api_params) -> list
+
+      Reverts filter mapping
+
+      :param api_params: available filters
+      :type api_params: list
+
+      :returns: filters matching
+      :rtype: list
+
+
+
+   .. py:method:: _check_response(api_response) -> dict
+
+      Checks for possible HTTP errors in the response.
+
+      :param api_response: Response object
+      :type api_response: request.Response
+
+      :returns: response content.
+      :rtype: dict
+
+
+
+   .. py:method:: _send_request(prerequest, stream=False, timeout=None, verify=True, cert=None, proxies=None) -> dict
+
+      Sends PreparedRequest object.
+
+      :param prerequest: PreparedRequest object
+      :type prerequest: requests.PreparedRequest
+      :param stream: Whether to stream the request content.
+      :type stream: optional
+      :param timeout: How long to wait for the
+                      server to send data before giving up, as a float, or a
+                      (connect timeout, read timeout) tuple.
+      :type timeout: float or tuple) (optional
+      :param verify: Either a boolean, in which case it controls
+                     whether we verify the servers TLS certificate, or a string,
+                     in which case it must be a path to a CA bundle to use
+      :type verify: optional
+      :param cert: Any user-provided SSL certificate to be trusted.
+      :type cert: optional
+      :param proxies: The proxies dictionary to apply to the request.
+      :type proxies: optional
+
+      :returns: response content
+      :rtype: dict
+
+
+
+   .. py:method:: _get_request(url, params=None) -> dict
+
+      Get a record from the API.
+
+      :param url: url to get
+      :type url: str
+      :param params: params to get. Defaults to None.
+      :type params: dict, optional
+
+      :returns: data of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: _options_request(url) -> dict
+
+      Returns the options and settings for a given endpoint.
+
+      :param url: url to get
+      :type url: str
+      :param params: params to get. Defaults to None.
+      :type params: dict, optional
+
+      :returns: data of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: _check_token()
+
+      Checks if the token is valid, otherwise stops class
+      initialization.
+
+
+
+
+   .. py:method:: _download_request(url, save_in='.')
+
+      Download a record from the API.
+
+      :param url: url to get
+      :type url: str
+      :param save_in: location where the file will be saved
+      :type save_in: str
+
+
+
+   .. py:method:: _patch_request(url, data) -> dict
+
+      Patchs a record to the API.
+
+      :param url: url to patch.
+      :type url: str
+      :param data: data to patch.
+      :type data: str
+
+      :returns: data of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: _upload_request(url, payload, upload_files=None) -> dict
+
+      Posts a record to the API.
+
+      :param url: url to post.
+      :type url: str
+      :param payload: payload to post.
+      :type payload: str
+
+      :returns: data of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: _post_request(url, payload) -> dict
+
+      Posts a record to the API.
+
+      :param url: url to post.
+      :type url: str
+      :param payload: payload to post.
+      :type payload: str
+
+      :returns: data of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: _delete_request(url) -> dict
+
+      Remove a record from the API.
+
+      :param url: url to delete with the record id.
+      :type url: str
+
+      :returns: status and message of the request.
+      :rtype: dict
+
+
+
+   .. py:method:: get_entities() -> list
+
+      Gets all entities from the API.
+
+      :returns: entities list
+      :rtype: list
+
+
+
+   .. py:method:: get_all(entity, ordering=None) -> list
+
+      Returns a list with all records of the entity.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+      :param ordering: column name to be ordered
+      :type ordering: None or str
+
+      :returns: list of records
+      :rtype: list
+
+
+
+   .. py:method:: get(entity, _id) -> dict
+
+      Gets a record from the entity.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+      :param _id: record id
+      :type _id: int
+
+      :returns: record metadata
+      :rtype: dict
+
+
+
+   .. py:method:: get_by_name(entity, name) -> dict
+
+      Gets a record from the entity by name.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+      :param _id: record id
+      :type _id: int
+
+      :returns: record metadata
+      :rtype: dict
+
+
+
+   .. py:method:: get_by_attribute(entity, attribute, value) -> dict
+
+      Gets a record from the entity by some attribute.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+      :param attribute: entity field
+      :type attribute: str
+      :param value: entity field value
+      :type value: str
+
+      :returns: record metadata
+      :rtype: dict
+
+
+
+   .. py:method:: options(entity) -> dict
+
+      Gets options (filters, search and ordering) from the entity.
+
+      :param entity: entity name  e.g. "releases", "products", "product-types"
+      :type entity: str
+
+      :returns: options metadata (filters, search and ordering).
+      :rtype: dict
+
+
+
+   .. py:method:: download_main_file(_id, save_in='.')
+
+      Gets the contents uploaded by the user for a given record.
+
+      :param _id: record id
+      :type _id: int
+      :param save_in: location where the file will be saved
+      :type save_in: str
+
+      :returns: record data
+      :rtype: dict
+
+
+
+   .. py:method:: get_product_files(product_id) -> list
+
+      Gets all files from a product.
+
+      :param product_id: product id
+      :type product_id: int
+
+      :returns: list of files
+      :rtype: list
+
+
+
+   .. py:method:: delete_product_file(file_id) -> None
+
+      Deletes a file from a product.
+
+      :param file_id: file id
+      :type file_id: int
+
+
+
+   .. py:method:: delete_product(product_id) -> None
+
+      Deletes a product.
+
+      :param product_id: product id
+      :type product_id: int
+
+
+
+   .. py:method:: get_main_file_info(_id, column_association=True) -> dict
+
+      Returns information about the main product file.
+
+      :param _id: record id
+      :type _id: int
+
+      :returns: record data
+      :rtype: dict
+
+
+
+   .. py:method:: download_product(_id, save_in='.')
+
+      Downloads the product to local
+
+      :param _id: record id
+      :type _id: int
+      :param save_in: location where the file will be saved
+      :type save_in: str
+
+      :returns: record data
+      :rtype: dict
+
+
+
+   .. py:method:: start_process(data)
+
+      Start process in Pz Server
+
+      :param data: data process
+      :type data: dict
+
+      :returns: record data
+      :rtype: dict
+
+
+
+   .. py:method:: stop_process(process_id)
+
+      Stop process in Pz Server
+
+      :param process_id: process ID
+      :type process_id: int
+
+
+
+   .. py:method:: upload_basic_info(name, product_type, release=None, pz_code=None, description=None)
+
+      Upload product with basic informations
+
+      :param name:
+      :type name: str
+      :param product_type:
+      :type product_type: int
+      :param release:
+      :type release: int
+      :param pz_code:
+      :type pz_code: str
+      :param description:
+      :type description: str
+
+      :returns: record data
+      :rtype: dict
+
+
+
+   .. py:method:: upload_file(product_id, filepath, role, mimetype=None)
+
+      Upload file
+
+      :param product_id: product id
+      :type product_id: int
+      :param filepath: filepath
+      :type filepath: str
+      :param role: file role
+      :type role: str
+      :param mimetype: file mimetype. Defaults to None.
+      :type mimetype: str, optional
+
+
+
+   .. py:method:: registry_upload(product_id)
+
+      Registry upload
+
+      :param id: product id
+      :type id: int
+
+
+
+   .. py:method:: update_upload_column(id_attr, data)
+
+      Update upload column
+
+      :param id_attr: attribute id
+      :type id_attr: int
+      :param data: attribute that will be updated
+      :type data: dict
+
+
+
+   .. py:method:: finish_upload(product_id)
+
+      Finish upload
+
+      :param product_id: product id
+      :type product_id: int
+
+
+
+   .. py:method:: update_product_description(product_id, description)
+
+      Update product description
+
+      :param product_id: product id
+      :type product_id: int
+      :param description: description
+      :type description: str
+
+
+
+   .. py:method:: get_products(filters=None, status=1) -> list
+
+      Returns list of products according to a filter
+
+      :param filters: products filter   ex: {'release': 'LSST'}
+      :type filters: dict
+      :param status: products status (1 is viewing only completed products)
+      :type status: int
+
+      :returns: list of records
+      :rtype: list
+
+
+
