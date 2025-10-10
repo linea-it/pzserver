@@ -362,8 +362,11 @@ class CSCProcess(Process):
             name (str): CSC name
             api (PzRequests): PzRequests
         """
+        try:
+            super().__init__("combine_redshift_dedup", name, api)
+        except Exception:
+            super().__init__("combine_redshift", name, api)
 
-        super().__init__("combine_redshift", name, api)
         # self.__api = api
         self.__catalogs = []
 
