@@ -12,7 +12,7 @@ from IPython.display import display
 
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
-from .process import CSCProcess, TSMProcess
+from .process import CRCProcess, TSMProcess
 from .product import PzProduct
 from .upload import PzUpload, UploadData
 
@@ -492,9 +492,9 @@ class PzServer:
             name (str): combine redshift name
 
         Return:
-            CSCProcess: CSCProcess object
+            CRCProcess: CRCProcess object
         """
-        return CSCProcess(name, self.api)
+        return CRCProcess(name, self.api)
 
     def training_set_maker(self, name):
         """
