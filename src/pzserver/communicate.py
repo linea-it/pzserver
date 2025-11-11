@@ -658,7 +658,7 @@ class PzRequests:
 
         return data.get("data")
 
-    def get_main_file_info(self, _id, column_association=True) -> dict:
+    def get_main_file_info(self, _id) -> dict:
         """
         Returns information about the main product file.
 
@@ -678,12 +678,18 @@ class PzRequests:
 
         data = resp.get("data").get("main_file")
 
-        if column_association:
-            assoc = self._get_request(
-                f"{self._base_api_url}product-contents/?product={_id}",
-            )
-            if assoc.get("success", False):
-                data["columns_association"] = assoc.get("data").get("results")
+        if data.get("associated_columns", None):
+            columns = []
+            assoc_cols = []
+            for col in data.get("associated_columns"):
+                columns.append(col.get("column_name"))
+
+                if col.get("alias", None):
+                    assoc_cols.append(col)
+
+            data["columns"] = columns
+            data["columns_association"] = assoc_cols
+            del data["associated_columns"]
 
         return data
 

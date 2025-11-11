@@ -286,6 +286,15 @@ class PzServer:
                     key = "product_name"
                 if key == "main_file":
                     transposed_list.append({"key": "n_rows", "value": value["n_rows"]})
+                    if value.get("size", None):
+                        transposed_list.append({"key": "size", "value": f"{value['size']}kB"})
+                    if value.get("columns_association", None):
+                        transposed_list.append(
+                            {"key": "columns_association", "value": value['columns_association']}
+                        )
+                    if value.get("columns", None):
+                        transposed_list.append({"key": "columns", "value": value["columns"]})
+                        transposed_list.append({"key": "n_columns", "value": len(value["columns"])})
                     value = value["name"]
 
                 transposed_list.append({"key": key, "value": value})
@@ -401,11 +410,9 @@ class PzServer:
                         delimiter=delimiter,
                     )
                 return Table.from_pandas(dataframe)
-                        
             table = tables_io.read(file_path, tables_io.types.AP_TABLE)
-
             return table
-                
+
     def upload(
         self,
         name: str,
@@ -462,7 +469,7 @@ class PzServer:
 
         self.api.delete_product(product.get("id"))
 
-    def __transform_df(self, dataframe, metadata):
+    def transform_df(self, dataframe, metadata):
         """
         Transforms the dataframe into an object corresponding to
         its product type (currently we have two: redshift_catalog or
