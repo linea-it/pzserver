@@ -63,6 +63,14 @@ class PzProduct:
 
         return main_file, _files
 
+    def get_main_file_info(self):
+        """Get main file info
+        Returns:
+            dict: main file info
+        """
+
+        return self.__api.get_main_file_info(self.product_id)
+
     def attach_auxiliary_file(self, filepath):
         """Attach auxiliary file
         Args:
