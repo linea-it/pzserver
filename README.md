@@ -45,13 +45,12 @@ Step-by-step procedure to test a new feature or bug fix from a particular branch
 3. Create a new Conda environment free from `pzserver`  old version installation. Delete any existing one with the same same, if necessary. 
 
     ```
-    conda remove --name pzserver-dev --all -y
-    jupyter kernelspec uninstall pzserver-dev -y 
-    conda create -n pzserver-dev python=3.12 -y 
+    conda remove --name pzserver-dev --all
+    conda create -n pzserver-dev python=3.12
     conda activate pzserver-dev
     conda install pip
-    python3.12 -m pip install -e '.[dev]'
-    python3.12 -m ipykernel install --user --name pzserver-dev --display-name "Python (pzserver-dev)"
+    python -m pip install -e '.[dev]'
+    python -m ipykernel install --user --name pzserver-dev --display-name "Python (pzserver-dev)"
     ```
 </p>
 

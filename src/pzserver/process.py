@@ -349,21 +349,24 @@ class TSMProcess(Process):
         return self.submit(data_process)
 
 
-class CSCProcess(Process):
-    """Responsible for managing user interactions with CSC process."""
+class CRCProcess(Process):
+    """Responsible for managing user interactions with CRC process."""
 
     # pylint: disable=too-many-instance-attributes
     # Eight is reasonable in this case.
 
     def __init__(self, name, api):
-        """CSC process class constructor
+        """CRC process class constructor
 
         Args:
-            name (str): CSC name
+            name (str): CRC name
             api (PzRequests): PzRequests
         """
+        try:
+            super().__init__("combine_redshift_dedup", name, api)
+        except Exception:
+            super().__init__("combine_redshift", name, api)
 
-        super().__init__("combine_redshift", name, api)
         # self.__api = api
         self.__catalogs = []
 
