@@ -417,6 +417,7 @@ class CRCProcess(Process):
         if self.__flags_translation:
             with open(self.__flags_translation, "rb") as _file:
                 files = {"flags_translation_file": _file}
+                return super().submit(data, files=files)
         return super().submit(data, files=files)
 
     def summary(self, extra_info=None):
