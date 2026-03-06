@@ -6,12 +6,12 @@
 	"service": "app",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
-		"ghcr.io/devcontainers/features/common-utils:2": {},
+		// "ghcr.io/devcontainers/features/common-utils:2": {},
 		// "ghcr.io/devcontainers/features/github-cli:1": {},
 		// "ghcr.io/devcontainers-contrib/features/black:2": {},
-		"ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {},
+		// "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {},
 		// "ghcr.io/dhoeric/features/act:1": {},
-		"ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+		// "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},

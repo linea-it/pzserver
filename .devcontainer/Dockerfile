@@ -7,8 +7,6 @@ COPY requirements-dev.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements-dev.txt \
    && rm -rf /tmp/pip-tmp
 
+RUN rm -f /etc/apt/sources.list.d/yarn.list
+
 RUN apt-get update && apt-get -y install pandoc
-
-
-
-
