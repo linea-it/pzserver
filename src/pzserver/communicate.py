@@ -414,30 +414,41 @@ class PzRequests:
         )
         return self._send_request(req.prepare())
 
-    def _post_request(self, url, payload) -> dict:
+    def _post_request(self, url, payload, files=None) -> dict:
         """
         Posts a record to the API.
 
         Args:
             url (str): url to post.
             payload (str): payload to post.
+            files (dict, optional): files to post. Defaults to None.
 
         Returns:
             dict: data of the request.
         """
 
-        req = requests.Request(
-            "POST",
-            url,
-            data=json.dumps(payload),
-            headers=dict(
-                {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "Authorization": f"Token {self._token}",
-                }
-            ),
-        )
+        headers = {
+            "Accept": "application/json",
+            "Authorization": f"Token {self._token}",
+        }
+
+        if files:
+            # multipart/form-data
+            req = requests.Request(
+                "POST",
+                url,
+                data=payload,
+                files=files,
+                headers=headers,
+            )
+        else:
+            req = requests.Request(
+                "POST",
+                url,
+                json=payload,
+                headers={**headers, "Content-Type": "application/json"},
+            )
+
         return self._send_request(req.prepare())
 
     def _delete_request(self, url) -> dict:
@@ -709,18 +720,26 @@ class PzRequests:
             f"{self._base_api_url}products/{_id}/download/", save_in
         )
 
-    def start_process(self, data):
+    def start_process(self, data, files=None):
         """
         Start process in Pz Server
 
         Args:
             data (dict): data process
+            files (dict, optional): files to post. Defaults to None.
 
         Returns:
             dict: record data
         """
 
-        process = self._post_request(f"{self._base_api_url}processes/", payload=data)
+        print("Starting process with data:", data)
+
+        if "used_config" in data and isinstance(data["used_config"], dict):
+            data["used_config"] = json.dumps(data["used_config"])
+
+        process = self._post_request(
+            f"{self._base_api_url}processes/", payload=data, files=files
+        )
 
         if "success" in process and process["success"] is False:
             raise requests.exceptions.RequestException(process["message"])

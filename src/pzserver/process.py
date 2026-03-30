@@ -197,17 +197,18 @@ class Process:
         }
         return self.submit(data_process)
 
-    def submit(self, data):
+    def submit(self, data, files=None):
         """Submit process
 
         Args:
             data (dict): process data
+            files (list, optional): files to upload. Defaults to None.
 
         Returns:
             dict: process info
         """
 
-        process = self.__api.start_process(data)
+        process = self.__api.start_process(data, files=files)
         data["id"] = process.get("id")
         self.__process = data
         self.__upload = self.__api.get("products", process.get("upload"))
@@ -364,11 +365,13 @@ class CRCProcess(Process):
         """
         try:
             super().__init__("combine_redshift_dedup", name, api)
-        except Exception:
+        except Exception:    # pylint: disable=broad-except
             super().__init__("combine_redshift", name, api)
 
-        # self.__api = api
+        self.__default_flags_translation = self.config.get("flags_translation_file")
+        self.__flags_translation = None
         self.__catalogs = []
+        self.__sync_flags_translation_from_config()
 
     @property
     def input_catalogs(self):
@@ -402,6 +405,38 @@ class CRCProcess(Process):
 
             self.__catalogs.append(dn_redshift)
             self.append_input(redshift_id)
+
+    def set_flags_translation(self, flags_translation):
+        """Set flags translation
+
+        Args:
+            flags_translation (str): flags translation file path
+        """
+        self.__flags_translation = flags_translation
+        self.set_config({"flags_translation_file": flags_translation})
+
+    def set_config(self, config):
+        """Set config and keep flags translation attribute in sync."""
+        super().set_config(config)
+        if "flags_translation_file" in config:
+            print("Config updated with new flags translation file.")
+            self.__sync_flags_translation_from_config()
+
+    def __sync_flags_translation_from_config(self):
+        value = self.config.get("flags_translation_file")
+        if value == self.__default_flags_translation:
+            self.__flags_translation = None
+            return
+        self.__flags_translation = value
+
+    def submit(self, data, files=None):
+        self.__sync_flags_translation_from_config()
+        if self.__flags_translation:
+            print("Uploading flags translation file.")
+            with open(self.__flags_translation, "rb") as _file:
+                files = {"flags_translation_file": _file}
+                return super().submit(data, files=files)
+        return super().submit(data, files=files)
 
     def summary(self, extra_info=None):
         """Summary of what will be executed"""
