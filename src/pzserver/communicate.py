@@ -3,11 +3,14 @@ Classes to communicate with the Pz Server app
 """
 
 import json
+import time
+from email.message import Message
+from urllib.parse import urljoin
 
 import requests
 
 
-# pylint: disable=R0904
+# pylint: disable=too-many-lines,too-many-public-methods
 class PzRequests:
     """
     Responsible for managing all requests to the Pz Server app.
@@ -170,6 +173,7 @@ class PzRequests:
     def _send_request(
         self,
         prerequest,
+        *,
         stream=False,
         timeout=None,
         verify=True,
@@ -320,6 +324,16 @@ class PzRequests:
             msg = cntxt.get("message", "Unforeseen error")
             raise requests.exceptions.RequestException(f"Status code {stcode}: {msg}")
 
+    @staticmethod
+    def _filename_from_content_disposition(content_disposition):
+        message = Message()
+        message["content-disposition"] = content_disposition or ""
+        filename = message.get_filename()
+        if filename:
+            return filename
+
+        return "download"
+
     def _download_request(self, url, save_in="."):
         """
         Download a record from the API.
@@ -343,17 +357,21 @@ class PzRequests:
         if data.get("success", False):
             resp_obj = data.get("response_object", None)
             filename = resp_obj.headers.get("Content-Disposition", "")
-            filename = filename.split("filename=")[1]
+            filename = self._filename_from_content_disposition(filename)
             filename = f"{save_in}/{filename}"
 
             with open(filename, "wb") as filedown:
                 for chunk in resp_obj.iter_content(chunk_size=128):
-                    filedown.write(chunk)
+                    if chunk:
+                        filedown.write(chunk)
 
             data.update({"message": filename})
             return data
 
         return data
+
+    def _resolve_api_url(self, url):
+        return urljoin(self._base_api_url, url)
 
     def _patch_request(self, url, data) -> dict:
         """
@@ -704,20 +722,88 @@ class PzRequests:
 
         return data
 
-    def download_product(self, _id, save_in="."):
+    def _prepare_product_download(self, _id):
+        data = self._post_request(
+            f"{self._base_api_url}products/{_id}/download/prepare/",
+            payload=None,
+        )
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
+    def _get_product_download_status(self, _id):
+        data = self._get_request(
+            f"{self._base_api_url}products/{_id}/download/status/"
+        )
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
+    def _wait_for_product_download_ready(
+        self,
+        _id,
+        archive,
+        timeout=1800,
+        poll_interval=2,
+    ):
+        deadline = time.monotonic() + timeout
+
+        while archive and archive.get("status") in ("pending", "running"):
+            if time.monotonic() >= deadline:
+                raise requests.exceptions.RequestException(
+                    "The download is still being prepared. Please try again later."
+                )
+
+            time.sleep(poll_interval)
+            archive = self._get_product_download_status(_id)
+
+        if archive and archive.get("status") == "failed":
+            raise requests.exceptions.RequestException(
+                archive.get("error_message") or "Failed to prepare product download."
+            )
+
+        if not archive or archive.get("status") != "ready":
+            raise requests.exceptions.RequestException(
+                "Product download archive is not ready."
+            )
+
+        download_url = archive.get("download_url")
+        if not download_url:
+            raise requests.exceptions.RequestException(
+                "Product download archive is ready but no download URL was returned."
+            )
+
+        return archive
+
+    def download_product(self, _id, save_in=".", timeout=1800, poll_interval=2):
         """
         Downloads the product to local
 
         Args:
             _id (int): record id
             save_in (str): location where the file will be saved
+            timeout (int): maximum seconds to wait for archive preparation
+            poll_interval (int): seconds between status checks
 
         Returns:
             dict: record data
         """
 
+        archive = self._prepare_product_download(_id)
+        archive = self._wait_for_product_download_ready(
+            _id,
+            archive,
+            timeout=timeout,
+            poll_interval=poll_interval,
+        )
+
         return self._download_request(
-            f"{self._base_api_url}products/{_id}/download/", save_in
+            self._resolve_api_url(archive["download_url"]),
+            save_in,
         )
 
     def start_process(self, data, files=None):
