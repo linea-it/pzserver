@@ -685,20 +685,33 @@ class PzRequests:
 
         return opt.get("data")
 
-    def download_main_file(self, _id, save_in="."):
+    def download_main_file(self, _id, save_in=".", timeout=1800, poll_interval=2):
         """
         Gets the contents uploaded by the user for a given record.
 
         Args:
             _id (int): record id
             save_in (str): location where the file will be saved
+            timeout (int): maximum seconds to wait for archive preparation
+            poll_interval (int): seconds between status checks
 
         Returns:
             dict: record data
         """
 
+        archive = self._prepare_product_main_file_download(_id)
+        archive = self._wait_for_product_download_ready(
+            _id,
+            archive,
+            timeout=timeout,
+            poll_interval=poll_interval,
+            status_getter=self._get_product_main_file_download_status,
+            download_name="Product main file",
+        )
+
         return self._download_request(
-            f"{self._base_api_url}products/{_id}/download_main_file/", save_in
+            self._resolve_api_url(archive["download_url"]),
+            save_in,
         )
 
     def get_product_files(self, product_id) -> list:
@@ -807,38 +820,63 @@ class PzRequests:
 
         return data.get("data")
 
+    def _prepare_product_main_file_download(self, _id):
+        data = self._post_request(
+            f"{self._base_api_url}products/{_id}/download/main-file/prepare/",
+            payload=None,
+        )
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
+    def _get_product_main_file_download_status(self, _id):
+        data = self._get_request(
+            f"{self._base_api_url}products/{_id}/download/main-file/status/"
+        )
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
     def _wait_for_product_download_ready(
         self,
         _id,
         archive,
         timeout=1800,
         poll_interval=2,
+        *,
+        status_getter=None,
+        download_name="Product download",
     ):
         deadline = time.monotonic() + timeout
+        status_getter = status_getter or self._get_product_download_status
 
         while archive and archive.get("status") in ("pending", "running"):
             if time.monotonic() >= deadline:
                 raise requests.exceptions.RequestException(
-                    "The download is still being prepared. Please try again later."
+                    f"{download_name} is still being prepared. Please try again later."
                 )
 
             time.sleep(poll_interval)
-            archive = self._get_product_download_status(_id)
+            archive = status_getter(_id)
 
         if archive and archive.get("status") == "failed":
             raise requests.exceptions.RequestException(
-                archive.get("error_message") or "Failed to prepare product download."
+                archive.get("error_message") or f"Failed to prepare {download_name}."
             )
 
         if not archive or archive.get("status") != "ready":
             raise requests.exceptions.RequestException(
-                "Product download archive is not ready."
+                f"{download_name} archive is not ready."
             )
 
         download_url = archive.get("download_url")
         if not download_url:
             raise requests.exceptions.RequestException(
-                "Product download archive is ready but no download URL was returned."
+                f"{download_name} archive is ready but no download URL was returned."
             )
 
         return archive
