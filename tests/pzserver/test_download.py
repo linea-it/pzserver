@@ -25,6 +25,25 @@ def make_api():
     return api, communicate
 
 
+class FakeDownloadResponse:
+    """Minimal streaming response fake used by download tests."""
+
+    def __init__(self, headers, chunks, status_code=200, error=None):
+        self.headers = headers
+        self._chunks = chunks
+        self.status_code = status_code
+        self.error = error
+        self.closed = False
+
+    def iter_content(self, chunk_size):  # pylint: disable=unused-argument
+        yield from self._chunks
+        if self.error:
+            raise self.error
+
+    def close(self):
+        self.closed = True
+
+
 def test_download_product_uses_prepared_download_url(monkeypatch):
     api, _ = make_api()
     calls = []
@@ -96,3 +115,49 @@ def test_download_product_raises_when_archive_failed(monkeypatch):
 
     with pytest.raises(requests.exceptions.RequestException, match="zip failed"):
         api.download_product(42)
+
+
+def test_download_request_resumes_interrupted_stream(tmp_path):
+    api, _ = make_api()
+    calls = []
+    first_response = FakeDownloadResponse(
+        {
+            "Content-Disposition": "attachment; filename=product.zip",
+            "Content-Length": "6",
+        },
+        [b"abc"],
+        error=requests.exceptions.ChunkedEncodingError("connection broken"),
+    )
+    second_response = FakeDownloadResponse(
+        {
+            "Content-Disposition": "attachment; filename=product.zip",
+            "Content-Range": "bytes 3-5/6",
+            "Content-Length": "3",
+        },
+        [b"def"],
+        status_code=206,
+    )
+    responses = [first_response, second_response]
+
+    def send_request(prepared, stream=False):
+        calls.append((prepared.headers.copy(), stream))
+        return {
+            "success": True,
+            "response_object": responses.pop(0),
+        }
+
+    api._send_request = send_request
+
+    result = api._download_request("https://pz.example.org/file", tmp_path)
+
+    assert result["success"] is True
+    assert Path(result["message"]).read_bytes() == b"abcdef"
+    assert not Path(f"{result['message']}.part").exists()
+    assert calls[0] == ({"Authorization": "Token token"}, True)
+    assert calls[1] == (
+        {"Authorization": "Token token", "Range": "bytes=3-"},
+        True,
+    )
+    assert first_response.closed is True
+    assert second_response.closed is True
+    assert not responses
