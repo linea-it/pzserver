@@ -30,6 +30,7 @@ HATS_DIRECTORY_MESSAGE = (
     "This product main file is a directory-based dataset, such as a "
     "HATS collection."
 )
+MAX_IN_MEMORY_PRODUCT_SIZE_KB = 200 * 1024
 
 
 class PzServer:
@@ -358,7 +359,7 @@ class PzServer:
         else:
             print(f"{FONTCOLORERR}Error: {results_dict['message']}{FONTCOLORERR}")
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, get_big_products=False):
         """
         Fetches the data product contents to local.
 
@@ -370,6 +371,9 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
+            get_big_products (bool, optional): allow products whose
+                stored main file is larger than 200 MB to be loaded
+                into memory. Defaults to False.
            
         Returns:
             astropy.Table
@@ -377,6 +381,7 @@ class PzServer:
         """
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id)
+        self._validate_product_size(metadata, product_id, get_big_products)
         prod_type = metadata["product_type_internal_name"]
 
         if prod_type in ("validation_results", "training_results"):
@@ -429,6 +434,35 @@ class PzServer:
                 return Table.from_pandas(dataframe)
             table = tables_io.read(file_path, tables_io.types.AP_TABLE)
             return table
+
+    @staticmethod
+    def _validate_product_size(metadata, product_id, get_big_products):
+        """Prevent large products from being loaded into memory by default."""
+        main_file = metadata.get("main_file") or {}
+        size_kb = main_file.get("size")
+        try:
+            is_too_large = float(size_kb) > MAX_IN_MEMORY_PRODUCT_SIZE_KB
+        except (TypeError, ValueError):
+            is_too_large = False
+
+        if not is_too_large or get_big_products:
+            return
+
+        product_name = metadata.get("internal_name") or product_id
+        raise ValueError(
+            f"Product '{product_name}' is larger than 200 MB and cannot be loaded "
+            "into memory by default. PZ Server may store products in compressed "
+            "form, so this product can use substantially more RAM when decompressed. "
+            "We recommend downloading it and reading it locally with pandas, Dask, "
+            "or LSDB (for HATS catalogs):\n\n"
+            "from pathlib import Path\n\n"
+            f"prod_name = {product_name!r}\n"
+            'caminho = Path("./downloaded_data")\n'
+            "caminho.mkdir(parents=True, exist_ok=True)\n"
+            "pz_server.download_product(product_id=prod_name, save_in=caminho)\n\n"
+            "To continue anyway, call "
+            "get_product(product_id=prod_name, get_big_products=True)."
+        )
 
     def _get_hats_product(self, metadata):
         """Download a directory-based HATS main file and load it with LSDB."""

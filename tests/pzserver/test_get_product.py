@@ -46,6 +46,87 @@ def base_metadata(main_file):
     }
 
 
+def test_get_product_rejects_products_larger_than_200_mb():
+    core = load_core_module()
+    api = mock.Mock()
+    server = make_server_with_api(core, api)
+    metadata = base_metadata(
+        {
+            "extension": ".parquet",
+            "is_directory": False,
+            "name": "main.parquet",
+            "size": 200 * 1024 + 1,
+        }
+    )
+    metadata["internal_name"] = "874_test_crc"
+    server.get_product_metadata = mock.Mock(return_value=metadata)
+
+    with pytest.raises(ValueError, match="larger than 200 MB") as exc_info:
+        server.get_product("874_test_crc")
+
+    message = str(exc_info.value)
+    assert "pz_server.download_product" in message
+    assert "pandas, Dask, or LSDB" in message
+    assert "get_big_products=True" in message
+    api.download_main_file.assert_not_called()
+
+
+def test_get_product_allows_large_products_when_explicitly_requested(tmp_path):
+    core = load_core_module()
+    table_path = tmp_path / "large.parquet"
+    api = mock.Mock()
+    api.download_main_file.return_value = {
+        "success": True,
+        "message": str(table_path),
+    }
+    server = make_server_with_api(core, api)
+    server.get_product_metadata = mock.Mock(
+        return_value=base_metadata(
+            {
+                "extension": ".parquet",
+                "is_directory": False,
+                "name": "large.parquet",
+                "size": 200 * 1024 + 1,
+            }
+        )
+    )
+
+    expected = Table({"id": [1]})
+    with mock.patch.object(core.tables_io, "read", return_value=expected):
+        result = server.get_product("large", get_big_products=True)
+
+    assert result is expected
+    api.download_main_file.assert_called_once()
+
+
+def test_get_product_allows_product_at_exactly_200_mb(tmp_path):
+    core = load_core_module()
+    table_path = tmp_path / "limit.parquet"
+    api = mock.Mock()
+    api.download_main_file.return_value = {
+        "success": True,
+        "message": str(table_path),
+    }
+    server = make_server_with_api(core, api)
+    server.get_product_metadata = mock.Mock(
+        return_value=base_metadata(
+            {
+                "extension": ".parquet",
+                "is_directory": False,
+                "name": "limit.parquet",
+                "size": 200 * 1024,
+            }
+        )
+    )
+
+    expected = Table({"id": [1]})
+    with mock.patch.object(core.tables_io, "read", return_value=expected):
+        result = server.get_product("limit")
+
+    assert result is expected
+    api.download_main_file.assert_called_once()
+
+
 class FakeLsdbCatalog:  # pylint: disable=too-few-public-methods
     """Minimal fake LSDB catalog used by get_product tests."""
     def compute(self):
