@@ -83,7 +83,7 @@ limit-inference-results=100
 load-plugins=
 
 # Pickle collected data for later comparisons.
-persistent=yes
+persistent=no
 
 # Minimum Python version to use for version dependent checks. Will default to
 # the version used to run pylint.
@@ -92,9 +92,7 @@ py-version=3.9
 # Discover python modules and packages in the file system subtree.
 recursive=no
 
-# When enabled, pylint would attempt to guess common misconfiguration and emit
-# user-friendly hints instead of false-positive error messages.
-suggestion-mode=yes
+# suggestion-mode was removed from newer pylint versions.
 
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.

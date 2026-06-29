@@ -2,10 +2,14 @@
 Classes responsible for managing user interaction
 """
 
+import importlib
+import pathlib
 import tempfile
 import time
+import zipfile
 
 import pandas as pd
+import requests
 import tables_io
 from astropy.table import Table
 from IPython.display import display
@@ -22,6 +26,11 @@ pd.options.display.max_rows = 6
 
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
+HATS_DIRECTORY_MESSAGE = (
+    "This product main file is a directory-based dataset, such as a "
+    "HATS collection."
+)
+MAX_IN_MEMORY_PRODUCT_SIZE_KB = 200 * 1024
 
 
 class PzServer:
@@ -350,7 +359,7 @@ class PzServer:
         else:
             print(f"{FONTCOLORERR}Error: {results_dict['message']}{FONTCOLORERR}")
 
-    def get_product(self, product_id=None):
+    def get_product(self, product_id=None, get_big_products=False):
         """
         Fetches the data product contents to local.
 
@@ -362,6 +371,9 @@ class PzServer:
             product_id (str or int): data product
                 unique identifier (product id
                 number or internal name)
+            get_big_products (bool, optional): allow products whose
+                stored main file is larger than 200 MB to be loaded
+                into memory. Defaults to False.
            
         Returns:
             astropy.Table
@@ -369,6 +381,7 @@ class PzServer:
         """
         print("Connecting to PZ Server...")
         metadata = self.get_product_metadata(product_id)
+        self._validate_product_size(metadata, product_id, get_big_products)
         prod_type = metadata["product_type_internal_name"]
 
         if prod_type in ("validation_results", "training_results"):
@@ -382,16 +395,25 @@ class PzServer:
         if not metadata["main_file"]:
             raise FileNotFoundError(f"Product ID ({product_id}): main file not found")
 
+        if metadata["main_file"].get("is_directory"):
+            return self._get_hats_product(metadata)
+
         file_extension = metadata["main_file"]["extension"]
 
         with tempfile.TemporaryDirectory() as tmpdirname:
             results_dict = self.api.download_main_file(metadata["id"], tmpdirname)
 
             if not results_dict.get("success", False):
-                print(f"Error: {results_dict['message']}")
-                return None
+                message = results_dict.get("message", "Failed to download main file.")
+                raise requests.exceptions.RequestException(message)
 
-            file_path = results_dict["message"]
+            file_path = pathlib.Path(results_dict["message"])
+            if file_path.suffix.lower() == ".zip":
+                return self._read_hats_archive(
+                    file_path,
+                    metadata["main_file"].get("name"),
+                )
+
             if file_extension == ".csv":
                 # TBD: add CSV to tables_io supported formats
                 delimiter = metadata["main_file"].get("delimiter", None)
@@ -413,7 +435,159 @@ class PzServer:
             table = tables_io.read(file_path, tables_io.types.AP_TABLE)
             return table
 
-    def upload(
+    @staticmethod
+    def _validate_product_size(metadata, product_id, get_big_products):
+        """Prevent large products from being loaded into memory by default."""
+        main_file = metadata.get("main_file") or {}
+        size_kb = main_file.get("size")
+        try:
+            is_too_large = float(size_kb) > MAX_IN_MEMORY_PRODUCT_SIZE_KB
+        except (TypeError, ValueError):
+            is_too_large = False
+
+        if not is_too_large or get_big_products:
+            return
+
+        product_name = metadata.get("internal_name") or product_id
+        raise ValueError(
+            f"Product '{product_name}' is larger than 200 MB and cannot be loaded "
+            "into memory by default. PZ Server may store products in compressed "
+            "form, so this product can use substantially more RAM when decompressed. "
+            "We recommend downloading it and reading it locally with pandas, Dask, "
+            "or LSDB (for HATS catalogs):\n\n"
+            "from pathlib import Path\n\n"
+            f"prod_name = {product_name!r}\n"
+            'caminho = Path("./downloaded_data")\n'
+            "caminho.mkdir(parents=True, exist_ok=True)\n"
+            "pz_server.download_product(product_id=prod_name, save_in=caminho)\n\n"
+            "To continue anyway, call "
+            "get_product(product_id=prod_name, get_big_products=True)."
+        )
+
+    def _get_hats_product(self, metadata):
+        """Download a directory-based HATS main file and load it with LSDB."""
+        lsdb = self._import_lsdb()
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            archive_path = self._download_hats_main_file(metadata, tmpdirname)
+            return self._read_hats_archive(
+                archive_path,
+                metadata["main_file"].get("name"),
+                lsdb=lsdb,
+            )
+
+    def _download_hats_main_file(self, metadata, destination):
+        results_dict = self.api.download_main_file(metadata["id"], destination)
+        if results_dict.get("success", False):
+            return pathlib.Path(results_dict["message"])
+
+        raise requests.exceptions.RequestException(
+            results_dict.get("message", "Failed to download HATS main file.")
+        )
+
+    @staticmethod
+    def _import_lsdb():
+        try:
+            return importlib.import_module("lsdb")
+        except ImportError as exc:
+            raise ImportError(
+                f"{HATS_DIRECTORY_MESSAGE} Reading it with get_product() requires "
+                "the optional dependency 'lsdb'. Install it and try again."
+            ) from exc
+
+    def _read_hats_archive(self, archive_path, main_file_name, lsdb=None):
+        if lsdb is None:
+            lsdb = self._import_lsdb()
+
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            extracted_dir = pathlib.Path(tmpdirname, "extracted")
+            self._extract_zip_safely(archive_path, extracted_dir)
+
+            catalog = self._open_hats_catalog_from_directory(
+                lsdb,
+                extracted_dir,
+                main_file_name,
+            )
+            return self._lsdb_catalog_to_table(catalog)
+
+    @staticmethod
+    def _extract_zip_safely(archive_path, destination):
+        """Extract a zip archive while preventing paths outside destination."""
+        destination = pathlib.Path(destination).resolve()
+        destination.mkdir(parents=True, exist_ok=True)
+
+        with zipfile.ZipFile(archive_path) as archive:
+            for member in archive.infolist():
+                target = (destination / member.filename).resolve()
+                try:
+                    target.relative_to(destination)
+                except ValueError as exc:
+                    raise ValueError(
+                        f"Unsafe path in product archive: {member.filename}"
+                    ) from exc
+
+            archive.extractall(destination)
+
+    def _open_hats_catalog_from_directory(self, lsdb, extracted_dir, main_file_name):
+        errors = []
+        for candidate in self._hats_open_candidates(extracted_dir, main_file_name):
+            try:
+                return lsdb.open_catalog(path=str(candidate))
+            except Exception as exc:  # pylint: disable=broad-exception-caught
+                errors.append(f"{candidate}: {exc}")
+
+        raise ValueError(
+            f"{HATS_DIRECTORY_MESSAGE} Could not open it with LSDB. Tried: "
+            + "; ".join(errors)
+        )
+
+    def _hats_open_candidates(self, extracted_dir, main_file_name):
+        extracted_dir = pathlib.Path(extracted_dir)
+        candidates = []
+
+        if main_file_name:
+            candidates.append(extracted_dir / main_file_name)
+
+        for filename in ("collection.properties", "hats.properties", "properties"):
+            candidates.extend(path.parent for path in extracted_dir.rglob(filename))
+
+        candidates.append(extracted_dir)
+
+        unique_candidates = []
+        seen = set()
+        for candidate in candidates:
+            candidate = candidate.resolve()
+            if candidate in seen or not candidate.is_dir():
+                continue
+            seen.add(candidate)
+            unique_candidates.append(candidate)
+
+        return unique_candidates
+
+    @staticmethod
+    def _lsdb_catalog_to_table(catalog):
+        if hasattr(catalog, "compute"):
+            data = catalog.compute()
+        elif hasattr(catalog, "to_pandas"):
+            data = catalog.to_pandas()
+        else:
+            ddf = getattr(catalog, "_ddf", None)
+            if ddf is None:
+                raise TypeError(
+                    "Could not convert LSDB catalog to an astropy Table."
+                )
+            data = ddf.compute()
+
+        if isinstance(data, Table):
+            return data
+        if isinstance(data, pd.DataFrame):
+            return Table.from_pandas(data)
+        if hasattr(data, "to_pandas"):
+            return Table.from_pandas(data.to_pandas())
+
+        raise TypeError("Could not convert LSDB catalog data to an astropy Table.")
+
+    def upload(  # pylint: disable=too-many-positional-arguments
         self,
         name: str,
         product_type: str,
