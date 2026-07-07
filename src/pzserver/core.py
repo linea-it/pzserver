@@ -30,7 +30,7 @@ HATS_DIRECTORY_MESSAGE = (
     "This product main file is a directory-based dataset, such as a "
     "HATS collection."
 )
-MAX_IN_MEMORY_PRODUCT_SIZE_KB = 200 * 1024
+MAX_IN_MEMORY_PRODUCT_SIZE_BYTES = 200 * 1024**2
 
 
 class PzServer:
@@ -296,7 +296,8 @@ class PzServer:
                 if key == "main_file":
                     transposed_list.append({"key": "n_rows", "value": value["n_rows"]})
                     if value.get("size", None):
-                        transposed_list.append({"key": "size", "value": f"{value['size']}kB"})
+                        size_mb = float(value["size"]) / 1_000_000
+                        transposed_list.append({"key": "size", "value": f"{size_mb:.2f} MB"})
                     if value.get("columns_association", None):
                         transposed_list.append(
                             {"key": "columns_association", "value": value['columns_association']}
@@ -439,9 +440,9 @@ class PzServer:
     def _validate_product_size(metadata, product_id, get_big_products):
         """Prevent large products from being loaded into memory by default."""
         main_file = metadata.get("main_file") or {}
-        size_kb = main_file.get("size")
+        size_bytes = main_file.get("size")
         try:
-            is_too_large = float(size_kb) > MAX_IN_MEMORY_PRODUCT_SIZE_KB
+            is_too_large = float(size_bytes) > MAX_IN_MEMORY_PRODUCT_SIZE_BYTES
         except (TypeError, ValueError):
             is_too_large = False
 
