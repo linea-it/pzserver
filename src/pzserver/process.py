@@ -7,10 +7,7 @@ from .pipeline import Pipeline
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
 PROCESS_CONFIG_KEYS = (
-    "output_dir",
-    "output_name",
     "output_format",
-    "output_root_dir",
 )
 
 
