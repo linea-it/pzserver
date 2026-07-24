@@ -1,4 +1,4 @@
-astropy==7.1.0
+astropy==8.0.1
 Deprecated==1.2.18
 h5py==3.14.0
 ipython==9.4.0
