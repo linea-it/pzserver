@@ -29,7 +29,7 @@ except ImportError:
 def get_version():
     """
     Get the version of the pzserver package.
-    
+
     Returns:
         str: The version string of the package.
     """

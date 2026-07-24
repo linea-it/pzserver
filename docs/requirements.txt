@@ -1,16 +1,5 @@
-pytest
-pytest-cov
-pre-commit
-ruff
 sphinx>=7.0.0,<8
 sphinx_rtd_theme>=1.2.0,<2
 sphinx-autoapi>=3.0.0,<4
 sphinx-copybutton>=0.5.0,<1
-pylint
-ipykernel
-nbconvert
 nbsphinx
-ipython
-jupyterlab
-matplotlib
-ghp-import
