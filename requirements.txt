@@ -1,7 +1,7 @@
-astropy>=6,<8
+astropy>=6,<9
 Deprecated>=1,<2
 h5py>=3,<4
-ipython>=8,<9
+ipython>=8,<10
 Jinja2>=3,<4
 lsdb>=0.9,<1
 matplotlib>=3,<4

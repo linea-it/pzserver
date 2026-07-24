@@ -172,7 +172,7 @@ class Process:
 
         redshift_pt = redshift.get("product_type")
 
-        if not redshift_pt in self.available_product_types_id():
+        if redshift_pt not in self.available_product_types_id():
             raise ValueError(
                 f"{FONTCOLORERR}Input is not of the expected type.{FONTCOLOREND}"
             )
@@ -416,7 +416,7 @@ class CRCProcess(Process):
         redshift = self.get_product(product_id=_id, internal_name=internal_name)
         redshift_id = redshift.get("id")
 
-        if not redshift_id in self.inputs:
+        if redshift_id not in self.inputs:
             dn_redshift = {
                 "name": redshift.get("display_name"),
                 "internal_name": redshift.get("internal_name"),

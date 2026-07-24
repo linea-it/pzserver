@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "LIneA", email = "itteam@linea.org.br" }
 ]
-requires-python = ">=3.11,<3.14.9"
+requires-python = ">=3.11,<3.14"
 classifiers = [
     "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
@@ -31,3 +31,18 @@ write_to = "src/pzserver/_version.py"
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 optional-dependencies = {dev = { file = ["requirements-dev.txt"] }}
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "B",   # flake8-bugbear: likely bugs and footguns
+    "E4",  # pycodestyle import and module-level issues
+    "E7",  # pycodestyle statement structure issues
+    "E9",  # pycodestyle runtime/syntax errors
+    "F",   # pyflakes: undefined names, unused imports, bad bindings
+    "I",   # import sorting
+    "UP",  # pyupgrade for supported Python versions
+]

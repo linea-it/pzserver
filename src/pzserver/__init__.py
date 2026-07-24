@@ -9,6 +9,16 @@ from .catalog import Catalog, SpeczCatalog, TrainingSet
 from .core import PzServer
 from .pipeline import Pipeline
 
+__all__ = [
+    "Catalog",
+    "Pipeline",
+    "PzServer",
+    "SpeczCatalog",
+    "TrainingSet",
+    "__version__",
+    "get_version",
+]
+
 # Import version information
 try:
     from ._version import __version__

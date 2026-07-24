@@ -68,6 +68,16 @@ repos:
         types: [python]
         files: ^(src|tests)/
 
+    # Run fast, high-signal Python checks.
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff basic checks
+        entry: python -m ruff check
+        language: system
+        types: [python]
+        files: ^(src|tests)/
+        pass_filenames: true
 
     # Analyze the src code style and report code that doesn't adhere.
   - repo: local
