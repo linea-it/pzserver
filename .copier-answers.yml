@@ -23,4 +23,4 @@ python_versions:
 - '3.11'
 - '3.12'
 - '3.13'
-test_lowest_version: none
+test_lowest_version: direct
