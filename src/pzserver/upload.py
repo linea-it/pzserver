@@ -4,9 +4,8 @@ Classes responsible for managing user interaction
 
 import mimetypes
 import pathlib
-from typing import Optional
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 
 
 class RequiredColumnsException(Exception):
@@ -21,10 +20,10 @@ class UploadData(BaseModel):
     name: str
     product_type: str
     main_file: str
-    release: Optional[str] = None
-    pz_code: Optional[str] = None
-    auxiliary_files: Optional[list] = []
-    description: Optional[str] = None
+    release: str | None = None
+    pz_code: str | None = None
+    auxiliary_files: list | None = []
+    description: str | None = None
 
     @property
     def system_columns(self):
@@ -39,14 +38,16 @@ class UploadData(BaseModel):
             "survey": ("survey", "meta.curation"),
         }
 
-    @validator("main_file", pre=True)
-    def validate_main_file(cls, value):  # pylint: disable=no-self-argument
+    @field_validator("main_file", mode="before")
+    @classmethod
+    def validate_main_file(cls, value):
         """Validate main_file field"""
         cls.__file_exist(value)
         return value
 
-    @validator("auxiliary_files", pre=True)
-    def validate_auxiliary_files(cls, value):  # pylint: disable=no-self-argument
+    @field_validator("auxiliary_files", mode="before")
+    @classmethod
+    def validate_auxiliary_files(cls, value):
         """Validate auxiliary_files"""
         if value:
             for aux in value:

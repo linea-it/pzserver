@@ -1,0 +1,13 @@
+astropy==7.1.0
+Deprecated==1.2.18
+h5py==3.14.0
+ipython==9.4.0
+Jinja2==3.1.6
+lsdb==0.6.4
+matplotlib==3.10.5
+numpy==2.2.6
+pandas==2.3.1
+pyarrow==17.0.0
+pydantic==2.11.7
+requests==2.32.4
+tables-io==1.0.0

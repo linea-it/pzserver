@@ -1,15 +1,26 @@
 # Changes here will be overwritten by Copier
-_commit: v1.3.3
+_commit: v2.2.0
 _src_path: gh:lincc-frameworks/python-project-template
 author_email: itteam@linea.org.br
 author_name: LIneA
-create_example_module: true
-custom_install: false
+create_example_module: false
+custom_install: custom
+enforce_style:
+- ruff_lint
+- ruff_format
+failure_notification: []
+include_benchmarks: false
+include_docs: true
 include_notebooks: true
-module_name: pzserver
 mypy_type_checking: none
-preferred_linter: pylint
+package_name: pzserver
+project_description: A Python library to access data and services from the LSST Photo-z
+    Server.
 project_license: MIT
 project_name: pzserver
-use_gitlfs: none
-use_isort: true
+project_organization: linea-it
+python_versions:
+- '3.11'
+- '3.12'
+- '3.13'
+test_lowest_version: direct

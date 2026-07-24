@@ -102,7 +102,7 @@ class PzRequests:
 
         for uitem in filters:
             item = self._mapping_filters.get(uitem, uitem)
-            if not item in api_params:
+            if item not in api_params:
                 lib_params = self.__reverse_filters(api_params)
                 raise ValueError(
                     "Invalid filter key was detected.\n"
@@ -152,8 +152,8 @@ class PzRequests:
 
         data = {
             "status_code": status_code,
-            "message": str(),
-            "data": str(),
+            "message": "",
+            "data": "",
             "response_object": api_response,
         }
 

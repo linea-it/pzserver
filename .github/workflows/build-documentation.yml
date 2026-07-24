@@ -1,4 +1,4 @@
-# This workflow will install Python dependencies, build the package and then build the documentation.
+# This workflow installs Python dependencies, builds the package, and builds the documentation.
 
 name: Build documentation
 
@@ -6,25 +6,28 @@ on:
   push:
     branches: [ main ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: build_doc
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: '3.11'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
     - name: Install dependencies
       run: |
         sudo apt-get update
-        python -m pip install --upgrade pip
-        pip install .
-        pip install .[dev]
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        uv pip install --system -e '.[dev]'
+        if [ -f requirements.txt ]; then uv pip install --system -r requirements.txt; fi
     - name: Install notebook requirements
       run: |
         sudo apt-get install pandoc
@@ -32,5 +35,5 @@ jobs:
       run: |
         sphinx-build -T -E -b html -d docs/build/doctrees ./docs docs/build/html -D exclude_patterns="notebooks/**.ipynb"
     - name: Run ghp-import
-      run: | 
+      run: |
         ghp-import -n -p -f -x docs/ docs/build/html
