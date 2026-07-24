@@ -10,7 +10,7 @@ pylint>=3
 ipykernel>=6
 nbconvert>=7
 nbsphinx>=0.9
-ipython>=8
+ipython>=9.15.0
 jupyterlab>=4
 matplotlib
 ghp-import>=2
