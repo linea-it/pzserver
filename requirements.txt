@@ -1,4 +1,4 @@
-astropy>=6,<9
+astropy>=8.0.1,<9
 Deprecated>=1,<2
 h5py>=3.8,<4
 ipython>=9.15.0,<10
