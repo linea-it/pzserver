@@ -1,4 +1,4 @@
-name: Rubin latest compatibility
+name: Rubin Latest Daily compatibility
 
 on:
   push:
@@ -9,20 +9,20 @@ on:
     - cron: 45 7 * * *
 
 jobs:
-  rubin-latest-compatibility:
-    name: rubin_latest_compatibility
+  rubin-latest-daily-compatibility:
+    name: rubin_latest_daily_compatibility
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Set up Python 3.13
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v6
       with:
         python-version: '3.13'
-    - name: Install dependencies with Rubin latest constraints
+    - name: Install dependencies with Rubin Latest Daily constraints
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -e '.[dev]' -c constraints-rubin-latest.txt
+        python -m pip install -e '.[dev]' -c constraints-rubin-latest-daily.txt
     - name: Run unit tests with pytest
       run: |
         python -m pytest

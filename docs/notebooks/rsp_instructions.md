@@ -1,5 +1,5 @@
 Use these steps in the Rubin Observatory Science Platform Notebook Aspect, using the
-`latest` image.
+`Latest Daily` image.
 
 The recommended setup is to install `pzserver` in a small virtual environment
 that reuses the Rubin-provided scientific stack, while ignoring packages
@@ -8,13 +8,13 @@ previously installed in `~/.local`.
 There are two supported installation paths:
 
 - from a JupyterLab terminal
-- from a cell in a notebook that is already running with the default Rubin
+- from a cell in a notebook that is already running with the Rubin `Latest Daily`
   kernel
 
 After either setup path, switch the notebook kernel to:
 
 ```text
-Rubin latest + pzserver
+Rubin Latest Daily + pzserver
 ```
 
 ## Option 1: Install from a JupyterLab terminal
@@ -26,8 +26,8 @@ setup lsst_distrib
 
 cd ~/notebooks
 
-PYTHONNOUSERSITE=1 python -m venv --system-site-packages .venvs/pzserver-rubin-latest
-source .venvs/pzserver-rubin-latest/bin/activate
+PYTHONNOUSERSITE=1 python -m venv --system-site-packages .venvs/pzserver-rubin-latest-daily
+source .venvs/pzserver-rubin-latest-daily/bin/activate
 
 export PYTHONNOUSERSITE=1
 
@@ -53,7 +53,7 @@ Expected result:
 
 ```text
 ENABLE_USER_SITE: False
-pzserver: /home/<username>/notebooks/.venvs/pzserver-rubin-latest/lib/python3.13/site-packages/pzserver/__init__.py
+pzserver: /home/<username>/notebooks/.venvs/pzserver-rubin-latest-daily/lib/python3.13/site-packages/pzserver/__init__.py
 version: ...
 OK
 ```
@@ -62,14 +62,14 @@ Register the virtual environment as a Jupyter kernel:
 
 ```bash
 python -m ipykernel install --user \
-  --name pzserver-rubin-latest \
-  --display-name "Rubin latest + pzserver"
+  --name pzserver-rubin-latest-daily \
+  --display-name "Rubin Latest Daily + pzserver"
 ```
 
 ## Option 2: Install from a notebook cell
 
-If you prefer not to use a terminal, open a notebook with the default Rubin
-`latest` kernel and run this cell:
+If you prefer not to use a terminal, open a notebook with the Rubin
+`Latest Daily` kernel and run this cell:
 
 ```python
 import json
@@ -79,9 +79,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-venv_dir = Path.home() / "notebooks" / ".venvs" / "pzserver-rubin-latest"
-kernel_name = "pzserver-rubin-latest"
-display_name = "Rubin latest + pzserver"
+venv_dir = Path.home() / "notebooks" / ".venvs" / "pzserver-rubin-latest-daily"
+kernel_name = "pzserver-rubin-latest-daily"
+display_name = "Rubin Latest Daily + pzserver"
 
 env = os.environ.copy()
 env["PYTHONNOUSERSITE"] = "1"
@@ -176,16 +176,16 @@ pzserver/docs/notebooks/pzserver_tutorial.ipynb
 Then select the kernel:
 
 ```text
-Rubin latest + pzserver
+Rubin Latest Daily + pzserver
 ```
 
 The notebook will then use the isolated `pzserver` installation together with
-the Rubin `latest` Science Pipelines environment.
+the Rubin `Latest Daily` Science Pipelines environment.
 
 If you need to use the environment again from a terminal, run:
 
 ```bash
 cd ~/notebooks
-source .venvs/pzserver-rubin-latest/bin/activate
+source .venvs/pzserver-rubin-latest-daily/bin/activate
 export PYTHONNOUSERSITE=1
 ```
