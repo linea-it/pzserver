@@ -13,4 +13,4 @@ nbsphinx>=0.9
 ipython>=8
 jupyterlab>=4
 matplotlib
-ghp-import>=2
+ghp-import>=2.1.0
