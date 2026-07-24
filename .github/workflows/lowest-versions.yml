@@ -1,0 +1,35 @@
+# This workflow tests the package against the lowest supported direct dependency versions.
+
+name: Lowest dependency versions
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: 45 8 * * *
+  workflow_dispatch:
+
+jobs:
+  lowest-direct:
+    name: lowest_direct_dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.11'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
+    - name: Compile lowest direct dependency constraints
+      run: |
+        uv pip compile --python-version 3.11 --resolution=lowest-direct requirements.txt requirements-dev.txt -o /tmp/pzserver-lowest-direct.txt
+    - name: Install package with lowest direct dependency constraints
+      run: |
+        uv pip install --system --constraint /tmp/pzserver-lowest-direct.txt -e '.[dev]'
+    - name: Run unit tests with pytest
+      run: |
+        python -m pytest

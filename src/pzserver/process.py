@@ -6,6 +6,9 @@ from .pipeline import Pipeline
 
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
+PROCESS_CONFIG_KEYS = (
+    "output_format",
+)
 
 
 class Process:
@@ -28,6 +31,7 @@ class Process:
         self.comment = None
         self.pipeline = Pipeline(pipeline, self.__api)
         self.__config = self.pipeline.parameters
+        self.__process_config = {}
         self.__inputs = []
         self.__process = None
         self.__upload = None
@@ -123,13 +127,27 @@ class Process:
         """
         return self.__config
 
+    @property
+    def process_config(self):
+        """Gets process-level config overrides."""
+        return self.__process_config
+
+    @property
+    def used_config(self):
+        """Gets the complete config payload for process submission."""
+        return {"param": self.config, **self.process_config}
+
     def set_config(self, config):
         """Set config
 
         Args:
             config (dict): config
         """
-        self.__config.update(config)
+        for key, value in config.items():
+            if key in PROCESS_CONFIG_KEYS:
+                self.__process_config[key] = value
+            else:
+                self.__config[key] = value
 
     def get_product(self, product_id=None, internal_name=None):
         """_summary_
@@ -154,7 +172,7 @@ class Process:
 
         redshift_pt = redshift.get("product_type")
 
-        if not redshift_pt in self.available_product_types_id():
+        if redshift_pt not in self.available_product_types_id():
             raise ValueError(
                 f"{FONTCOLORERR}Input is not of the expected type.{FONTCOLOREND}"
             )
@@ -167,6 +185,8 @@ class Process:
         print("-" * 30)
         print(f"{self.pipeline.display_name}: {self.name}")
         print(f"Configuration: {self.config}")
+        if self.process_config:
+            print(f"Process options: {self.process_config}")
 
         if isinstance(extra_info, list):
             for line in extra_info:
@@ -191,7 +211,7 @@ class Process:
 
         data_process = {
             "display_name": self.name,
-            "used_config": {"param": self.config},
+            "used_config": self.used_config,
             "pipeline": self.pipeline.pipeline_id,
             "inputs": self.inputs,
         }
@@ -342,7 +362,7 @@ class TSMProcess(Process):
 
         data_process = {
             "pipeline": self.pipeline.pipeline_id,
-            "used_config": {"param": self.config},
+            "used_config": self.used_config,
             "display_name": self.name,
             "release": self.release.get("id"),
             "inputs": self.inputs,
@@ -396,7 +416,7 @@ class CRCProcess(Process):
         redshift = self.get_product(product_id=_id, internal_name=internal_name)
         redshift_id = redshift.get("id")
 
-        if not redshift_id in self.inputs:
+        if redshift_id not in self.inputs:
             dn_redshift = {
                 "name": redshift.get("display_name"),
                 "internal_name": redshift.get("internal_name"),
