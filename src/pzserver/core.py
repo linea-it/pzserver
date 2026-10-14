@@ -14,6 +14,7 @@ import tables_io
 from astropy.table import Table
 from IPython.display import display
 
+from .auth import hub_credentials, load_token
 from .catalog import SpeczCatalog, TrainingSet
 from .communicate import PzRequests
 from .process import CRCProcess, TSMProcess
@@ -38,21 +39,33 @@ class PzServer:
     Responsible for managing user interactions with the Pz Server app.
     """
 
-    def __init__(self, token=None, host="pz"):
+    def __init__(self, token=None, host="pz", *, hub=None):
         """
         PzServer class constructor
 
         Args:
-            token (str): user's token generated on the PZ Server website
+            token (str): user's token generated on the PZ Server website.
+                If omitted, use the token saved by pzserver.login for this host.
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
                         "api url"
+            hub (str): optional partner ID, e.g. "linea-dev". When provided
+                without an explicit token, use the partner's environment token
+                instead of a saved PzServer token.
         """
 
+        if token is None and hub is None:
+            token = load_token(host)
+        if token is None:
+            partner_token = hub_credentials(host, hub)
+            if partner_token is not None:
+                self.api = PzRequests(partner_token, host, auth_scheme="JupyterHub")
+                return
         if token is None:
             raise ValueError(
-                f"{FONTCOLORERR}Please provide a valid token.{FONTCOLOREND}"
+                f"{FONTCOLORERR}Please provide a valid token or run "
+                f"pzserver.login(host={host!r}) to save one.{FONTCOLOREND}"
             )
 
         self.api = PzRequests(token, host)

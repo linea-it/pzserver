@@ -18,6 +18,94 @@ This repo uses the [LINCC's Python Project Template](https://github.com/lincc-fr
  
 --- 
 
+## Save your API token once
+
+In your notebook or Python session, register the token generated on the PZ
+Server website. The prompt hides your input, and the token is validated before
+being saved:
+
+```python
+from pzserver import PzServer, login, logout
+
+login()  # First use only: enter your token in the hidden prompt.
+pz = PzServer()
+```
+
+In later sessions, including after kernel or Jupyter server restarts, use only:
+
+```python
+from pzserver import PzServer
+
+pz = PzServer()
+```
+
+Tokens are stored **unencrypted** in `~/.pzserver/credentials`, outside your
+notebooks. On POSIX systems, the credentials directory has permissions `0700`
+and token files have permissions `0600`. Processes running as your user can
+read them. On other systems, protect your home directory with the operating
+system's access controls. Your home directory must be persistent for credentials
+to survive a server restart; another environment needs its own login.
+
+Credentials are stored separately for each API endpoint. For development, use
+`login(host="pz-dev")` followed by `PzServer(host="pz-dev")`. Custom API URLs
+are also supported. Only enter a token for an API you trust, using HTTPS for
+remote servers.
+
+Explicit credentials still work with `PzServer(token=token)` and take precedence
+over saved credentials without saving or replacing them. If no saved token
+exists, `PzServer()` raises an error directing you to `login()`; it never opens
+an unexpected prompt. To replace an expired or revoked token, run `login()`
+again. Tokens are not automatically renewed.
+
+Use `logout()` (or `logout(host="pz-dev")`) to delete the local credential.
+This does not revoke the token on the API or disconnect existing Python
+instances. Revocation must be done on the PZ Server website.
+
+## Partner JupyterHub authentication
+
+Once the PzServer API administrator has enabled the `linea-dev` partner and
+confirmed your active PzServer account has exactly the same username, you can use:
+
+```python
+pz = PzServer(host="pz-dev", hub="linea-dev")
+```
+
+This reads `JUPYTERHUB_API_TOKEN` from the notebook environment without saving
+it. For `PzServer()` without an explicit token or partner, saved PzServer
+credentials take precedence; otherwise the package recognizes the LIneA dev
+Hub via `JUPYTERHUB_PUBLIC_HUB_URL` or `JUPYTERHUB_HOST`. If those variables
+are unavailable, specify `hub="linea-dev"`. Explicit `token=...` always wins.
+
+Partner credentials are sent only to the known production/development
+PzServer API URLs, never automatically to a custom `host`. The API validates
+the token with its configured partner endpoint and requires an active local
+account with exactly the same username. It applies that account's permissions. Rubin/Nublado is not supported by this integration.
+The backend must be deployed and configured before this mode will work.
+
+## Training Set Maker HATS configuration
+
+Select the release before setting the photometric options. The package fetches
+that release's editable HATS configuration and submits the effective object with
+the process. Flux output is the default:
+
+```python
+tsm = pz.training_set_maker("DP1 training set")
+tsm.set_release(name="dp1")
+tsm.set_config(
+    {
+        "flux_type": "cModel",
+        "dereddening": "none",
+        "convert_flux_to_mag": False,
+    }
+)
+```
+
+The flux type and dereddening value must be among the options exposed by the
+selected release. Magnitude conversion is accepted only when the release has
+enabled it. Advanced callers may provide a complete editable configuration as
+the `hats_config` dictionary. Infrastructure paths and executor settings are
+restored by the server and cannot be overridden by the client.
+
 ## Instructions for developers: 
 
 ### How to validate a PR 

@@ -7,10 +7,18 @@ class FakePipeline:
     def __init__(self, name, api):
         self.pipeline_id = 7
         self.display_name = name
-        self.parameters = {
-            "combine_type": "concatenate",
-            "flags_translation_file": "default-flags.yml",
-        }
+        if name == "training_set_maker":
+            self.parameters = {
+                "flux_type": "auto",
+                "dereddening": "none",
+                "convert_flux_to_mag": False,
+                "hats_config": {},
+            }
+        else:
+            self.parameters = {
+                "combine_type": "concatenate",
+                "flags_translation_file": "default-flags.yml",
+            }
         self.acceptable_product_types = (
             {"id": 100, "name": "redshift_catalog"},
             {"id": 200, "name": "training_set"},
@@ -23,6 +31,18 @@ class FakeApi:
         self.started_process = None
         self.started_files = None
         self.stopped = []
+        self.release = {
+            "id": 44,
+            "name": "DR1",
+            "can_convert_flux_to_mag": True,
+            "fluxes": [
+                {"name": "cModel", "display_name": "cModel", "selected": True}
+            ],
+            "dereddening": [
+                {"name": "none", "display_name": "None", "selected": True},
+                {"name": "sfd", "display_name": "SFD", "selected": False},
+            ],
+        }
 
     def start_process(self, data, files=None):
         self.started_process = data
@@ -40,7 +60,7 @@ class FakeApi:
         if entity == "processes":
             return {"status": "Pending"}
         if entity == "releases":
-            return {"id": _id, "name": "DR1"}
+            return {**self.release, "id": _id}
         return {}
 
     def get_by_attribute(self, entity, attribute, value):
@@ -59,8 +79,41 @@ class FakeApi:
 
     def get_by_name(self, entity, name):
         if (entity, name) == ("releases", "DR1"):
-            return {"id": 44, "name": "DR1"}
+            return self.release
         return None
+
+    def get_release_hats_config(self, release_id):
+        assert release_id == 44
+        return {
+            "release": "DR1",
+            "config": {
+                "input": {
+                    "user_selected_cols": ["u_<FLUX>Flux", "u_<FLUX>FluxErr"]
+                },
+                "photometry": {
+                    "measurements": [
+                        {
+                            "name": "<FLUX>",
+                            "input": {
+                                "type": "flux",
+                                "value_pattern": "BAND_<FLUX>Flux",
+                                "error_pattern": "BAND_<FLUX>FluxErr",
+                            },
+                            "output": {
+                                "type": "<MAG_OR_FLUX>_dered",
+                                "value_pattern": (
+                                    "BAND_<FLUX><MAG_OR_FLUX>_<DEREDDENING>"
+                                ),
+                                "error_pattern": (
+                                    "BAND_<FLUX><MAG_OR_FLUX>Err_<DEREDDENING>"
+                                ),
+                            },
+                        }
+                    ]
+                },
+                "dust": {"use_dustmap": None},
+            },
+        }
 
     def stop_process(self, process_id):
         self.stopped.append(process_id)
@@ -147,26 +200,83 @@ def test_training_set_maker_configures_release_input_and_submission(monkeypatch)
     process = TSMProcess("training set", api)
 
     process.set_release(name="DR1")
+    process.set_config(
+        {
+            "flux_type": "cmodel",
+            "dereddening": "sfd",
+            "convert_flux_to_mag": True,
+        }
+    )
     process.set_redshift(internal_name="input")
     result = process.run()
 
-    assert process.release == {"id": 44, "name": "DR1"}
+    assert process.release == api.release
     assert process.redshift["id"] == 33
     assert process.inputs == [33]
-    assert api.started_process == {
-        "pipeline": 7,
-        "used_config": {
-            "param": {
-                "combine_type": "concatenate",
-                "flags_translation_file": "default-flags.yml",
-            }
-        },
-        "display_name": "training set",
-        "release": 44,
-        "inputs": [33],
-        "id": 11,
+    assert api.started_process["pipeline"] == 7
+    assert api.started_process["display_name"] == "training set"
+    assert api.started_process["release"] == 44
+    assert api.started_process["inputs"] == [33]
+
+    param = api.started_process["used_config"]["param"]
+    assert param["flux_type"] == "cModel"
+    assert param["dereddening"] == "sfd"
+    assert param["convert_flux_to_mag"] is True
+    assert param["hats_config"]["dust"]["use_dustmap"] == "sfd"
+    output = param["hats_config"]["photometry"]["measurements"][0]["output"]
+    assert output == {
+        "type": "mag_dered",
+        "value_pattern": "BAND_cModelMag_sfd",
+        "error_pattern": "BAND_cModelMagErr_sfd",
     }
     assert result["status"] == "Pending"
+
+
+def test_training_set_maker_defaults_to_flux_and_uses_release_defaults(monkeypatch):
+    monkeypatch.setattr("pzserver.process.Pipeline", FakePipeline)
+    from pzserver.process import TSMProcess
+
+    process = TSMProcess("training set", FakeApi())
+    process.set_release(name="DR1")
+
+    used_config = process.used_config
+    param = used_config["param"]
+    assert param["flux_type"] == "cModel"
+    assert param["dereddening"] == "none"
+    assert param["convert_flux_to_mag"] is False
+    assert param["hats_config"]["dust"]["use_dustmap"] is None
+    output = param["hats_config"]["photometry"]["measurements"][0]["output"]
+    assert output == {
+        "type": "flux",
+        "value_pattern": "BAND_cModelFlux",
+        "error_pattern": "BAND_cModelFluxErr",
+    }
+
+
+def test_training_set_maker_uses_advanced_hats_config_unchanged(monkeypatch):
+    monkeypatch.setattr("pzserver.process.Pipeline", FakePipeline)
+    from pzserver.process import TSMProcess
+
+    process = TSMProcess("training set", FakeApi())
+    process.set_release(name="DR1")
+    advanced_config = {"photometry": {"advanced": True}}
+    process.set_config({"hats_config": advanced_config})
+
+    assert process.used_config["param"]["hats_config"] == advanced_config
+
+
+def test_training_set_maker_rejects_disallowed_magnitude_conversion(monkeypatch):
+    monkeypatch.setattr("pzserver.process.Pipeline", FakePipeline)
+    from pzserver.process import TSMProcess
+
+    api = FakeApi()
+    api.release["can_convert_flux_to_mag"] = False
+    process = TSMProcess("training set", api)
+    process.set_release(name="DR1")
+    process.set_config({"convert_flux_to_mag": True})
+
+    with pytest.raises(ValueError, match="does not allow"):
+        process.run()
 
 
 def test_training_set_maker_rejects_missing_release(monkeypatch):
@@ -177,6 +287,9 @@ def test_training_set_maker_rejects_missing_release(monkeypatch):
 
     with pytest.raises(ValueError, match="No release selected"):
         process.set_release()
+
+    with pytest.raises(ValueError, match="No release selected"):
+        process.run()
 
 
 def test_combine_redshift_process_tracks_unique_catalogs_and_uploads_flags(

@@ -5,6 +5,7 @@ SpeczCatalog:
 TrainingSet:
 """
 
+from .auth import login, logout
 from .catalog import Catalog, SpeczCatalog, TrainingSet
 from .core import PzServer
 from .pipeline import Pipeline
@@ -17,6 +18,8 @@ __all__ = [
     "TrainingSet",
     "__version__",
     "get_version",
+    "login",
+    "logout",
 ]
 
 # Import version information
