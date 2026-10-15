@@ -33,7 +33,7 @@ class PzRequests:
         "pz": "https://pzserver.linea.org.br/api/",
     }
 
-    def __init__(self, token, host="pz"):
+    def __init__(self, token, host="pz", *, auth_scheme="Token"):
         """
         Initializes communication with the Pz Server app.
 
@@ -48,7 +48,14 @@ class PzRequests:
             self._base_api_url = host
 
         self._token = token
+        if auth_scheme not in ("Token", "JupyterHub"):
+            raise ValueError("Unsupported authentication scheme.")
+        self._auth_scheme = auth_scheme
         self._check_token()
+
+    @property
+    def _authorization(self):
+        return f"{getattr(self, '_auth_scheme', 'Token')} {self._token}"
 
     @staticmethod
     def safe_list_get(_list, idx, default) -> list:
@@ -282,7 +289,7 @@ class PzRequests:
                 {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": f"Token {self._token}",
+                    "Authorization": self._authorization,
                 }
             ),
         )
@@ -306,7 +313,7 @@ class PzRequests:
                 {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": f"Token {self._token}",
+                    "Authorization": self._authorization,
                 }
             ),
         )
@@ -353,7 +360,7 @@ class PzRequests:
         return content_length
 
     def _download_response(self, url, start_byte=None):
-        headers = {"Authorization": f"Token {self._token}"}
+        headers = {"Authorization": self._authorization}
         if start_byte:
             headers["Range"] = f"bytes={start_byte}-"
 
@@ -458,7 +465,7 @@ class PzRequests:
                 {
                     # "Accept": "application/json",
                     # "Content-Type": "application/json",
-                    "Authorization": f"Token {self._token}",
+                    "Authorization": self._authorization,
                 }
             ),
         )
@@ -490,7 +497,7 @@ class PzRequests:
             files=files,
             headers=dict(
                 {
-                    "Authorization": f"Token {self._token}",
+                    "Authorization": self._authorization,
                 }
             ),
         )
@@ -511,7 +518,7 @@ class PzRequests:
 
         headers = {
             "Accept": "application/json",
-            "Authorization": f"Token {self._token}",
+            "Authorization": self._authorization,
         }
 
         if files:
@@ -550,7 +557,7 @@ class PzRequests:
             headers=dict(
                 {
                     "Accept": "application/json",
-                    "Authorization": f"Token {self._token}",
+                    "Authorization": self._authorization,
                 }
             ),
         )
@@ -619,6 +626,17 @@ class PzRequests:
         """
 
         data = self._get_request(f"{self._base_api_url}{entity}/{_id}/")
+
+        if "success" in data and data["success"] is False:
+            raise requests.exceptions.RequestException(data["message"])
+
+        return data.get("data")
+
+    def get_release_hats_config(self, release_id) -> dict:
+        """Get the editable HATS configuration for a release."""
+        data = self._get_request(
+            f"{self._base_api_url}releases/{release_id}/hats_config/"
+        )
 
         if "success" in data and data["success"] is False:
             raise requests.exceptions.RequestException(data["message"])

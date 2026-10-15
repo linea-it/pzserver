@@ -291,6 +291,36 @@ def test_get_helpers_return_data_and_raise_api_errors():
     ]
 
 
+def test_get_release_hats_config_uses_release_action_endpoint():
+    api = make_api()
+    calls = []
+
+    def get_request(url):
+        calls.append(url)
+        return {
+            "success": True,
+            "data": {"release": "dp1", "config": {"photometry": {}}},
+        }
+
+    api._get_request = get_request
+
+    result = api.get_release_hats_config(2)
+
+    assert result == {"release": "dp1", "config": {"photometry": {}}}
+    assert calls == ["https://pz.example.org/api/releases/2/hats_config/"]
+
+
+def test_get_release_hats_config_propagates_api_errors():
+    api = make_api()
+    api._get_request = lambda url: {
+        "success": False,
+        "message": "HATS configuration not found",
+    }
+
+    with pytest.raises(requests.exceptions.RequestException, match="not found"):
+        api.get_release_hats_config(2)
+
+
 def test_upload_and_product_helpers_build_expected_api_calls(tmp_path):
     api = make_api()
     posted = []

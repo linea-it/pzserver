@@ -2,6 +2,10 @@
 Classes responsible for managing user interaction with processes
 """
 
+from collections.abc import Mapping
+from copy import deepcopy
+
+from .hats_config import customize_hats_config
 from .pipeline import Pipeline
 
 FONTCOLORERR = "\033[38;2;255;0;0m"
@@ -277,6 +281,7 @@ class TSMProcess(Process):
         self.__api = api
         self.__release = None
         self.__redshift = None
+        self.__hats_config_template = None
 
     @property
     def release(self):
@@ -286,6 +291,11 @@ class TSMProcess(Process):
             dict: release info
         """
         return self.__release
+
+    @property
+    def hats_config_template(self):
+        """Get the editable HATS configuration provided by the release."""
+        return deepcopy(self.__hats_config_template)
 
     def set_release(self, name=None, release_id=None):
         """Set release
@@ -303,7 +313,112 @@ class TSMProcess(Process):
             release = self.__api.get_by_name("releases", name)
         else:
             raise ValueError(f"{FONTCOLORERR}No release selected{FONTCOLOREND}")
+
+        if not release:
+            raise ValueError(f"{FONTCOLORERR}Release not found{FONTCOLOREND}")
+
+        hats_config_response = self.__api.get_release_hats_config(release.get("id"))
+        if not isinstance(hats_config_response, Mapping) or not isinstance(
+            hats_config_response.get("config"), Mapping
+        ):
+            raise ValueError(
+                f"{FONTCOLORERR}Invalid release HATS configuration{FONTCOLOREND}"
+            )
+
         self.__release = release
+        self.__hats_config_template = deepcopy(hats_config_response["config"])
+        self.__apply_release_defaults()
+
+    def __apply_release_defaults(self):
+        for release_key, config_key in (
+            ("fluxes", "flux_type"),
+            ("dereddening", "dereddening"),
+        ):
+            options = self.release.get(release_key) or []
+            selected = next(
+                (
+                    option.get("name")
+                    for option in options
+                    if isinstance(option, Mapping)
+                    and option.get("selected") is True
+                    and option.get("disabled") is not True
+                    and option.get("name")
+                ),
+                None,
+            )
+            if selected is not None:
+                self.config[config_key] = selected
+
+        self.config["convert_flux_to_mag"] = False
+        self.config["hats_config"] = {}
+
+    def __canonical_release_option(self, release_key, value, label):
+        options = self.release.get(release_key) or []
+        available = [
+            option.get("name")
+            for option in options
+            if isinstance(option, Mapping)
+            and option.get("name")
+            and option.get("disabled") is not True
+        ]
+        if not available:
+            if value is None or str(value) == "":
+                raise ValueError(f"No {label} was selected.")
+            return str(value)
+
+        selected = str(value or "")
+        for option in available:
+            if option == selected or option.casefold() == selected.casefold():
+                return option
+
+        raise ValueError(
+            f"Invalid {label} {selected!r}. Available values: "
+            f"{', '.join(available)}."
+        )
+
+    @property
+    def used_config(self):
+        """Build a TSM config containing the effective release HATS config."""
+        if not self.release or not self.__hats_config_template:
+            raise ValueError(f"{FONTCOLORERR}No release selected{FONTCOLOREND}")
+
+        used_config = deepcopy(super().used_config)
+        param = used_config["param"]
+        convert_flux_to_mag = param.get("convert_flux_to_mag", False)
+        if not isinstance(convert_flux_to_mag, bool):
+            raise ValueError("convert_flux_to_mag must be a boolean.")
+        if (
+            convert_flux_to_mag
+            and self.release.get("can_convert_flux_to_mag") is not True
+        ):
+            raise ValueError(
+                "The selected release does not allow flux-to-magnitude conversion."
+            )
+
+        flux = self.__canonical_release_option(
+            "fluxes", param.get("flux_type"), "flux type"
+        )
+        dereddening = self.__canonical_release_option(
+            "dereddening", param.get("dereddening"), "dereddening option"
+        )
+        param["flux_type"] = flux
+        param["dereddening"] = dereddening
+        param["convert_flux_to_mag"] = convert_flux_to_mag
+
+        custom_hats_config = param.get("hats_config")
+        if custom_hats_config is not None and custom_hats_config != {}:
+            if not isinstance(custom_hats_config, Mapping):
+                raise ValueError("hats_config must be an object.")
+            param["hats_config"] = deepcopy(dict(custom_hats_config))
+        else:
+            param["hats_config"] = customize_hats_config(
+                self.__hats_config_template,
+                flux=flux,
+                dereddening=dereddening,
+                convert_flux_to_mag=convert_flux_to_mag,
+            )
+
+        return used_config
 
     @property
     def redshift(self):
@@ -359,6 +474,9 @@ class TSMProcess(Process):
         if self.process:
             print(f"Process has already been initialized: {self.process}")
             return {}
+
+        if not self.release:
+            raise ValueError(f"{FONTCOLORERR}No release selected{FONTCOLOREND}")
 
         data_process = {
             "pipeline": self.pipeline.pipeline_id,
