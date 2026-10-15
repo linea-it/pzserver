@@ -9,5 +9,5 @@ numpy>=2.3.5,<3
 pandas>=2.3.3,<4
 pyarrow>=17
 pydantic>=2,<3
-requests>=2,<3
+requests>=2.34.2,<3
 tables-io>=1.1.2,<2
