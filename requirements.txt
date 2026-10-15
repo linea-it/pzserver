@@ -10,4 +10,4 @@ pandas>=2,<3
 pyarrow>=17
 pydantic>=2,<3
 requests>=2,<3
-tables-io>=1,<2
+tables-io>=1.1.2,<2
