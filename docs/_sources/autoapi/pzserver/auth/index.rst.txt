@@ -1,0 +1,68 @@
+pzserver.auth
+=============
+
+.. py:module:: pzserver.auth
+
+.. autoapi-nested-parse::
+
+   Persist user-provided API tokens separately for each API endpoint.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   pzserver.auth.TRUSTED_PZSERVER_APIS
+   pzserver.auth.PARTNER_HUBS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   pzserver.auth.hub_credentials
+   pzserver.auth._token_path
+   pzserver.auth.load_token
+   pzserver.auth.login
+   pzserver.auth.logout
+
+
+Module Contents
+---------------
+
+.. py:data:: TRUSTED_PZSERVER_APIS
+
+.. py:data:: PARTNER_HUBS
+
+.. py:function:: hub_credentials(host='pz', hub=None)
+
+   Discover partner credentials, only for known PzServer destinations.
+
+
+.. py:function:: _token_path(host)
+
+.. py:function:: load_token(host='pz')
+
+   Read a saved token without prompting or contacting the API.
+
+
+.. py:function:: login(token=None, host='pz')
+
+   Validate and save a token, prompting with hidden input when omitted.
+
+   Credentials are stored unencrypted under ``~/.pzserver/credentials``.
+   On POSIX, the directory and files are restricted to their owner. The
+   home directory must persist for credentials to survive server restarts.
+   An existing credential is replaced only after successful validation.
+
+
+.. py:function:: logout(host='pz')
+
+   Remove the saved token for this API without revoking it on the server.
+
+   Existing PzServer instances keep their in-memory credentials.
+
+

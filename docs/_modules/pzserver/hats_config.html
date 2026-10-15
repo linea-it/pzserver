@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.hats_config &mdash; pzserver 0.1.dev1+g02289880d documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=b7a101b4"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=d07363f3"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../pzserver.html">pzserver</a></li>
+      <li class="breadcrumb-item active">pzserver.hats_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pzserver.hats_config</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Build effective HATS configurations for Training Set Maker submissions."""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+
+<div class="viewcode-block" id="PLACEHOLDERS">
+<a class="viewcode-back" href="../../autoapi/pzserver/hats_config/index.html#pzserver.hats_config.PLACEHOLDERS">[docs]</a>
+<span class="n">PLACEHOLDERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"&lt;FLUX&gt;"</span><span class="p">:</span> <span class="s2">"flux"</span><span class="p">,</span>
+    <span class="s2">"&lt;MAG_OR_FLUX&gt;"</span><span class="p">:</span> <span class="s2">"mag_or_flux"</span><span class="p">,</span>
+    <span class="s2">"&lt;DEREDDENING&gt;"</span><span class="p">:</span> <span class="s2">"dereddening"</span><span class="p">,</span>
+<span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="_replace_placeholders">
+<a class="viewcode-back" href="../../autoapi/pzserver/hats_config/index.html#pzserver.hats_config._replace_placeholders">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_replace_placeholders</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">replacements</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">placeholder</span><span class="p">,</span> <span class="n">replacement_name</span> <span class="ow">in</span> <span class="n">PLACEHOLDERS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">placeholder</span><span class="p">,</span> <span class="n">replacements</span><span class="p">[</span><span class="n">replacement_name</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">_replace_placeholders</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">_replace_placeholders</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_create_invalid_handling">
+<a class="viewcode-back" href="../../autoapi/pzserver/hats_config/index.html#pzserver.hats_config._create_invalid_handling">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_invalid_handling</span><span class="p">(</span><span class="n">use_magnitude</span><span class="p">):</span>
+    <span class="n">replacement_value</span> <span class="o">=</span> <span class="mf">99.0</span> <span class="k">if</span> <span class="n">use_magnitude</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_channel</span><span class="p">():</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"nonfinite_is_invalid"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">use_magnitude</span><span class="p">:</span>
+            <span class="n">channel</span><span class="p">[</span><span class="s2">"limit"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"value"</span><span class="p">:</span> <span class="mf">99.0</span><span class="p">,</span>
+                <span class="s2">"comparison"</span><span class="p">:</span> <span class="s2">"greater_or_equal"</span><span class="p">,</span>
+                <span class="s2">"use_absolute"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="n">channel</span><span class="p">[</span><span class="s2">"replacement"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"value"</span><span class="p">:</span> <span class="n">replacement_value</span><span class="p">,</span>
+            <span class="s2">"when"</span><span class="p">:</span> <span class="s2">"invalid"</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">channel</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"value"</span><span class="p">:</span> <span class="n">create_channel</span><span class="p">(),</span>
+        <span class="s2">"error"</span><span class="p">:</span> <span class="n">create_channel</span><span class="p">(),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="customize_hats_config">
+<a class="viewcode-back" href="../../autoapi/pzserver/hats_config/index.html#pzserver.hats_config.customize_hats_config">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">customize_hats_config</span><span class="p">(</span>
+    <span class="n">template</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">flux</span><span class="p">,</span>
+    <span class="n">dereddening</span><span class="p">,</span>
+    <span class="n">convert_flux_to_mag</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Apply the basic TSM selections to a release HATS configuration."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The release HATS configuration must be an object."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">convert_flux_to_mag</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"convert_flux_to_mag must be a boolean."</span><span class="p">)</span>
+
+    <span class="n">flux</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">flux</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">flux</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"A flux type is required to build the HATS configuration."</span><span class="p">)</span>
+
+    <span class="n">dereddening</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dereddening</span> <span class="ow">or</span> <span class="s2">"none"</span><span class="p">)</span>
+    <span class="n">mag_or_flux</span> <span class="o">=</span> <span class="s2">"Mag"</span> <span class="k">if</span> <span class="n">convert_flux_to_mag</span> <span class="k">else</span> <span class="s2">"Flux"</span>
+    <span class="n">replacements</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"flux"</span><span class="p">:</span> <span class="n">flux</span><span class="p">,</span>
+        <span class="s2">"dereddening"</span><span class="p">:</span> <span class="n">dereddening</span><span class="p">,</span>
+        <span class="s2">"mag_or_flux"</span><span class="p">:</span> <span class="n">mag_or_flux</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_replace_placeholders</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">replacements</span><span class="p">)</span>
+    <span class="n">uses_dereddening</span> <span class="o">=</span> <span class="n">dereddening</span><span class="o">.</span><span class="n">casefold</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">"none"</span>
+    <span class="n">output_type</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"mag"</span> <span class="k">if</span> <span class="n">convert_flux_to_mag</span> <span class="k">else</span> <span class="s2">"flux"</span>
+    <span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s2">"_dered"</span> <span class="k">if</span> <span class="n">uses_dereddening</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">dereddening_suffix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">dereddening</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">uses_dereddening</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="n">output_value_pattern</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"BAND_</span><span class="si">{</span><span class="n">flux</span><span class="si">}{</span><span class="n">mag_or_flux</span><span class="si">}{</span><span class="n">dereddening_suffix</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="n">output_error_pattern</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"BAND_</span><span class="si">{</span><span class="n">flux</span><span class="si">}{</span><span class="n">mag_or_flux</span><span class="si">}</span><span class="s2">Err</span><span class="si">{</span><span class="n">dereddening_suffix</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+    <span class="n">dust</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dust"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dust</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">config</span><span class="p">[</span><span class="s2">"dust"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">**</span><span class="n">dust</span><span class="p">,</span>
+            <span class="s2">"use_dustmap"</span><span class="p">:</span> <span class="n">dereddening</span> <span class="k">if</span> <span class="n">uses_dereddening</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">photometry</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"photometry"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">photometry</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">measurements</span> <span class="o">=</span> <span class="n">photometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"measurements"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">measurements</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">customized_measurements</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">measurements</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">measurement</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+                    <span class="n">customized_measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">measurement</span><span class="p">))</span>
+                    <span class="k">continue</span>
+
+                <span class="n">output</span> <span class="o">=</span> <span class="n">measurement</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"output"</span><span class="p">)</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)</span> <span class="k">else</span> <span class="p">{}</span>
+                <span class="n">customized_measurements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="o">**</span><span class="n">measurement</span><span class="p">,</span>
+                        <span class="s2">"output"</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="o">**</span><span class="n">output</span><span class="p">,</span>
+                            <span class="s2">"type"</span><span class="p">:</span> <span class="n">output_type</span><span class="p">,</span>
+                            <span class="s2">"value_pattern"</span><span class="p">:</span> <span class="n">output_value_pattern</span><span class="p">,</span>
+                            <span class="s2">"error_pattern"</span><span class="p">:</span> <span class="n">output_error_pattern</span><span class="p">,</span>
+                        <span class="p">},</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="n">measurements</span> <span class="o">=</span> <span class="n">customized_measurements</span>
+
+        <span class="n">config</span><span class="p">[</span><span class="s2">"photometry"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="o">**</span><span class="n">photometry</span><span class="p">,</span>
+            <span class="s2">"measurements"</span><span class="p">:</span> <span class="n">measurements</span><span class="p">,</span>
+            <span class="s2">"invalid_handling"</span><span class="p">:</span> <span class="n">_create_invalid_handling</span><span class="p">(</span><span class="n">convert_flux_to_mag</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

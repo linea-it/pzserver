@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pzserver.auth &mdash; pzserver 0.1.dev1+g02289880d documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=fd3f3429" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=b7a101b4"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=d07363f3"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="pzserver.catalog" href="../catalog/index.html" />
+    <link rel="prev" title="pzserver" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pzserver
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../index.html">Home page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Install</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">pzserver</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pzserver.auth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../catalog/index.html">pzserver.catalog</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../communicate/index.html">pzserver.communicate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../core/index.html">pzserver.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../hats_config/index.html">pzserver.hats_config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../pipeline/index.html">pzserver.pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../process/index.html">pzserver.process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../product/index.html">pzserver.product</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../upload/index.html">pzserver.upload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#attributes">Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#classes">Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../index.html#package-contents">Package Contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pzserver</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">API Reference</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">pzserver</a></li>
+      <li class="breadcrumb-item active">pzserver.auth</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pzserver.auth">
+<span id="pzserver-auth"></span><h1>pzserver.auth<a class="headerlink" href="#module-pzserver.auth" title="Link to this heading"></a></h1>
+<p>Persist user-provided API tokens separately for each API endpoint.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.auth.TRUSTED_PZSERVER_APIS" title="pzserver.auth.TRUSTED_PZSERVER_APIS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TRUSTED_PZSERVER_APIS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pzserver.auth.PARTNER_HUBS" title="pzserver.auth.PARTNER_HUBS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PARTNER_HUBS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.auth.hub_credentials" title="pzserver.auth.hub_credentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hub_credentials</span></code></a>([host, hub])</p></td>
+<td><p>Discover partner credentials, only for known PzServer destinations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pzserver.auth._token_path" title="pzserver.auth._token_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_token_path</span></code></a>(host)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.auth.load_token" title="pzserver.auth.load_token"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_token</span></code></a>([host])</p></td>
+<td><p>Read a saved token without prompting or contacting the API.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pzserver.auth.login" title="pzserver.auth.login"><code class="xref py py-obj docutils literal notranslate"><span class="pre">login</span></code></a>([token, host])</p></td>
+<td><p>Validate and save a token, prompting with hidden input when omitted.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pzserver.auth.logout" title="pzserver.auth.logout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logout</span></code></a>([host])</p></td>
+<td><p>Remove the saved token for this API without revoking it on the server.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading"></a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="pzserver.auth.TRUSTED_PZSERVER_APIS">
+<span class="sig-name descname"><span class="pre">TRUSTED_PZSERVER_APIS</span></span><a class="reference internal" href="../../../_modules/pzserver/auth.html#TRUSTED_PZSERVER_APIS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.TRUSTED_PZSERVER_APIS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="pzserver.auth.PARTNER_HUBS">
+<span class="sig-name descname"><span class="pre">PARTNER_HUBS</span></span><a class="reference internal" href="../../../_modules/pzserver/auth.html#PARTNER_HUBS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.PARTNER_HUBS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pzserver.auth.hub_credentials">
+<span class="sig-name descname"><span class="pre">hub_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/auth.html#hub_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.hub_credentials" title="Link to this definition"></a></dt>
+<dd><p>Discover partner credentials, only for known PzServer destinations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pzserver.auth._token_path">
+<span class="sig-name descname"><span class="pre">_token_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/auth.html#_token_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth._token_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pzserver.auth.load_token">
+<span class="sig-name descname"><span class="pre">load_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/auth.html#load_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.load_token" title="Link to this definition"></a></dt>
+<dd><p>Read a saved token without prompting or contacting the API.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pzserver.auth.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/auth.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.login" title="Link to this definition"></a></dt>
+<dd><p>Validate and save a token, prompting with hidden input when omitted.</p>
+<p>Credentials are stored unencrypted under <code class="docutils literal notranslate"><span class="pre">~/.pzserver/credentials</span></code>.
+On POSIX, the directory and files are restricted to their owner. The
+home directory must persist for credentials to survive server restarts.
+An existing credential is replaced only after successful validation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pzserver.auth.logout">
+<span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pz'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/pzserver/auth.html#logout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pzserver.auth.logout" title="Link to this definition"></a></dt>
+<dd><p>Remove the saved token for this API without revoking it on the server.</p>
+<p>Existing PzServer instances keep their in-memory credentials.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="pzserver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../catalog/index.html" class="btn btn-neutral float-right" title="pzserver.catalog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, LIneA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
