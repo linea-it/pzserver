@@ -1,12 +1,12 @@
-astropy>=8.0.1,<9
-Deprecated>=1,<2
+astropy>=7.2.0,<9
+Deprecated>=1,<4
 h5py>=3.8,<4
 ipython>=9.15.0,<10
 Jinja2>=3.1.2,<4
 lsdb>=0.6.4,<1
 matplotlib>=3.9,<4
-numpy>=2.4.6,<3
-pandas>=2,<3
+numpy>=2.3.5,<3
+pandas>=2.3.3,<4
 pyarrow>=17
 pydantic>=2,<3
 requests>=2,<3
