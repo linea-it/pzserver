@@ -95,24 +95,34 @@ def test_empty_token_is_not_saved(validate):
 
 
 def test_partner_discovery_and_request_header(monkeypatch, validate):
-    monkeypatch.setenv("JUPYTERHUB_PUBLIC_HUB_URL", "https://jupyter-dev.linea.org.br/hub/")
+    monkeypatch.setenv(
+        "JUPYTERHUB_PUBLIC_HUB_URL", "https://jupyter-dev.linea.org.br/hub/"
+    )
     monkeypatch.setenv("JUPYTERHUB_API_TOKEN", "hub-secret")
     api = PzServer(host="pz-dev").api
     send = Mock(return_value={})
     monkeypatch.setattr(api, "_send_request", send)
     api._get_request("https://pzserver-dev.linea.org.br/api/")
     request = send.call_args.args[0]
-    assert request.headers["Authorization"] == "JupyterHub linea-dev hub-secret"
+    assert (
+        request.headers["Authorization"]
+        == "JupyterHub https://jupyter-dev.linea.org.br/hub hub-secret"
+    )
     assert auth.load_token("pz-dev") is None
 
 
-def test_partner_does_not_receive_local_or_explicit_token_priority(monkeypatch, validate):
+def test_partner_does_not_receive_local_or_explicit_token_priority(
+    monkeypatch, validate
+):
     monkeypatch.setenv("JUPYTERHUB_PUBLIC_HUB_URL", "https://jupyter-dev.linea.org.br/")
     monkeypatch.setenv("JUPYTERHUB_API_TOKEN", "hub-secret")
     login("saved")
     assert PzServer().api._authorization == "Token saved"
     assert PzServer(token="explicit").api._authorization == "Token explicit"
-    assert PzServer(hub="linea-dev").api._authorization == "JupyterHub linea-dev hub-secret"
+    assert (
+        PzServer(hub="https://jupyter-dev.linea.org.br").api._authorization
+        == "JupyterHub https://jupyter-dev.linea.org.br hub-secret"
+    )
 
 
 def test_partner_token_is_never_discovered_for_arbitrary_destination(monkeypatch):
@@ -120,12 +130,36 @@ def test_partner_token_is_never_discovered_for_arbitrary_destination(monkeypatch
     monkeypatch.setenv("JUPYTERHUB_PUBLIC_HUB_URL", "https://jupyter-dev.linea.org.br/")
     assert auth.hub_credentials("https://another.example/api/") is None
     with pytest.raises(ValueError, match="trusted"):
-        auth.hub_credentials("https://another.example/api/", hub="linea-dev")
+        auth.hub_credentials(
+            "https://another.example/api/", hub="https://jupyter-dev.linea.org.br"
+        )
 
 
-def test_unknown_hub_is_not_automatically_used(monkeypatch):
+def test_new_hub_url_is_forwarded_for_server_side_allowlist(monkeypatch):
     monkeypatch.setenv("JUPYTERHUB_API_TOKEN", "hub-secret")
-    monkeypatch.setenv("JUPYTERHUB_PUBLIC_HUB_URL", "https://nb.data.lsst.cloud/nb/hub/")
-    assert auth.hub_credentials() is None
-    with pytest.raises(ValueError, match="Unknown"):
-        auth.hub_credentials(hub="rubin")
+    monkeypatch.setenv("JUPYTERHUB_PUBLIC_HUB_URL", "https://NEW.example:443/prefix/")
+    assert auth.hub_credentials() == "https://new.example/prefix hub-secret"
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "http://hub.example",
+        "https://user:password@hub.example",
+        "https://hub.example/?x=1",
+        "https://hub.example/#fragment",
+        "https://hub.example/a/../b",
+        "https://hub.example/%2f",
+        "https://hub.example/\n",
+    ],
+)
+def test_invalid_hub_urls_are_rejected(url):
+    with pytest.raises(ValueError):
+        auth.normalize_hub_url(url)
+
+
+def test_hub_url_preserves_case_sensitive_prefix():
+    assert (
+        auth.normalize_hub_url("https://HUB.example:443/Prefix/")
+        == "https://hub.example/Prefix"
+    )

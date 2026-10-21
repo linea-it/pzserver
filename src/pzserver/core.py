@@ -50,7 +50,7 @@ class PzServer:
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
                         "api url"
-            hub (str): optional partner ID, e.g. "linea-dev". When provided
+            hub (str): optional public Hub URL. When provided
                 without an explicit token, use the partner's environment token
                 instead of a saved PzServer token.
         """

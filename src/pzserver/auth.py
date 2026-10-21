@@ -14,7 +14,33 @@ TRUSTED_PZSERVER_APIS = {
     "https://pzserver.linea.org.br/api",
     "https://pzserver-dev.linea.org.br/api",
 }
-PARTNER_HUBS = {"jupyter-dev.linea.org.br": "linea-dev"}
+
+
+def normalize_hub_url(value):
+    """Normalize HTTPS origin and trailing slashes; preserve the path prefix."""
+    if not isinstance(value, str) or not value or not value.isascii():
+        raise ValueError("Invalid Hub URL.")
+    if any(c.isspace() or ord(c) < 32 for c in value) or "\\" in value:
+        raise ValueError("Invalid Hub URL.")
+    parsed = urlsplit(value)
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or "?" in value
+        or "#" in value
+        or "%" in parsed.netloc
+        or "%" in parsed.path
+        or any(part in (".", "..") for part in parsed.path.split("/"))
+    ):
+        raise ValueError("Invalid Hub URL.")
+    port = parsed.port
+    host = parsed.hostname.lower()
+    if ":" in host:
+        host = f"[{host}]"
+    authority = host if port in (None, 443) else f"{host}:{port}"
+    return f"https://{authority}{parsed.path.rstrip('/')}"
 
 
 def hub_credentials(host="pz", hub=None):
@@ -25,13 +51,16 @@ def hub_credentials(host="pz", hub=None):
             raise ValueError("JupyterHub credentials require a trusted PzServer API.")
         return None
     if hub is None:
-        for name in ("JUPYTERHUB_PUBLIC_HUB_URL", "JUPYTERHUB_HOST"):
-            url = urlsplit(os.environ.get(name, ""))
-            if url.scheme == "https" and url.hostname in PARTNER_HUBS:
-                hub = PARTNER_HUBS[url.hostname]
-                break
-    elif hub not in PARTNER_HUBS.values():
-        raise ValueError("Unknown JupyterHub partner.")
+        hub = next(
+            (
+                os.environ[name]
+                for name in ("JUPYTERHUB_PUBLIC_HUB_URL", "JUPYTERHUB_HOST")
+                if os.environ.get(name)
+            ),
+            None,
+        )
+    if hub is not None:
+        hub = normalize_hub_url(hub)
     token = os.environ.get("JUPYTERHUB_API_TOKEN")
     if hub is None or not token:
         return None
