@@ -1,0 +1,16 @@
+name: Daily dependency compatibility
+
+on:
+  schedule:
+    - cron: 15 7 * * *
+  workflow_dispatch:
+
+jobs:
+  lowest-versions:
+    uses: ./.github/workflows/lowest-versions.yml
+
+  rubin-recommended:
+    uses: ./.github/workflows/rubin-recommended-compatibility.yml
+
+  rubin-latest-daily:
+    uses: ./.github/workflows/rubin-latest-daily-compatibility.yml
