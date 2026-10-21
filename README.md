@@ -63,24 +63,26 @@ instances. Revocation must be done on the PZ Server website.
 
 ## Partner JupyterHub authentication
 
-Once the PzServer API administrator has enabled the `linea-dev` partner and
-confirmed your active PzServer account has exactly the same username, you can use:
+After the administrator enables your Hub in the API, use `PzServer(host="pz-dev")`.
+The package reads `JUPYTERHUB_PUBLIC_HUB_URL`, or `JUPYTERHUB_HOST` if the first
+is empty, and `JUPYTERHUB_API_TOKEN`. No per-partner mapping is needed in the
+package. The optional `hub=` override now takes a public HTTPS URL, not an ID.
+Explicit and saved PzServer credentials retain their existing priority.
 
-```python
-pz = PzServer(host="pz-dev", hub="linea-dev")
-```
+The URL is normalized by lowercasing the hostname, removing the default HTTPS
+port and trailing slashes. Path prefixes and their case are preserved. URLs
+with user credentials, query strings, fragments, whitespace, encoded paths or
+dot segments are rejected. Internal API URLs are not used for discovery.
 
-This reads `JUPYTERHUB_API_TOKEN` from the notebook environment without saving
-it. For `PzServer()` without an explicit token or partner, saved PzServer
-credentials take precedence; otherwise the package recognizes the LIneA dev
-Hub via `JUPYTERHUB_PUBLIC_HUB_URL` or `JUPYTERHUB_HOST`. If those variables
-are unavailable, specify `hub="linea-dev"`. Explicit `token=...` always wins.
+The API matches only registered URLs and explicit aliases, then validates the
+token at that partner's fixed endpoint. Unknown or ambiguous URLs are rejected;
+tokens are never tried against other partners. A new partner only requires
+backend configuration when it supports the same Hub authentication protocol.
+Rubin/Nublado still requires a separately supported integration.
 
-Partner credentials are sent only to the known production/development
-PzServer API URLs, never automatically to a custom `host`. The API validates
-the token with its configured partner endpoint and requires an active local
-account with exactly the same username. It applies that account's permissions. Rubin/Nublado is not supported by this integration.
-The backend must be deployed and configured before this mode will work.
+Hub credentials are sent only to the known production/development PzServer API
+URLs, never automatically to a custom host. Deploy the matching backend update
+before using the new URL-based authorization format.
 
 ## Training Set Maker HATS configuration
 
