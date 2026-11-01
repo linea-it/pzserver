@@ -5,7 +5,7 @@ ipython==9.16.1
 Jinja2==3.1.6
 lsdb==0.10.4
 matplotlib==3.10.9
-numpy==2.3.5
+numpy==2.4.6
 pandas==2.3.3
 pyarrow==21.0.0
 pydantic==2.13.4
