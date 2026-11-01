@@ -1,7 +1,7 @@
 pytest>=9.1.1
 pytest-cov>=4
 pre-commit>=3
-ruff>=0.2
+ruff>=0.17.3
 sphinx>=7.0.0,<8
 sphinx_rtd_theme>=3.1.0,<4
 sphinx-autoapi>=3.0.0,<4
