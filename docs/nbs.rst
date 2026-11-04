@@ -3,4 +3,4 @@ Notebooks
 
 .. toctree::
 
-    Tutorial introducing PZ Server lib <notebooks/rst/pzserver_tutorial.rst>
+    Tutorial introducing PZ Server lib <notebooks/pzserver_tutorial.ipynb>
