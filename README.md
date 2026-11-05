@@ -5,7 +5,7 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/linea-it/pzserver/build-documentation.yml?label=docs)
 ![GitHub](https://img.shields.io/github/license/linea-it/pzserver)
 
-A Python library to access data and services from the LSST [Photo-z Server](https://pz-server.linea.org.br/). 
+A Python library to access data and services from the LSST [Photo-z Server](https://pzserver.linea.org.br/).
 
 The Photo-z (PZ) Server is an online service based on software developed and delivered as part of the in-kind contribution program BRA-LIN, from LIneA to the Legacy Survey of Space and Time (LSST) caried out by the [Rubin Observatory](https://rubinobservatory.org/). The PZ Server is an open source project. The source code is available on the GitHub repository [linea-it/pzserver](https://github.com/linea-it/pzserver). 
  
@@ -145,9 +145,10 @@ Step-by-step procedure to test a new feature or bug fix from a particular branch
 4. Open Python prompt or notebook and import the library:
 
     ```
-    from pzserver import PzServer
-    token = "****"  # your toker 
-    pz = PzServer(token)                                   
+    from pzserver import PzServer, login
+
+    login()  # First use only: enter the API token in the hidden prompt.
+    pz = PzServer()
     ```  
 
 --- 
