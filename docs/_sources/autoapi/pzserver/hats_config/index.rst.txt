@@ -1,0 +1,43 @@
+pzserver.hats_config
+====================
+
+.. py:module:: pzserver.hats_config
+
+.. autoapi-nested-parse::
+
+   Build effective HATS configurations for Training Set Maker submissions.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   pzserver.hats_config.PLACEHOLDERS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   pzserver.hats_config._replace_placeholders
+   pzserver.hats_config._create_invalid_handling
+   pzserver.hats_config.customize_hats_config
+
+
+Module Contents
+---------------
+
+.. py:data:: PLACEHOLDERS
+
+.. py:function:: _replace_placeholders(value, replacements)
+
+.. py:function:: _create_invalid_handling(use_magnitude)
+
+.. py:function:: customize_hats_config(template, *, flux, dereddening, convert_flux_to_mag=False)
+
+   Apply the basic TSM selections to a release HATS configuration.
+
+
