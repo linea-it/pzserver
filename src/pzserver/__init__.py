@@ -8,6 +8,7 @@ TrainingSet:
 from .auth import login, logout
 from .catalog import Catalog, SpeczCatalog, TrainingSet
 from .core import PzServer
+from .device_auth import login_device
 from .pipeline import Pipeline
 
 __all__ = [
@@ -19,6 +20,7 @@ __all__ = [
     "__version__",
     "get_version",
     "login",
+    "login_device",
     "logout",
 ]
 

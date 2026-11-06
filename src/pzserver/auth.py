@@ -92,8 +92,12 @@ def login(token=None, host="pz"):
 
 
 def logout(host="pz"):
-    """Remove the saved token for this API without revoking it on the server.
+    """Forget saved manual and Device credentials without server revocation.
 
-    Existing PzServer instances keep their in-memory credentials.
+    Manual-token instances keep their in-memory credentials. Device instances
+    require the saved credentials on their next request.
     """
+    from .device_auth import forget_device_credentials
+
+    forget_device_credentials(host)
     _token_path(host).unlink(missing_ok=True)
