@@ -12,6 +12,10 @@ from urllib.parse import urljoin
 import requests
 
 
+class AuthenticationRequired(requests.exceptions.RequestException):
+    """The API explicitly rejected the supplied credentials (HTTP 401)."""
+
+
 # pylint: disable=too-many-lines,too-many-public-methods
 class PzRequests:
     """
@@ -48,14 +52,16 @@ class PzRequests:
             self._base_api_url = host
 
         self._token = token
-        if auth_scheme not in ("Token", "JupyterHub"):
+        if auth_scheme not in ("Token", "JupyterHub", "Bearer"):
             raise ValueError("Unsupported authentication scheme.")
         self._auth_scheme = auth_scheme
         self._check_token()
 
     @property
     def _authorization(self):
-        return f"{getattr(self, '_auth_scheme', 'Token')} {self._token}"
+        scheme = getattr(self, "_auth_scheme", "Token")
+        token = self._token.access_token() if scheme == "Bearer" else self._token
+        return f"{scheme} {token}"
 
     @staticmethod
     def safe_list_get(_list, idx, default) -> list:
@@ -331,6 +337,10 @@ class PzRequests:
         if not cntxt.get("success", True):
             stcode = cntxt.get("status_code")
             msg = cntxt.get("message", "Unforeseen error")
+            if stcode == 401:
+                raise AuthenticationRequired(
+                    "Authentication rejected by the API (HTTP 401)."
+                )
             raise requests.exceptions.RequestException(f"Status code {stcode}: {msg}")
 
     @staticmethod
@@ -829,9 +839,7 @@ class PzRequests:
         return data.get("data")
 
     def _get_product_download_status(self, _id):
-        data = self._get_request(
-            f"{self._base_api_url}products/{_id}/download/status/"
-        )
+        data = self._get_request(f"{self._base_api_url}products/{_id}/download/status/")
 
         if "success" in data and data["success"] is False:
             raise requests.exceptions.RequestException(data["message"])

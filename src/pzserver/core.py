@@ -16,7 +16,8 @@ from IPython.display import display
 
 from .auth import hub_credentials, load_token
 from .catalog import SpeczCatalog, TrainingSet
-from .communicate import PzRequests
+from .communicate import AuthenticationRequired, PzRequests
+from .device_auth import DeviceLoginRequired, load_device_credentials, login_device
 from .process import CRCProcess, TSMProcess
 from .product import PzProduct
 from .upload import PzUpload, UploadData
@@ -28,8 +29,7 @@ pd.options.display.max_rows = 6
 FONTCOLORERR = "\033[38;2;255;0;0m"
 FONTCOLOREND = "\033[0m"
 HATS_DIRECTORY_MESSAGE = (
-    "This product main file is a directory-based dataset, such as a "
-    "HATS collection."
+    "This product main file is a directory-based dataset, such as a HATS collection."
 )
 MAX_IN_MEMORY_PRODUCT_SIZE_BYTES = 200 * 1024**2
 
@@ -39,13 +39,23 @@ class PzServer:
     Responsible for managing user interactions with the Pz Server app.
     """
 
-    def __init__(self, token=None, host="pz", *, hub=None):
+    def __init__(
+        self,
+        token=None,
+        host="pz",
+        *,
+        hub=None,
+        auto_login=True,
+        open_browser=True,
+        force=False,
+    ):
         """
         PzServer class constructor
 
         Args:
             token (str): user's token generated on the PZ Server website.
-                If omitted, use the token saved by pzserver.login for this host.
+                If omitted, prefer saved Device credentials, then the manual
+                token saved by pzserver.login for this host.
             host (str): "pz" (production) or
                         "pz-dev" (test environment) or
                         "localhost" (dev environment) or
@@ -53,22 +63,64 @@ class PzServer:
             hub (str): optional partner ID, e.g. "linea-dev". When provided
                 without an explicit token, use the partner's environment token
                 instead of a saved PzServer token.
+            auto_login (bool): start Device Flow when no usable saved credentials
+                exist. Set False for unattended scripts that must not prompt.
+            open_browser (bool): attempt to open the verification page. The URL
+                and user code are always printed when authorization is required.
+            force (bool): start a new Device authorization, cancelling a pending
+                request first. Does not revoke previously authorized connections.
         """
 
-        if token is None and hub is None:
-            token = load_token(host)
-        if token is None:
-            partner_token = hub_credentials(host, hub)
-            if partner_token is not None:
-                self.api = PzRequests(partner_token, host, auth_scheme="JupyterHub")
+        if force:
+            if token is not None or hub is not None or not auto_login:
+                raise ValueError(
+                    "force=True requires Device Flow: omit token/hub and keep auto_login=True."
+                )
+            self._authorize_device(host, open_browser, force=True)
+            return
+
+        if token is not None:
+            self.api = PzRequests(token, host)
+            return
+
+        if hub is None:
+            credentials = load_device_credentials(host)
+            if credentials is not None:
+                try:
+                    self.api = PzRequests(credentials, host, auth_scheme="Bearer")
+                except (AuthenticationRequired, DeviceLoginRequired):
+                    if not auto_login:
+                        raise
+                    self._authorize_device(host, open_browser)
                 return
-        if token is None:
+            saved_token = load_token(host)
+            if saved_token is not None:
+                try:
+                    self.api = PzRequests(saved_token, host)
+                except AuthenticationRequired:
+                    if not auto_login:
+                        raise
+                    self._authorize_device(host, open_browser)
+                return
+
+        partner_token = hub_credentials(host, hub)
+        if partner_token is not None:
+            self.api = PzRequests(partner_token, host, auth_scheme="JupyterHub")
+            return
+        if hub is not None or not auto_login:
             raise ValueError(
                 f"{FONTCOLORERR}Please provide a valid token or run "
-                f"pzserver.login(host={host!r}) to save one.{FONTCOLOREND}"
+                f"pzserver.login_device(host={host!r}) to authorize in your browser, or "
+                f"pzserver.login(host={host!r}) to save a manual token.{FONTCOLOREND}"
             )
+        self._authorize_device(host, open_browser)
 
-        self.api = PzRequests(token, host)
+    def _authorize_device(self, host, open_browser, *, force=False):
+        login_device(host=host, open_browser=open_browser, force=force)
+        credentials = load_device_credentials(host)
+        if credentials is None:
+            raise DeviceLoginRequired("Authorization did not save usable credentials.")
+        self.api = PzRequests(credentials, host, auth_scheme="Bearer")
 
     # ---- methods to get general info ----#
     def get_product_types(self) -> list:
@@ -310,14 +362,23 @@ class PzServer:
                     transposed_list.append({"key": "n_rows", "value": value["n_rows"]})
                     if value.get("size", None):
                         size_mb = float(value["size"]) / 1_000_000
-                        transposed_list.append({"key": "size", "value": f"{size_mb:.2f} MB"})
+                        transposed_list.append(
+                            {"key": "size", "value": f"{size_mb:.2f} MB"}
+                        )
                     if value.get("columns_association", None):
                         transposed_list.append(
-                            {"key": "columns_association", "value": value['columns_association']}
+                            {
+                                "key": "columns_association",
+                                "value": value["columns_association"],
+                            }
                         )
                     if value.get("columns", None):
-                        transposed_list.append({"key": "columns", "value": value["columns"]})
-                        transposed_list.append({"key": "n_columns", "value": len(value["columns"])})
+                        transposed_list.append(
+                            {"key": "columns", "value": value["columns"]}
+                        )
+                        transposed_list.append(
+                            {"key": "n_columns", "value": len(value["columns"])}
+                        )
                     value = value["name"]
 
                 transposed_list.append({"key": key, "value": value})
@@ -388,7 +449,7 @@ class PzServer:
             get_big_products (bool, optional): allow products whose
                 stored main file is larger than 200 MB to be loaded
                 into memory. Defaults to False.
-           
+
         Returns:
             astropy.Table
 
@@ -587,9 +648,7 @@ class PzServer:
         else:
             ddf = getattr(catalog, "_ddf", None)
             if ddf is None:
-                raise TypeError(
-                    "Could not convert LSDB catalog to an astropy Table."
-                )
+                raise TypeError("Could not convert LSDB catalog to an astropy Table.")
             data = ddf.compute()
 
         if isinstance(data, Table):

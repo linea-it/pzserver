@@ -69,7 +69,7 @@ class FakeApi:
 
 def test_server_requires_token():
     with pytest.raises(ValueError, match="Please provide a valid token"):
-        core.PzServer()
+        core.PzServer(auto_login=False)
 
 
 def test_simple_list_methods_delegate_to_api():

@@ -36,7 +36,7 @@ def test_tokens_are_isolated_by_endpoint(validate):
     assert PzServer(host="pz-dev").api._token == "development"
     assert auth.load_token("https://pzserver.linea.org.br/api/") == "production"
     with pytest.raises(ValueError, match="pzserver.login"):
-        PzServer(host="https://another.example/api/")
+        PzServer(host="https://another.example/api/", auto_login=False)
 
 
 def test_explicit_token_does_not_read_or_replace_saved_token(monkeypatch, validate):

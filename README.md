@@ -18,6 +18,103 @@ This repo uses the [LINCC's Python Project Template](https://github.com/lincc-fr
  
 --- 
 
+## Sign in through your browser (Device Flow)
+
+For an API with Device Flow enabled, specify the host once:
+
+```python
+from pzserver import PzServer
+
+pz = PzServer(host="localhost", open_browser=False)
+# If needed, open the displayed URL, enter the code and approve access.
+# Construction waits for approval, then returns the authenticated client.
+pz.get_product_types()
+```
+
+For local development, install this checkout into the notebook kernel with
+`%pip install -e /home/singulani/projects/pzserver` and restart the kernel.
+The `localhost` alias uses `http://localhost/api/`. If your local server uses a
+port, pass the full API URL, e.g. `host="http://localhost:8080/api/"`.
+A remote notebook's localhost is the notebook server, not your laptop.
+
+On later runs, use the same constructor. It checks the saved credentials against
+the API and only requests authorization when necessary. Near-expiry Device tokens
+are renewed automatically. A rejected saved access token triggers renewal before
+requesting another authorization. Explicit manual tokens and Hub selections retain
+their existing authentication behavior.
+
+For unattended scripts, use `PzServer(host="localhost", auto_login=False)` to fail
+without opening a browser or waiting for approval. Network failures, server errors
+and permission denials do not automatically start Device Flow.
+
+The standalone `login_device` function remains available:
+Calling `login_device(host="localhost")` again validates and renews the saved
+credentials within the same authorization, without opening the browser or creating
+another connection. If the refresh token expired or was revoked, it starts a new
+browser authorization. Network/server errors do not trigger a new login.
+
+To deliberately create another independent authorization, use
+`PzServer(host="localhost", force=True)` (or the standalone
+`login_device(host="localhost", force=True)`). This replaces the saved credentials
+only after success and **does not revoke** the previous server authorization;
+revoke unused connections from Connected applications in PzServer.
+
+Access tokens last one hour; the package refreshes them before requests when fewer than 60
+seconds remain. Each successful refresh restarts the server's 30-day renewal
+window. If access is revoked after construction, instantiate a new client or run
+`login_device` again. API writes are not automatically retried on 401.
+
+Credentials are stored **unencrypted** in `~/.pzserver/credentials`, separately
+for each API, in private files (`0600`) inside a private directory (`0700`) on
+POSIX. The home directory must persist across notebook restarts. A file lock
+serializes refresh across instances/processes; refresh rotation is saved with
+an atomic replacement. Anyone running as your OS user can read these files.
+
+Use `open_browser=False` on a remote notebook and open the printed URL yourself.
+Only the verification URL and user code are displayed. HTTPS is required except
+for HTTP on loopback during local testing. OAuth requests do not follow redirects.
+No JupyterHub token is used by this flow.
+
+Saved Device credentials take precedence over saved manual tokens and automatic
+Hub detection. An explicit `token=` or `hub=` still selects the existing flow.
+`logout(host=...)` forgets both kinds of saved credentials locally; it does not
+revoke them on the server. Existing Device instances cannot make new requests
+after their saved credentials are removed. Server-side revocation is available
+in Connected applications on the PzServer website.
+
+### Pending authorization and retry limits
+
+A code is valid for **15 minutes** by default. Its verification link identifies
+that specific request: open the full URL printed by Python. The server tells the
+package how many incorrect code entries are allowed (the default is **3**). Once
+that limit is reached, the request is blocked even if you switch browsers. A
+correct code entered before the limit proceeds to the approval screen. These
+errors are unrelated to your account password or the package's background polling.
+
+If you interrupt Python, the pending request is saved in a private file next to
+the credentials. Running the constructor/login again resumes the same code without
+extending its expiry. Only one local login process per API may wait for approval;
+interrupt the old execution before restarting. To explicitly replace the pending
+request, call:
+
+```python
+from pzserver import PzServer
+pz = PzServer(host="localhost", force=True)
+```
+
+The package first cancels the pending request on the server, then requests another.
+A cancellation failure does not issue a new code. Expired, denied or blocked
+requests require a new authorization. Previously issued access tokens are not
+revoked by this restart. Update the backend together with the package for pending
+request cancellation support.
+
+While waiting, the package checks for approval at the interval reported by the
+server (normally **5 seconds**). `authorization_pending` simply means “not yet”.
+An early poll receives `slow_down`, increasing the wait by **5 seconds** (5 → 10 →
+15...). The increased interval is retained after interruption. Polling stops on
+approval, denial, blocking, cancellation or expiry; it does not count as entering
+an incorrect code. Server rate limits return HTTP 429; wait before retrying.
+
 ## Save your API token once
 
 In your notebook or Python session, register the token generated on the PZ
@@ -52,13 +149,13 @@ are also supported. Only enter a token for an API you trust, using HTTPS for
 remote servers.
 
 Explicit credentials still work with `PzServer(token=token)` and take precedence
-over saved credentials without saving or replacing them. If no saved token
-exists, `PzServer()` raises an error directing you to `login()`; it never opens
-an unexpected prompt. To replace an expired or revoked token, run `login()`
-again. Tokens are not automatically renewed.
+over saved credentials without saving or replacing them. If no saved credential or usable Hub credential
+exists, `PzServer()` starts Device Flow unless `auto_login=False`. A saved manual
+token rejected with HTTP 401 can also transition to Device Flow. To replace a
+manual token directly, run `login()` again; manual tokens are not automatically renewed.
 
 Use `logout()` (or `logout(host="pz-dev")`) to delete the local credential.
-This does not revoke the token on the API or disconnect existing Python
+For manual tokens, this does not revoke the token on the API or disconnect existing Python
 instances. Revocation must be done on the PZ Server website.
 
 ## Partner JupyterHub authentication
